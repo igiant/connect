@@ -1,5 +1,5 @@
 # Kerio API
-[![GoDoc](http://godoc.org/github.com/igiant/connect?status.png)](http://godoc.org/github.com/igiant/connect)
+[![Go Reference](https://pkg.go.dev/badge/github.com/igiant/connect.svg)](https://pkg.go.dev/github.com/igiant/connect)
 ## Overview
 Client for Kerio API Connect (JSON-RPC 2.0)
 
