@@ -74,7 +74,8 @@ func (c *Connection) DomainsGetSettings() (*DomainSetting, error) {
 	return &domainSetting.Result.DomainSetting, err
 }
 
-// DomainsCheckPublicFoldersIntegrity checks integrity of all public folders. If corrupted folder is found, try to fix it.
+// DomainsCheckPublicFoldersIntegrity checks integrity of all public folders.
+// If corrupted folder is found, try to fix it.
 func (c *Connection) DomainsCheckPublicFoldersIntegrity() error {
 	_, err := c.CallRaw("Domains.checkPublicFoldersIntegrity", nil)
 	return err
@@ -96,13 +97,13 @@ func (c *Connection) DomainsGetDomainFooterPlaceholders() (PlaceHolderList, erro
 }
 
 // DomainsSaveFooterImage - save a new footer's image.
-func (c *Connection) DomainsSaveFooterImage(fileID string) (*string, error) {
+func (c *Connection) DomainsSaveFooterImage(fileID string) (string, error) {
 	params := struct {
 		FileID string `json:"fileId"`
 	}{fileID}
 	data, err := c.CallRaw("Domains.saveFooterImage", &params)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	imgUrl := struct {
 		Result struct {
@@ -110,5 +111,5 @@ func (c *Connection) DomainsSaveFooterImage(fileID string) (*string, error) {
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &imgUrl)
-	return &imgUrl.Result.ImgUrl, err
+	return imgUrl.Result.ImgUrl, err
 }

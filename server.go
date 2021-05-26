@@ -199,10 +199,10 @@ func (c *Connection) ServerGetColumnList(objectName, methodName string) ([]strin
 }
 
 // ServerGetDownloadProgress obtains a progress of installation package downloading.
-func (c *Connection) ServerGetDownloadProgress() (*int, error) {
+func (c *Connection) ServerGetDownloadProgress() (int, error) {
 	data, err := c.CallRaw("Server.getDownloadProgress", nil)
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
 	downloadProgress := struct {
 		Result struct {
@@ -210,7 +210,7 @@ func (c *Connection) ServerGetDownloadProgress() (*int, error) {
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &downloadProgress)
-	return &downloadProgress.Result.Progress, err
+	return downloadProgress.Result.Progress, err
 }
 
 // ServerGetServerTime obtains server time information.
@@ -229,10 +229,10 @@ func (c *Connection) ServerGetServerTime() (*ServerTimeInfo, error) {
 }
 
 // ServerGetClientStatistics obtains client statistics settings.
-func (c *Connection) ServerGetClientStatistics() (*bool, error) {
+func (c *Connection) ServerGetClientStatistics() (bool, error) {
 	data, err := c.CallRaw("Server.getClientStatistics", nil)
 	if err != nil {
-		return nil, err
+		return false, err
 	}
 	clientStatistics := struct {
 		Result struct {
@@ -240,7 +240,7 @@ func (c *Connection) ServerGetClientStatistics() (*bool, error) {
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &clientStatistics)
-	return &clientStatistics.Result.ClientStatistics, err
+	return clientStatistics.Result.ClientStatistics, err
 }
 
 // ServerGetLicenseExtensionsList obtains a list of license extensionsList, caller must be authenticated.
@@ -289,6 +289,28 @@ func (c *Connection) ServerGetWebSessions(query SearchQuery) ([]WebSessionList, 
 	}{}
 	err = json.Unmarshal(data, &webSessionList)
 	return webSessionList.Result.WebSessions, err
+}
+
+// ServerKillWebSessions Terminate actual web sessions.
+func (c *Connection) ServerKillWebSessions(ids []string) error {
+	params := struct {
+		IDs []string `json:"ids"`
+	}{ids}
+	_, err := c.CallRaw("Server.killWebSessions", params)
+	return err
+}
+
+// ServerSendBugReport send a bug report to Kerio.
+func (c *Connection) ServerSendBugReport(name, email, language, subject, description string) error {
+	params := struct {
+		Name        string `json:"name"`
+		Email       string `json:"email"`
+		Language    string `json:"language"`
+		Subject     string `json:"subject"`
+		Description string `json:"description"`
+	}{name, email, language, subject, description}
+	_, err := c.CallRaw("Server.sendBugReport", params)
+	return err
 }
 
 // ServerGetConnections obtains a information about active connections.
@@ -350,14 +372,14 @@ func (c *Connection) ServerGetDirs(path string) ([]DirList, error) {
 //      path	    - directory name
 //      credentials	- (optional) user name and password required to access network disk
 //      result	    - result of check
-func (c *Connection) ServerPathExists(username, password, path string) (*string, error) {
+func (c *Connection) ServerPathExists(username, password, path string) (string, error) {
 	params := struct {
 		Credentials Credentials `json:"credentials"`
 		Path        string      `json:"path"`
 	}{Credentials{username, password}, path}
 	data, err := c.CallRaw("Server.pathExists", params)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	directoryAccessResult := struct {
 		Result struct {
@@ -365,7 +387,7 @@ func (c *Connection) ServerPathExists(username, password, path string) (*string,
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &directoryAccessResult)
-	return &directoryAccessResult.Result.Result, err
+	return directoryAccessResult.Result.Result, err
 }
 
 // ServerReboot - reboot the host system
