@@ -1,7 +1,7 @@
-# Kerio API
+# Kerio Connect API
 [![Go Reference](https://pkg.go.dev/badge/github.com/igiant/connect.svg)](https://pkg.go.dev/github.com/igiant/connect)
 ## Overview
-Client for Kerio API Connect (JSON-RPC 2.0)
+Client for [Kerio API Connect (JSON-RPC 2.0)](https://manuals.gfi.com/en/kerio/api/connect/admin/reference/index.html)
 
 Implemented several Administration API for Kerio Connect methods
 
