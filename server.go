@@ -149,6 +149,24 @@ func (c *Connection) ServerGetRemoteAdministration() (*Administration, error) {
 	return &administration.Result.Administration, err
 }
 
+// ServerSetRemoteAdministration obtains a information about remote administration settings.
+func (c *Connection) ServerSetRemoteAdministration(setting *Administration) error {
+	params := struct {
+		Administration `json:"setting"`
+	}{*setting}
+	_, err := c.CallRaw("Server.setRemoteAdministration", params)
+	return err
+}
+
+// ServerValidateRemoteAdministration obtains a information about remote administration settings.
+func (c *Connection) ServerValidateRemoteAdministration(setting *Administration) error {
+	params := struct {
+		Administration `json:"setting"`
+	}{*setting}
+	_, err := c.CallRaw("Server.validateRemoteAdministration", params)
+	return err
+}
+
 // ServerGetBrowserLanguages returns a list of user-preferred languages set in browser.
 func (c *Connection) ServerGetBrowserLanguages() ([]string, error) {
 	data, err := c.CallRaw("Server.getBrowserLanguages", nil)
@@ -243,6 +261,15 @@ func (c *Connection) ServerGetClientStatistics() (bool, error) {
 	return clientStatistics.Result.ClientStatistics, err
 }
 
+// ServerSetClientStatistics set client statistics settings.
+func (c *Connection) ServerSetClientStatistics(isEnabled bool) error {
+	params := struct {
+		IsEnabled bool `json:"isEnabled"`
+	}{isEnabled}
+	_, err := c.CallRaw("Server.getClientStatistics", params)
+	return err
+}
+
 // ServerGetLicenseExtensionsList obtains a list of license extensionsList, caller must be authenticated.
 func (c *Connection) ServerGetLicenseExtensionsList() (ExtensionsList, error) {
 	data, err := c.CallRaw("Server.getLicenseExtensionsList", nil)
@@ -301,6 +328,12 @@ func (c *Connection) ServerKillWebSessions(ids []string) error {
 }
 
 // ServerSendBugReport send a bug report to Kerio.
+// Parameters:
+//      name	    - name of sender
+//      email	    - email of sender
+//      language	- language of report
+//      subject     - summary of report
+//      description	- description of problem
 func (c *Connection) ServerSendBugReport(name, email, language, subject, description string) error {
 	params := struct {
 		Name        string `json:"name"`

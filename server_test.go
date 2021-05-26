@@ -1,7 +1,6 @@
 package connect
 
 import (
-	"fmt"
 	"os"
 	"strings"
 	"testing"
@@ -59,9 +58,6 @@ func TestServerRequests(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	for _, session := range sessionList {
-		fmt.Println(session.ID, session.UserName)
-	}
 	if len(sessionList) == 0 || sessionList[0].ID == "" {
 		t.Error("domains information not received")
 	}
@@ -103,6 +99,16 @@ func TestServerRequests(t *testing.T) {
 	}
 	if result == "" {
 		t.Error("status path not received")
+	}
+	admin, err := conn.ServerGetRemoteAdministration()
+	if err != nil {
+		t.Error(err)
+	}
+	if admin != nil {
+		err = conn.ServerValidateRemoteAdministration(admin)
+		if err != nil {
+			t.Error(err)
+		}
 	}
 	err = conn.Logout()
 	if err != nil {
