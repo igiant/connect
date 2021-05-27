@@ -400,8 +400,8 @@ func (c *Connection) ServerGetDirs(path string) ([]DirList, error) {
 	return dirList.Result.Dirs, err
 }
 
-//ServerPathExists checks if the selected path exists and is accessible from the server.
-//Parameters:
+// ServerPathExists checks if the selected path exists and is accessible from the server.
+// Parameters:
 //      path	    - directory name
 //      credentials	- (optional) user name and password required to access network disk
 //      result	    - result of check
