@@ -25,11 +25,6 @@ type loginStruct struct {
 	Application Application `json:"application"`
 }
 
-type Credentials struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
 type LocalizableMessageParameters struct {
 	PositionalParameters []string `json:"positionalParameters"` //additional strings to replace the placeholders in message (first string replaces %1 etc.)
 	Plurality            int      `json:"plurality"`            //count of items, used to distinguish among singular/paucal/plural; 1 for messages with no counted items
