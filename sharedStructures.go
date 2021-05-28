@@ -212,10 +212,12 @@ type OptionalString struct {
 	Enabled bool   `json:"enabled"`
 	Value   string `json:"value"`
 }
+
 type OptionalLong struct {
 	Enabled bool `json:"enabled"`
 	Value   int  `json:"value"`
 }
+
 type OptionalEntity struct {
 	Enabled bool `json:"enabled"`
 	ID      KId  `json:"id"`

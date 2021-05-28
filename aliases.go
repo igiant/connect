@@ -3,31 +3,21 @@ package connect
 import "encoding/json"
 
 type Alias struct {
-	ID          string `json:"id"`
-	DomainID    string `json:"domainId"`
-	Name        string `json:"name"`
-	DeliverToID string `json:"deliverToId"`
-	DeliverTo   string `json:"deliverTo"`
-	Type        string `json:"type"`
-	Description string `json:"description"`
-	HomeServer  struct {
-		ID   string `json:"id"`
-		Name string `json:"name"`
-	} `json:"homeServer"`
+	ID          KId        `json:"id"`
+	DomainID    KId        `json:"domainId"`
+	Name        string     `json:"name"`
+	DeliverToID KId        `json:"deliverToId"`
+	DeliverTo   string     `json:"deliverTo"`
+	Type        string     `json:"type"`
+	Description string     `json:"description"`
+	HomeServer  HomeServer `json:"homeServer"`
 }
 
 type AliasList []Alias
 
-type PublicFolder struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-}
-
-type PublicFolderList []PublicFolder
-
 // HomeServer User's home server in a distributed domain.
 type HomeServer struct {
-	ID   string `json:"id"`   // server's id
+	ID   KId    `json:"id"`   // server's id
 	Name string `json:"name"` // server's Internet hostname
 }
 

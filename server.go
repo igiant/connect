@@ -46,8 +46,6 @@ type Constant struct {
 	Value string `json:"value"`
 }
 
-type NamedConstantList []Constant
-
 type FolderInfo struct {
 	FolderName     string   `json:"folderName"`
 	ReferenceCount int      `json:"referenceCount"`
@@ -56,24 +54,6 @@ type FolderInfo struct {
 }
 
 type FolderInfoList []FolderInfo
-
-type ProductInfo struct {
-	ProductName   string `json:"productName"`
-	Version       string `json:"version"`
-	BuildNumber   string `json:"buildNumber"`
-	OsName        string `json:"osName"`
-	Os            string `json:"os"`
-	ReleaseType   string `json:"releaseType"`
-	DeployedType  string `json:"deployedType"`
-	IsDockerImage bool   `json:"isDockerImage"`
-	UpdateInfo    struct {
-		Result      string `json:"result"`
-		Description string `json:"description"`
-		DownloadURL string `json:"downloadUrl"`
-		InfoURL     string `json:"infoUrl"`
-	} `json:"updateInfo"`
-	CentralManagementSet bool `json:"centralManagementSet"`
-}
 
 type Administration struct {
 	IsEnabled                   bool   `json:"isEnabled"`
