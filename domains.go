@@ -2,14 +2,6 @@ package connect
 
 import "encoding/json"
 
-type SearchQuery struct {
-	Fields     []string          `json:"fields"`
-	Conditions []string          `json:"conditions"`
-	Start      int               `json:"start"`
-	Limit      int               `json:"limit"`
-	OrderBy    map[string]string `json:"orderBy,omitempty"`
-}
-
 type PlaceHolderList []Constant
 
 type DomainInfo struct {

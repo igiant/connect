@@ -25,7 +25,7 @@ func TestServerRequests(t *testing.T) {
 		return
 	}
 	conf := NewConfig(param.Server)
-	app := &Application{
+	app := &ApiApplication{
 		Name:    "MyApp",
 		Vendor:  "Me",
 		Version: "v0.0.1",
@@ -54,7 +54,7 @@ func TestServerRequests(t *testing.T) {
 	if info.ProductName != "Kerio Connect" {
 		t.Error("product info not received")
 	}
-	sessionList, err := conn.ServerGetWebSessions(NewSearchQuery(nil, nil, 0, 0, nil))
+	sessionList, err := conn.ServerGetWebSessions(NewSearchQuery(nil, nil, Or, 0, 0, nil))
 	if err != nil {
 		t.Error(err)
 	}

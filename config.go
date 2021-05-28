@@ -29,7 +29,7 @@ func NewConfig(server string) *Config {
 }
 
 // NewApplication returns a pointer to structure with application data
-func NewApplication(name, vendor, version string) *Application {
+func NewApplication(name, vendor, version string) *ApiApplication {
 	if name == "" {
 		name = "TempApp"
 	}
@@ -39,7 +39,7 @@ func NewApplication(name, vendor, version string) *Application {
 	if version == "" {
 		version = "v1.0.1"
 	}
-	return &Application{
+	return &ApiApplication{
 		Name:    name,
 		Vendor:  vendor,
 		Version: version,

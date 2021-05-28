@@ -31,7 +31,7 @@ func TestConfig_NewSession(t *testing.T) {
 		return
 	}
 	conf := NewConfig(param.Server)
-	app := &Application{
+	app := &ApiApplication{
 		Name:    "MyApp",
 		Vendor:  "Me",
 		Version: "v0.0.1",

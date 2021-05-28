@@ -142,7 +142,7 @@ type Domain struct {
 //                 e.g. "jdoe" or "jdoe@company.com"
 //      password - password of the user to be logged in
 //      app      - client application description
-func (c *Connection) Login(user, password string, app *Application) error {
+func (c *Connection) Login(user, password string, app *ApiApplication) error {
 	if app == nil {
 		app = NewApplication("", "", "")
 	}

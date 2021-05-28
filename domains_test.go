@@ -24,7 +24,7 @@ func TestDomainRequests(t *testing.T) {
 		return
 	}
 	conf := NewConfig(param.Server)
-	app := &Application{
+	app := &ApiApplication{
 		Name:    "MyApp",
 		Vendor:  "Me",
 		Version: "v0.0.1",
@@ -39,7 +39,7 @@ func TestDomainRequests(t *testing.T) {
 		t.Error(err)
 		return
 	}
-	domains, err := conn.DomainsGet(NewSearchQuery(nil, nil, 0, 0, nil))
+	domains, err := conn.DomainsGet(NewSearchQuery(nil, nil, Or, 0, 0, nil))
 	if err != nil {
 		t.Error(err)
 	}

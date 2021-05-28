@@ -27,20 +27,20 @@ type PublicFolderList []PublicFolder
 
 // HomeServer User's home server in a distributed domain.
 type HomeServer struct {
-	ID   string `json:"id"`   //server's id
-	Name string `json:"name"` //server's Internet hostname
+	ID   string `json:"id"`   // server's id
+	Name string `json:"name"` // server's Internet hostname
 }
 
 type AliasTarget struct {
-	ID           string     `json:"id"`           //unique identifier
-	Type         string     `json:"type"`         //item type discriminator
-	Name         string     `json:"name"`         //loginName for the User, name in square brackets for the Group
-	FullName     string     `json:"fullName"`     //fullname for the User, empty string for the Group
-	Description  string     `json:"description"`  //description of User/Group
-	IsEnabled    string     `json:"isEnabled"`    //is the User/Group enabled?
-	ItemSource   string     `json:"itemSource"`   //is the User/Group stored internally or by LDAP?
-	EmailAddress string     `json:"emailAddress"` //first email address
-	HomeServer   HomeServer `json:"homeServer"`   //id of users homeserver if server is in Cluster; groups haven't homeserver
+	ID           string     `json:"id"`           // unique identifier
+	Type         string     `json:"type"`         // item type discriminator
+	Name         string     `json:"name"`         // loginName for the User, name in square brackets for the Group
+	FullName     string     `json:"fullName"`     // fullname for the User, empty string for the Group
+	Description  string     `json:"description"`  // description of User/Group
+	IsEnabled    string     `json:"isEnabled"`    // is the User/Group enabled?
+	ItemSource   string     `json:"itemSource"`   // is the User/Group stored internally or by LDAP?
+	EmailAddress string     `json:"emailAddress"` // first email address
+	HomeServer   HomeServer `json:"homeServer"`   // id of users homeserver if server is in Cluster; groups haven't homeserver
 }
 
 type AliasTargetList []AliasTarget

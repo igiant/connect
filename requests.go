@@ -42,7 +42,7 @@ func (c *Connection) CallRaw(method string, params interface{}) ([]byte, error) 
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Content-Type", "Application/json-rpc")
+	req.Header.Set("Content-Type", "ApiApplication/json-rpc")
 	if c.Token != nil {
 		req.Header.Add("X-Token", *c.Token)
 	}
@@ -61,22 +61,23 @@ func (c *Connection) CallRaw(method string, params interface{}) ([]byte, error) 
 	return data, nil
 }
 
-func NewSearchQuery(fields []string, conditions []string, start, limit int, orderBy map[string]string) SearchQuery {
+func NewSearchQuery(fields []string, conditions SubConditionList, combining LogicalOperator, start, limit int, orderBy SortOrderList) SearchQuery {
 	if fields == nil {
 		fields = make([]string, 0)
 	}
 	if conditions == nil {
-		conditions = make([]string, 0)
+		conditions = make(SubConditionList, 0)
 	}
 	if limit == 0 {
 		limit = -1
 	}
 	if orderBy == nil {
-		orderBy = make(map[string]string)
+		orderBy = make(SortOrderList, 0)
 	}
 	return SearchQuery{
 		Fields:     fields,
 		Conditions: conditions,
+		Combining:  combining,
 		Start:      start,
 		Limit:      limit,
 		OrderBy:    orderBy,
