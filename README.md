@@ -24,7 +24,7 @@ import (
 )
 
 func main() {
-	config := connect.NewConfig(connect.Admin, "server_addr")
+	config := connect.NewConfig("server_addr")
 	conn, err := config.NewConnection()
 	if err != nil {
 		log.Fatal(err)

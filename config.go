@@ -1,28 +1,26 @@
 package connect
 
-import "net/url"
-
-type Destination uint8
+import (
+	"net/url"
+	"strings"
+)
 
 const (
-	Admin Destination = iota
-	Client
+	port = ":4040"
+	path = "/admin/api/jsonrpc"
 )
 
 // NewConfig returns a pointer to structure with the configuration for connecting to the API server
 // Parameters:
 //      dest   - control destination (Admin - for server control, Client - for mail client control)
 //      server - address without schema and port
-func NewConfig(dest Destination, server string) *Config {
-	port := "4040"
-	path := "/admin/api/jsonrpc"
-	if dest == Client {
-		port = "443"
-		path = "webmail/api/jsonrpc"
+func NewConfig(server string) *Config {
+	if !strings.Contains(server, ":") {
+		server += port
 	}
 	u := url.URL{
 		Scheme: "https",
-		Host:   server + ":" + port,
+		Host:   server,
 		Path:   path,
 	}
 	return &Config{
