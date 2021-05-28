@@ -55,26 +55,14 @@ type Domain struct {
 	PasswordComplexityEnabled bool   `json:"passwordComplexityEnabled"`
 	PasswordMinimumLength     int    `json:"passwordMinimumLength"`
 	OutgoingMessageLimit      `json:"outgoingMessageLimit"`
-	DeletedItems              struct {
-		IsEnabled bool `json:"isEnabled"`
-		Days      int  `json:"days"`
-	} `json:"deletedItems"`
-	JunkEmail struct {
-		IsEnabled bool `json:"isEnabled"`
-		Days      int  `json:"days"`
-	} `json:"junkEmail"`
-	SentItems struct {
-		IsEnabled bool `json:"isEnabled"`
-		Days      int  `json:"days"`
-	} `json:"sentItems"`
-	AutoDelete struct {
-		IsEnabled bool `json:"isEnabled"`
-		Days      int  `json:"days"`
-	} `json:"autoDelete"`
-	KeepForRecovery   `json:"keepForRecovery"`
-	AliasList         []interface{} `json:"aliasList"`
-	ForwardingOptions `json:"forwardingOptions"`
-	Service           struct {
+	DeletedItems              ActionAfterDays `json:"deletedItems"`
+	JunkEmail                 ActionAfterDays `json:"junkEmail"`
+	SentItems                 ActionAfterDays `json:"sentItems"`
+	AutoDelete                ActionAfterDays `json:"autoDelete"`
+	KeepForRecovery           `json:"keepForRecovery"`
+	AliasList                 []interface{} `json:"aliasList"`
+	ForwardingOptions         `json:"forwardingOptions"`
+	Service                   struct {
 		IsEnabled      bool   `json:"isEnabled"`
 		ServiceType    string `json:"serviceType"`
 		CustomMapFile  string `json:"customMapFile"`

@@ -23,7 +23,7 @@ func TestDomainRequests(t *testing.T) {
 		t.Error(err)
 		return
 	}
-	conf := NewConfig(Admin, param.Server)
+	conf := NewConfig(param.Server)
 	app := &Application{
 		Name:    "MyApp",
 		Vendor:  "Me",

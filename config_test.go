@@ -8,12 +8,8 @@ import (
 )
 
 func TestNewConfig(t *testing.T) {
-	conf := NewConfig(Admin, "myserver.ru")
+	conf := NewConfig("myserver.ru")
 	if conf.url != "https://myserver.ru:4040/admin/api/jsonrpc" {
-		t.Error("invalid URL")
-	}
-	conf = NewConfig(Client, "myserver.ru")
-	if conf.url != "https://myserver.ru:443/webmail/api/jsonrpc" {
 		t.Error("invalid URL")
 	}
 }
@@ -34,7 +30,7 @@ func TestConfig_NewSession(t *testing.T) {
 		t.Error(err)
 		return
 	}
-	conf := NewConfig(Admin, param.Server)
+	conf := NewConfig(param.Server)
 	app := &Application{
 		Name:    "MyApp",
 		Vendor:  "Me",
