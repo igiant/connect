@@ -7,10 +7,10 @@ type PublicFolder struct {
 
 type PublicFolderList []PublicFolder
 
-// List of email addresses
+// UserEmailAddressList - List of email addresses
 type UserEmailAddressList []string
 
-// Export format type.
+// FileFormatType - Export format type.
 type FileFormatType string
 
 const (
@@ -18,7 +18,7 @@ const (
 	TypeCsv FileFormatType = "TypeCsv" // Comma Separated Values
 )
 
-// Type of user role.
+// UserRoleType - Type of user role.
 type UserRoleType string
 
 const (
@@ -30,15 +30,14 @@ const (
 	BuiltInDomainAdmin UserRoleType = "BuiltInDomainAdmin" // BuiltIn domain admin role can be returned only in Session::WhoAmI method for built-in domain administrator. This role must NOT be assigned.
 )
 
-//
-// Note: all fields must be assigned if used in set methods.
+// UserRight - Note: all fields must be assigned if used in set methods.
 type UserRight struct {
 	UserRole           UserRoleType `json:"userRole"`
 	PublicFolderRight  bool         `json:"publicFolderRight"`
 	ArchiveFolderRight bool         `json:"archiveFolderRight"`
 }
 
-// Forwarding setup for user.
+// UserForwardMode - Forwarding setup for user.
 type UserForwardMode string
 
 const (
@@ -47,7 +46,7 @@ const (
 	UForwardDeliver UserForwardMode = "UForwardDeliver" // Forward all messages for this user to some addresses, and also deliver the message to user's mailbox.
 )
 
-// Type of deleting folder of the user
+// UserDeleteFolderMode - Type of deleting folder of the user
 type UserDeleteFolderMode string
 
 const (
@@ -56,14 +55,14 @@ const (
 	UMoveFolder   UserDeleteFolderMode = "UMoveFolder"   // Delete user and his folder will move into another user's folder.
 )
 
-// Settings of email forwarding.
+// EmailForwarding - Settings of email forwarding.
 // Note: all fields must be assigned if used in set methods.
 type EmailForwarding struct {
 	Mode           UserForwardMode      `json:"mode"`
 	EmailAddresses UserEmailAddressList `json:"emailAddresses"` // list of email addresses, make sense only for UForwardDeliver
 }
 
-// Properties of user's groups.
+// UserGroup - Properties of user's groups.
 type UserGroup struct {
 	Id          KId        `json:"id"` // global identification
 	Name        string     `json:"name"`
@@ -71,32 +70,32 @@ type UserGroup struct {
 	ItemSource  DataSource `json:"itemSource"`
 }
 
-// List of user's groups.
+// UserGroupList - List of user's groups.
 type UserGroupList []UserGroup
 
-// Settings of items limit.
+// ItemCountLimit - Settings of items limit.
 // Note: all fields must be assigned if used in set methods.
 type ItemCountLimit struct {
 	IsActive bool `json:"isActive"`
 	Limit    int  `json:"limit"`
 }
 
-// Amount of storage used and items currently stored in user's store.
+// QuotaUsage - Amount of storage used and items currently stored in user's store.
 type QuotaUsage struct {
 	Items   int                `json:"items"`
 	Storage ByteValueWithUnits `json:"storage"`
 }
 
-// List of QuotaUsage.
+// QuotaUsageList - List of QuotaUsage.
 type QuotaUsageList []QuotaUsage
 
-// Last login information.
+// LastLogin - Last login information.
 type LastLogin struct {
 	DateTime DateTimeStamp `json:"dateTime"` // date and time of last login
 	Protocol string        `json:"protocol"` // protocol name of last login, example POP3
 }
 
-// Per-user message retention policy.
+// CleanOut - Per-user message retention policy.
 type CleanOut struct {
 	IsUsedDomain bool            `json:"isUsedDomain"` // use domain settings
 	DeletedItems ActionAfterDays `json:"deletedItems"` // clean Deleted Items folder (maximum: 24855)
@@ -105,7 +104,7 @@ type CleanOut struct {
 	AutoDelete   ActionAfterDays `json:"autoDelete"`   // clean all folders (maximum: 24855)
 }
 
-// User details.
+// User - User details.
 type User struct {
 	Id                   KId                  `json:"id"`                   // [READ-ONLY] global identification
 	DomainId             KId                  `json:"domainId"`             // [REQUIRED FOR CREATE] ID of domain where user belongs to
@@ -141,19 +140,19 @@ type User struct {
 	Migration            OptionalEntity       `json:"migration"`            // [READ-ONLY] migration.enabled is true if user's store is just being migrated and migration.id contains migration task id
 }
 
-// List of users.
+// UserList - List of users.
 type UserList []User
 
-// User effective rights (inherited from groups)
+// EffectiveUserRights - User effective rights (inherited from groups)
 type EffectiveUserRights struct {
 	UserId               KId  `json:"userId"`               // [READ-ONLY] global identification
 	HasDomainRestriction bool `json:"hasDomainRestriction"` // user can send/receive from/to his/her domain only
 }
 
-// List of users effective rights
+// EffectiveUserRightsList - List of users effective rights
 type EffectiveUserRightsList []EffectiveUserRights
 
-// Type of user directory
+// ServerDirectoryType - Type of user directory
 type ServerDirectoryType string
 
 const (
@@ -162,7 +161,7 @@ const (
 	NovellEDirectory ServerDirectoryType = "NovellEDirectory" // Novell eDirectory
 )
 
-// Properties of the server from which users are imported.
+// ImportServer - Properties of the server from which users are imported.
 type ImportServer struct {
 	DirectoryType      ServerDirectoryType `json:"directoryType"`
 	RemoteDomainName   string              `json:"remoteDomainName"`
@@ -173,13 +172,13 @@ type ImportServer struct {
 	IsSecureConnection bool                `json:"isSecureConnection"`
 }
 
-// Login statistics - count and timestamp of the last login.
+// LoginStats - Login statistics - count and timestamp of the last login.
 type LoginStats struct {
 	Count     int    `json:"count"`
 	LastLogin string `json:"lastLogin"`
 }
 
-// Statistics about user's usage of quota, logins to different services.
+// UserStats - Statistics about user's usage of quota, logins to different services.
 type UserStats struct {
 	Name             string     `json:"name"` // user's loginName
 	OccupiedSpace    QuotaUsage `json:"occupiedSpace"`
@@ -199,19 +198,19 @@ type UserStats struct {
 	SecureXmpp       LoginStats `json:"secureXmpp"`
 }
 
-// List of users' statistics.
+// UserStatList - List of users' statistics.
 type UserStatList []UserStats
 
-// Result of a mass operation.
+// ResultTriplet - Result of a mass operation.
 type ResultTriplet struct {
 	InputIndex int `json:"inputIndex"`
 	ItemsCount int `json:"itemsCount"`
 }
 
-// List of mass operation results.
+// ResultTripletList - List of mass operation results.
 type ResultTripletList []ResultTriplet
 
-// User to be removed, what to do with his/her mailbox.
+// RemovalRequest - User to be removed, what to do with his/her mailbox.
 type RemovalRequest struct {
 	UserId           KId                        `json:"userId"`           // ID of user to be removed
 	Method           UserDeleteFolderMode       `json:"method"`           // removal method
@@ -222,7 +221,7 @@ type RemovalRequest struct {
 
 type RemovalRequestList []RemovalRequest
 
-// A user being imported from directory server.
+// Importee - A user being imported from directory server.
 type Importee struct {
 	UserItem     User   `json:"userItem"`     // user data
 	IsImportable bool   `json:"isImportable"` // [READ-ONLY] user can be imported
@@ -236,7 +235,7 @@ type MailboxCount struct {
 	Total  int `json:"total"`  // the number of created users on server
 }
 
-// Resut of autentication.
+// AuthResult - Resut of autentication.
 type AuthResult string
 
 const (

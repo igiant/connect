@@ -1,12 +1,12 @@
 package connect
 
-// Extension of Apple Address Book
+// ABExtension - Extension of Apple Address Book
 type ABExtension struct {
 	GroupId string `json:"groupId"`
 	Label   string `json:"label"`
 }
 
-// Type of a postal address
+// PostalAddressType - Type of a postal address
 type PostalAddressType string
 
 const (
@@ -16,7 +16,7 @@ const (
 	AddressCustom PostalAddressType = "AddressCustom" // no type defined
 )
 
-// Structure describing a postal address in contact.
+// PostalAddress - Structure describing a postal address in contact.
 type PostalAddress struct {
 	Preferred       bool              `json:"preferred"`
 	Pobox           string            `json:"pobox"`           // the post office box
@@ -31,10 +31,10 @@ type PostalAddress struct {
 	Extension       ABExtension       `json:"extension"`
 }
 
-// A sequence of postal addresses.
+// PostalAddressList - A sequence of postal addresses.
 type PostalAddressList []PostalAddress
 
-// Email address type.
+// EmailAddressType - Email address type.
 type EmailAddressType string
 
 const (
@@ -42,12 +42,12 @@ const (
 	EmailHome   EmailAddressType = "EmailHome"
 	EmailOther  EmailAddressType = "EmailOther"
 	EmailCustom EmailAddressType = "EmailCustom" // no type defined
-	// EmailAddressType = "//" // valid for distribution lists only
+	// valid for distribution lists only
 	RefContact          EmailAddressType = "RefContact"          // Reference to existing conatact
 	RefDistributionList EmailAddressType = "RefDistributionList" // Reference to existing distribution list
 )
 
-// Structure describing an email address in contact.
+// EmailAddress - Structure describing an email address in contact.
 type EmailAddress struct {
 	Address            string           `json:"address"`
 	Name               string           `json:"name"`
@@ -58,10 +58,10 @@ type EmailAddress struct {
 	Extension          ABExtension      `json:"extension"`
 }
 
-// Sequence of email addresses.
+// EmailAddressList - Sequence of email addresses.
 type EmailAddressList []EmailAddress
 
-// Type of a contact phone number
+// PhoneNumberType - Type of a contact phone number
 type PhoneNumberType string
 
 const (
@@ -85,7 +85,7 @@ const (
 	TypeCustom     PhoneNumberType = "TypeCustom" // no type defined
 )
 
-// Structure desribing a contact phone number
+// PhoneNumber - Structure desribing a contact phone number
 type PhoneNumber struct {
 	Type      PhoneNumberType `json:"type"`
 	Number    string          `json:"number"` // A number - based on the X.500 Telephone Number attribute
@@ -94,7 +94,7 @@ type PhoneNumber struct {
 
 type PhoneNumberList []PhoneNumber
 
-// Type of URL
+// UrlType - Type of URL
 type UrlType string
 
 const (
@@ -104,7 +104,7 @@ const (
 	UrlCustom UrlType = "UrlCustom" // no type defined
 )
 
-// Structure desribing URL
+// Url - Structure desribing URL
 type Url struct {
 	Type      UrlType     `json:"type"`
 	Url       string      `json:"url"`
@@ -113,13 +113,13 @@ type Url struct {
 
 type UrlList []Url
 
-// A contact photo. Only JPEG format is supported. Maximum size is 256 kB.
+// PhotoAttachment - A contact photo. Only JPEG format is supported. Maximum size is 256 kB.
 type PhotoAttachment struct {
 	Id  string `json:"id"`  // origin ID of attachment or ID from upload response
 	Url string `json:"url"` // [READ-ONLY] Relative URL from root of web. Eg.: /webmail/api/download/attachment/ba5767a9-7a70-4c90-a6bf-dc8dd62e259c/14/0-1-0-1/picture.jpg
 }
 
-// Personal Contact detail.
+// PersonalContact - Personal Contact detail.
 type PersonalContact struct {
 	CommonName           string        `json:"commonName"`
 	FirstName            string        `json:"firstName"`
@@ -132,8 +132,7 @@ type PersonalContact struct {
 	PhoneNumberMobile    string        `json:"phoneNumberMobile"`
 	PostalAddressWork    PostalAddress `json:"postalAddressWork"`
 	UrlWork              string        `json:"urlWork"`
-	// TODO UtcDataTime
-	// BirthDay UtcDateTime `json:"birthDay"`
+	// BirthDay UtcDateTime `json:"birthDay"` TODO
 	// Anniversary UtcDateTime `json:"anniversary"`
 	CompanyName    string           `json:"companyName"`
 	DepartmentName string           `json:"departmentName"`

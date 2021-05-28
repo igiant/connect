@@ -1,7 +1,6 @@
 package connect
 
-// Type for date/time representation
-// Type for lists of date/times
+// DateTimeStampList - Type for lists of date/times
 type DateTimeStampList []DateTimeStamp
 
 type SettingPath []string
