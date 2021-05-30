@@ -33,7 +33,7 @@ type ArchiveOptions struct {
 // Return
 //	options - current archive options
 func (c *Connection) ArchiveGet() (*ArchiveOptions, error) {
-	data, err := c.CallRaw("Archive.archiveGet", nil)
+	data, err := c.CallRaw("Archive.get", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -53,13 +53,13 @@ func (c *Connection) ArchiveSet(options ArchiveOptions) error {
 	params := struct {
 		Options ArchiveOptions `json:"options"`
 	}{options}
-	_, err := c.CallRaw("Archive.archiveSet", params)
+	_, err := c.CallRaw("Archive.set", params)
 	return err
 }
 
 // ArchiveGetXmppArchiveFiles - Returns links to available Instant Messaging archive files
 func (c *Connection) ArchiveGetXmppArchiveFiles() (DownloadList, error) {
-	data, err := c.CallRaw("Archive.archiveGetXmppArchiveFiles", nil)
+	data, err := c.CallRaw("Archive.getXmppArchiveFiles", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (c *Connection) ArchiveGetImArchiveFile(fromDate Date, toDate Date) (*Downl
 		FromDate Date `json:"fromDate"`
 		ToDate   Date `json:"toDate"`
 	}{fromDate, toDate}
-	data, err := c.CallRaw("Archive.archiveGetImArchiveFile", params)
+	data, err := c.CallRaw("Archive.getImArchiveFile", params)
 	if err != nil {
 		return nil, err
 	}

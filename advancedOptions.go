@@ -1,5 +1,7 @@
 package connect
 
+import "encoding/json"
+
 type MiscellaneousOptions struct {
 	LogHostNames              bool `json:"logHostNames"`              // Log hostnames for incoming connections
 	ShowProgramNameAndVersion bool `json:"showProgramNameAndVersion"` // Show program name and version in network communication for non-authenticated users
@@ -146,4 +148,77 @@ type AdvancedOptionsSetting struct {
 	Fulltext             FulltextSetting             `json:"fulltext"`
 	KoffOptions          KoffOptions                 `json:"koffOptions"`
 	OperatorOptions      OperatorOptions             `json:"operatorOptions"`
+}
+
+// AdvancedOptionsCheckUpdates - Check for updates.
+// Return
+//	options - new version details
+func (c *Connection) AdvancedOptionsCheckUpdates() (*UpdateCheckerOptions, error) {
+	data, err := c.CallRaw("AdvancedOptions.checkUpdates", nil)
+	if err != nil {
+		return nil, err
+	}
+	options := struct {
+		Result struct {
+			Options UpdateCheckerOptions `json:"options"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &options)
+	return &options.Result.Options, err
+}
+
+// AdvancedOptionsGet - Obtain Advanced options.
+// Return
+//	options - current advanced options
+func (c *Connection) AdvancedOptionsGet() (*AdvancedOptionsSetting, error) {
+	data, err := c.CallRaw("AdvancedOptions.get", nil)
+	if err != nil {
+		return nil, err
+	}
+	options := struct {
+		Result struct {
+			Options AdvancedOptionsSetting `json:"options"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &options)
+	return &options.Result.Options, err
+}
+
+// AdvancedOptionsGetFulltextStatus - Get information about index status.
+// Return
+//	info - structure with information
+func (c *Connection) AdvancedOptionsGetFulltextStatus() (*FulltextRebuildStatus, error) {
+	data, err := c.CallRaw("AdvancedOptions.getFulltextStatus", nil)
+	if err != nil {
+		return nil, err
+	}
+	info := struct {
+		Result struct {
+			Info FulltextRebuildStatus `json:"info"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &info)
+	return &info.Result.Info, err
+}
+
+// AdvancedOptionsSet - Set advanced options.
+// Parameters
+//	options - options to be updated
+func (c *Connection) AdvancedOptionsSet(options AdvancedOptionsSetting) error {
+	params := struct {
+		Options AdvancedOptionsSetting `json:"options"`
+	}{options}
+	_, err := c.CallRaw("AdvancedOptions.set", params)
+	return err
+}
+
+// AdvancedOptionsStartRebuildFulltext - Launch re-index according parameters.
+// Parameters
+//	parameters - parameters for launching re-index
+func (c *Connection) AdvancedOptionsStartRebuildFulltext(parameters FulltextRebuildingCommand) error {
+	params := struct {
+		Parameters FulltextRebuildingCommand `json:"parameters"`
+	}{parameters}
+	_, err := c.CallRaw("AdvancedOptions.startRebuildFulltext", params)
+	return err
 }
