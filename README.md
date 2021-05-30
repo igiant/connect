@@ -5,8 +5,6 @@ Client for [Kerio API Connect (JSON-RPC 2.0)](https://manuals.gfi.com/en/kerio/a
 
 Implemented all Administration API for Kerio Connect methods
 
-Created the basis for easily adding your own methods
-
 ## Installation
 ```go
 go get github.com/igiant/connect
