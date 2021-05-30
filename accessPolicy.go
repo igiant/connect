@@ -1,5 +1,7 @@
 package connect
 
+import "encoding/json"
+
 type ServiceType string
 
 const (
@@ -55,4 +57,197 @@ type AccessPolicyGroup struct {
 // AccessPolicyGroupList - List of AccessPolicy.
 type AccessPolicyGroupList []AccessPolicyGroup
 
-// TODO Add Methods
+// Access policies management.
+
+// AccessPolicyCreate - Add new policies.
+// Parameters
+//	rules - new policies rules
+// Return
+//	errors - error message list
+//	result - list of IDs of created rules
+func (c *Connection) AccessPolicyCreate(rules AccessPolicyRuleList) (ErrorList, CreateResultList, error) {
+	params := struct {
+		Rules AccessPolicyRuleList `json:"rules"`
+	}{rules}
+	data, err := c.CallRaw("AccessPolicy.accessPolicyCreate", params)
+	if err != nil {
+		return nil, nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList        `json:"errors"`
+			Result CreateResultList `json:"result"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, errors.Result.Result, err
+}
+
+// AccessPolicyCreateGroupList - Create the list of groups.
+// Parameters
+//	groups - list of groups to create
+// Return
+//	errors - error message list
+//	result - list of IDs of created groups
+func (c *Connection) AccessPolicyCreateGroupList(groups AccessPolicyGroupList) (ErrorList, CreateResultList, error) {
+	params := struct {
+		Groups AccessPolicyGroupList `json:"groups"`
+	}{groups}
+	data, err := c.CallRaw("AccessPolicy.accessPolicyCreateGroupList", params)
+	if err != nil {
+		return nil, nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList        `json:"errors"`
+			Result CreateResultList `json:"result"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, errors.Result.Result, err
+}
+
+// AccessPolicyGet - Obtain a list of policies.
+// Parameters
+//	query - query attributes and limits
+// Return
+//	list - policies
+func (c *Connection) AccessPolicyGet(query SearchQuery) (AccessPolicyRuleList, error) {
+	params := struct {
+		Query SearchQuery `json:"query"`
+	}{query}
+	data, err := c.CallRaw("AccessPolicy.accessPolicyGet", params)
+	if err != nil {
+		return nil, err
+	}
+	list := struct {
+		Result struct {
+			List       AccessPolicyRuleList `json:"list"`
+			TotalItems int                  `json:"totalItems"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &list)
+	return list.Result.List, err
+}
+
+// AccessPolicyGetGroupList - Get the list of groups, sorted in ascending order.
+// Return
+//	groups - list of Access policy groups
+func (c *Connection) AccessPolicyGetGroupList() (AccessPolicyGroupList, error) {
+	data, err := c.CallRaw("AccessPolicy.accessPolicyGetGroupList", nil)
+	if err != nil {
+		return nil, err
+	}
+	groups := struct {
+		Result struct {
+			Groups AccessPolicyGroupList `json:"groups"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &groups)
+	return groups.Result.Groups, err
+}
+
+// AccessPolicyGetServiceList - Get the list of services.
+// Return
+//	services - list of service info
+func (c *Connection) AccessPolicyGetServiceList() (ServiceTypeInfoList, error) {
+	data, err := c.CallRaw("AccessPolicy.accessPolicyGetServiceList", nil)
+	if err != nil {
+		return nil, err
+	}
+	services := struct {
+		Result struct {
+			Services ServiceTypeInfoList `json:"services"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &services)
+	return services.Result.Services, err
+}
+
+// AccessPolicyRemove - Remove policies.
+// Parameters
+//	ruleIds - list of IDs of policy to be removed
+// Return
+//	errors - error message list
+func (c *Connection) AccessPolicyRemove(ruleIds KIdList) (ErrorList, error) {
+	params := struct {
+		RuleIds KIdList `json:"ruleIds"`
+	}{ruleIds}
+	data, err := c.CallRaw("AccessPolicy.accessPolicyRemove", params)
+	if err != nil {
+		return nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList `json:"errors"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, err
+}
+
+// AccessPolicyRemoveGroupList - Remove the list of groups.
+// Parameters
+//	groupIds - list of IDs of group policy to be removed
+// Return
+//	errors - error message list
+func (c *Connection) AccessPolicyRemoveGroupList(groupIds KIdList) (ErrorList, error) {
+	params := struct {
+		GroupIds KIdList `json:"groupIds"`
+	}{groupIds}
+	data, err := c.CallRaw("AccessPolicy.accessPolicyRemoveGroupList", params)
+	if err != nil {
+		return nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList `json:"errors"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, err
+}
+
+// AccessPolicySet - Set policy details.
+// Parameters
+//	rules - rules to save
+// Return
+//	errors - error message list
+func (c *Connection) AccessPolicySet(rules AccessPolicyRuleList) (ErrorList, error) {
+	params := struct {
+		Rules AccessPolicyRuleList `json:"rules"`
+	}{rules}
+	data, err := c.CallRaw("AccessPolicy.accessPolicySet", params)
+	if err != nil {
+		return nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList `json:"errors"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, err
+}
+
+// AccessPolicySetGroupList - Set the list of groups.
+// Parameters
+//	groups - list of group to set
+// Return
+//	errors - error message list
+func (c *Connection) AccessPolicySetGroupList(groups AccessPolicyGroupList) (ErrorList, error) {
+	params := struct {
+		Groups AccessPolicyGroupList `json:"groups"`
+	}{groups}
+	data, err := c.CallRaw("AccessPolicy.accessPolicySetGroupList", params)
+	if err != nil {
+		return nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList `json:"errors"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, err
+}

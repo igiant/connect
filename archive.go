@@ -1,5 +1,7 @@
 package connect
 
+import "encoding/json"
+
 type DayWeekMonthPeriod string
 
 const (
@@ -25,4 +27,66 @@ type ArchiveOptions struct {
 	IsEnabledPerDomain        bool               `json:"isEnabledPerDomain"`        // Enable custom per domain settings
 }
 
-// TODO Add methods
+// Archive
+
+// ArchiveGet - Obtain archive options.
+// Return
+//	options - current archive options
+func (c *Connection) ArchiveGet() (*ArchiveOptions, error) {
+	data, err := c.CallRaw("Archive.archiveGet", nil)
+	if err != nil {
+		return nil, err
+	}
+	options := struct {
+		Result struct {
+			Options ArchiveOptions `json:"options"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &options)
+	return &options.Result.Options, err
+}
+
+// ArchiveSet - Set archive options.
+// Parameters
+//	options - archive options
+func (c *Connection) ArchiveSet(options ArchiveOptions) error {
+	params := struct {
+		Options ArchiveOptions `json:"options"`
+	}{options}
+	_, err := c.CallRaw("Archive.archiveSet", params)
+	return err
+}
+
+// ArchiveGetXmppArchiveFiles - Returns links to available Instant Messaging archive files
+func (c *Connection) ArchiveGetXmppArchiveFiles() (DownloadList, error) {
+	data, err := c.CallRaw("Archive.archiveGetXmppArchiveFiles", nil)
+	if err != nil {
+		return nil, err
+	}
+	fileList := struct {
+		Result struct {
+			FileList DownloadList `json:"fileList"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &fileList)
+	return fileList.Result.FileList, err
+}
+
+// ArchiveGetImArchiveFile - Returns link to IM archive file in given period
+func (c *Connection) ArchiveGetImArchiveFile(fromDate Date, toDate Date) (*Download, error) {
+	params := struct {
+		FromDate Date `json:"fromDate"`
+		ToDate   Date `json:"toDate"`
+	}{fromDate, toDate}
+	data, err := c.CallRaw("Archive.archiveGetImArchiveFile", params)
+	if err != nil {
+		return nil, err
+	}
+	fileDownload := struct {
+		Result struct {
+			FileDownload Download `json:"fileDownload"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &fileDownload)
+	return &fileDownload.Result.FileDownload, err
+}
