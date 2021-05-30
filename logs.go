@@ -160,10 +160,10 @@ const (
 
 // Log object
 
-// CancelSearch - Cancel search on server (useful for large logs).
+// LogsCancelSearch - Cancel search on server (useful for large logs).
 // Parameters
 //	searchId - identifier from search()
-func (c *Connection) CancelSearch(searchId string) error {
+func (c *Connection) LogsCancelSearch(searchId string) error {
 	params := struct {
 		SearchId string `json:"searchId"`
 	}{searchId}
@@ -171,10 +171,10 @@ func (c *Connection) CancelSearch(searchId string) error {
 	return err
 }
 
-// Clear - Delete all log lines.
+// LogsClear - Delete all log lines.
 // Parameters
 //	logName - unique name of the log
-func (c *Connection) Clear(logName LogType) error {
+func (c *Connection) LogsClear(logName LogType) error {
 	params := struct {
 		LogName LogType `json:"logName"`
 	}{logName}
@@ -182,7 +182,7 @@ func (c *Connection) Clear(logName LogType) error {
 	return err
 }
 
-// ExportLog - Exporting a given log.
+// LogsExportLog - Exporting a given log.
 // Parameters
 //	logName - unique name of the log
 //	fromLine - number of the line to start the search from;
@@ -190,7 +190,7 @@ func (c *Connection) Clear(logName LogType) error {
 //	type - export file type
 // Return
 //	fileDownload - file download structure
-func (c *Connection) ExportLog(logName LogType, fromLine int, countLines int, format ExportFormat) (*Download, error) {
+func (c *Connection) LogsExportLog(logName LogType, fromLine int, countLines int, format ExportFormat) (*Download, error) {
 	params := struct {
 		LogName    LogType      `json:"logName"`
 		FromLine   int          `json:"fromLine"`
@@ -210,7 +210,7 @@ func (c *Connection) ExportLog(logName LogType, fromLine int, countLines int, fo
 	return &fileDownload.Result.FileDownload, err
 }
 
-// ExportLogRelative - Exporting a given log with relative download path.
+// LogsExportLogRelative - Exporting a given log with relative download path.
 // Parameters
 //	logName - unique name of the log
 //	fromLine - number of the line to start the search from;
@@ -218,7 +218,7 @@ func (c *Connection) ExportLog(logName LogType, fromLine int, countLines int, fo
 //	type - export file type
 // Return
 //	fileDownload - file download structure
-func (c *Connection) ExportLogRelative(logName LogType, fromLine int, countLines int, format ExportFormat) (*Download, error) {
+func (c *Connection) LogsExportLogRelative(logName LogType, fromLine int, countLines int, format ExportFormat) (*Download, error) {
 	params := struct {
 		LogName    LogType      `json:"logName"`
 		FromLine   int          `json:"fromLine"`
@@ -238,14 +238,14 @@ func (c *Connection) ExportLogRelative(logName LogType, fromLine int, countLines
 	return &fileDownload.Result.FileDownload, err
 }
 
-// Get - Obtain log data without linebreaks.
+// LogsGet - Obtain log data without linebreaks.
 // Parameters
 //	logName - unique name of the log
 //	fromLine - number of the line to start from; if (fromLine == Unlimited) then fromline is end of log minus countLines
 //	countLines - number of lines to transfer
 // Return
 //	viewport - list of log lines; count of lines = min(count, NUMBER_OF_CURRENT LINES - from)
-func (c *Connection) Get(logName LogType, fromLine int, countLines int) (LogRowList, error) {
+func (c *Connection) LogsGet(logName LogType, fromLine int, countLines int) (LogRowList, error) {
 	params := struct {
 		LogName    LogType `json:"logName"`
 		FromLine   int     `json:"fromLine"`
@@ -264,10 +264,10 @@ func (c *Connection) Get(logName LogType, fromLine int, countLines int) (LogRowL
 	return viewport.Result.Viewport, err
 }
 
-// GetHighlightRules - Obtain a list of sorted highlighting rules.
+// LogsGetHighlightRules - Obtain a list of sorted highlighting rules.
 // Return
 //	rules - highlight rules
-func (c *Connection) GetHighlightRules() (*HighlightRules, error) {
+func (c *Connection) LogsGetHighlightRules() (*HighlightRules, error) {
 	data, err := c.CallRaw("Logs.getHighlightRules", nil)
 	if err != nil {
 		return nil, err
@@ -281,10 +281,10 @@ func (c *Connection) GetHighlightRules() (*HighlightRules, error) {
 	return &rules.Result.Rules, err
 }
 
-// GetLogSet - Retrieve set of valid logs.
+// LogsGetLogSet - Retrieve set of valid logs.
 // Return
 //	logSet - list of valid logs
-func (c *Connection) GetLogSet() (*LogSet, error) {
+func (c *Connection) LogsGetLogSet() (*LogSet, error) {
 	data, err := c.CallRaw("Logs.getLogSet", nil)
 	if err != nil {
 		return nil, err
@@ -298,10 +298,10 @@ func (c *Connection) GetLogSet() (*LogSet, error) {
 	return &logSet.Result.LogSet, err
 }
 
-// GetMessages - Obtain log message settings; make sense only if LogItem.hasMessages == true.
+// LogsGetMessages - Obtain log message settings; make sense only if LogItem.hasMessages == true.
 // Return
 //	messages - tree of log messages
-func (c *Connection) GetMessages() (TreeLeafList, error) {
+func (c *Connection) LogsGetMessages() (TreeLeafList, error) {
 	data, err := c.CallRaw("Logs.getMessages", nil)
 	if err != nil {
 		return nil, err
@@ -315,7 +315,7 @@ func (c *Connection) GetMessages() (TreeLeafList, error) {
 	return messages.Result.Messages, err
 }
 
-// GetSearchProgress - Clears timeout for search() and obtains status of the search.
+// LogsGetSearchProgress - Clears timeout for search() and obtains status of the search.
 // Parameters
 //	countLines - number of lines to transfer
 //	searchId - identifier from search()
@@ -324,7 +324,7 @@ func (c *Connection) GetMessages() (TreeLeafList, error) {
 //	firstLine - first matching line
 //	status - current status of the search
 //	percentage - already finished search <0;100>
-func (c *Connection) GetSearchProgress(countLines int, searchId string) (LogRowList, int, *SearchStatus, int, error) {
+func (c *Connection) LogsGetSearchProgress(countLines int, searchId string) (LogRowList, int, *SearchStatus, int, error) {
 	params := struct {
 		CountLines int    `json:"countLines"`
 		SearchId   string `json:"searchId"`
@@ -345,12 +345,12 @@ func (c *Connection) GetSearchProgress(countLines int, searchId string) (LogRowL
 	return viewport.Result.Viewport, viewport.Result.FirstLine, &viewport.Result.Status, viewport.Result.Percentage, err
 }
 
-// GetSettings - Obtain log settings.
+// LogsGetSettings - Obtain log settings.
 // Parameters
 //	logName - unique name of the log
 // Return
 //	currentSettings - current valid settings (or undefined data on failure)
-func (c *Connection) GetSettings(logName LogType) (*LogSettings, error) {
+func (c *Connection) LogsGetSettings(logName LogType) (*LogSettings, error) {
 	params := struct {
 		LogName LogType `json:"logName"`
 	}{logName}
@@ -367,7 +367,7 @@ func (c *Connection) GetSettings(logName LogType) (*LogSettings, error) {
 	return &currentSettings.Result.CurrentSettings, err
 }
 
-// Search - Start searching for a string in a given log; The search exists 1 minute unless prolonged by getSearchProgress.
+// LogsSearch - Start searching for a string in a given log; The search exists 1 minute unless prolonged by getSearchProgress.
 // Parameters
 //	logName - unique name of the log
 //	what - searched string
@@ -376,7 +376,7 @@ func (c *Connection) GetSettings(logName LogType) (*LogSettings, error) {
 //	forward - direction of the search; true = forward, false = backward
 // Return
 //	searchId - identifier that can be used for cancelSearch and getSearchProgress
-func (c *Connection) Search(logName LogType, what string, fromLine int, toLine int, forward bool) (*string, error) {
+func (c *Connection) LogsSearch(logName LogType, what string, fromLine int, toLine int, forward bool) (*string, error) {
 	params := struct {
 		LogName  LogType `json:"logName"`
 		What     string  `json:"what"`
@@ -397,10 +397,10 @@ func (c *Connection) Search(logName LogType, what string, fromLine int, toLine i
 	return &searchId.Result.SearchId, err
 }
 
-// SetHighlightRules - Set highlighting rules, rules have to be sorted purposely, the only way to change a rule is to change the whole ruleset.
+// LogsSetHighlightRules - Set highlighting rules, rules have to be sorted purposely, the only way to change a rule is to change the whole ruleset.
 // Parameters
 //	rules - highlight rules (ordered by priority)
-func (c *Connection) SetHighlightRules(rules HighlightRules) error {
+func (c *Connection) LogsSetHighlightRules(rules HighlightRules) error {
 	params := struct {
 		Rules HighlightRules `json:"rules"`
 	}{rules}
@@ -408,10 +408,10 @@ func (c *Connection) SetHighlightRules(rules HighlightRules) error {
 	return err
 }
 
-// SetMessages - Change log message settings; makes sense only if LogItem.hasMessages == true.
+// LogsSetMessages - Change log message settings; makes sense only if LogItem.hasMessages == true.
 // Parameters
 //	messages - tree of log messages
-func (c *Connection) SetMessages(messages TreeLeafList) error {
+func (c *Connection) LogsSetMessages(messages TreeLeafList) error {
 	params := struct {
 		Messages TreeLeafList `json:"messages"`
 	}{messages}
@@ -419,11 +419,11 @@ func (c *Connection) SetMessages(messages TreeLeafList) error {
 	return err
 }
 
-// SetSettings - Change log settings.
+// LogsSetSettings - Change log settings.
 // Parameters
 //	logName - unique name of the log
 //	newSettings
-func (c *Connection) SetSettings(logName LogType, newSettings LogSettings) error {
+func (c *Connection) LogsSetSettings(logName LogType, newSettings LogSettings) error {
 	params := struct {
 		LogName     LogType     `json:"logName"`
 		NewSettings LogSettings `json:"newSettings"`
