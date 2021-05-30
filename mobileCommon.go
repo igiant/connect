@@ -32,7 +32,7 @@ type SyncFolder struct {
 	FolderName     string        `json:"folderName"`     // folder name
 	FolderTypeIcon FolderIcon    `json:"folderTypeIcon"` // mail,contact...
 	LastSyncDate   DateTimeStamp `json:"lastSyncDate"`   // date of last synchronization
-	//LastSyncDateIso UtcDateTime `json:"lastSyncDateIso"` // date of last synchronization TODO
+	// LastSyncDateIso UtcDateTime `json:"lastSyncDateIso"` // date of last synchronization TODO
 }
 
 type SyncFolderList []SyncFolder
@@ -58,9 +58,9 @@ type MobileDevice struct {
 	DeviceId         string        `json:"deviceId"`
 	ProtocolVersion  string        `json:"protocolVersion"`  // used ActiveSync protocol version
 	RegistrationDate DateTimeStamp `json:"registrationDate"` // date of registration
-	//RegistrationDateIso UtcDateTime `json:"registrationDateIso"` // date of registration TODO
+	// RegistrationDateIso UtcDateTime `json:"registrationDateIso"` // date of registration TODO
 	LastSyncDate DateTimeStamp `json:"lastSyncDate"` // date of last synchronization
-	//LastSyncDateIso UtcDateTime `json:"lastSyncDateIso"` // date of last synchronization TODO
+	// LastSyncDateIso UtcDateTime `json:"lastSyncDateIso"` // date of last synchronization TODO
 	FolderList SyncFolderList `json:"folderList"` // list of synchronized folders
 	Status     DeviceStatus   `json:"status"`     // wipe status
 	Method     SyncMethod     `json:"method"`     // synchronization method
