@@ -43,14 +43,14 @@ func TestDomainRequests(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if len(domains) == 0 || domains[0].ID == "" {
+	if len(domains) == 0 || domains[0].Id == "" {
 		t.Error("Domains information not received")
 	}
 	dSettings, err := conn.DomainsGetSettings()
 	if err != nil {
 		t.Error(err)
 	}
-	if dSettings.ServerID == "" {
+	if dSettings.ServerId == "" {
 		t.Error("Domains settings information not received")
 	}
 	err = conn.Logout()

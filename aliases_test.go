@@ -44,7 +44,7 @@ func TestAliasesRequests(t *testing.T) {
 		t.Error(err)
 	}
 	if len(domains) > 0 {
-		_, err := conn.AliasesGet(domains[0].ID, NewSearchQuery(nil, nil, Or, 0, -1, nil))
+		_, err := conn.AliasesGet(NewSearchQuery(nil, nil, Or, 0, -1, nil), domains[0].Id)
 		if err != nil {
 			t.Error(err)
 		}
