@@ -50,7 +50,7 @@ type RenameInfo struct {
 //                 e.g. "jdoe" or "jdoe@company.com"
 //      password - password of the user to be logged in
 //      app      - client application description
-func (c *Connection) Login(user, password string, app *ApiApplication) error {
+func (c *ServerConnection) Login(user, password string, app *ApiApplication) error {
 	if app == nil {
 		app = NewApplication("", "", "")
 	}
@@ -75,14 +75,14 @@ func (c *Connection) Login(user, password string, app *ApiApplication) error {
 }
 
 // Logout - Log out the callee
-func (c *Connection) Logout() error {
+func (c *ServerConnection) Logout() error {
 	_, err := c.CallRaw("Session.logout", nil)
 	return err
 }
 
 // SessionWhoAmI determines the currently logged user (caller, e.g. administrator).
 // Fields id and domainId can be empty if built-in administrator is logged-in.
-func (c *Connection) SessionWhoAmI() (*UserDetails, error) {
+func (c *ServerConnection) SessionWhoAmI() (*UserDetails, error) {
 	data, err := c.CallRaw("Session.whoAmI", nil)
 	if err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (c *Connection) SessionWhoAmI() (*UserDetails, error) {
 
 // SessionGetDomain gets domain information of the currently logged user.
 // Only name, displayName, ID, description and password policy related fields are filled.
-func (c *Connection) SessionGetDomain() (*Domain, error) {
+func (c *ServerConnection) SessionGetDomain() (*Domain, error) {
 	data, err := c.CallRaw("Session.getDomain", nil)
 	if err != nil {
 		return nil, err

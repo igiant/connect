@@ -65,7 +65,7 @@ type AccessPolicyGroupList []AccessPolicyGroup
 // Return
 //	errors - error message list
 //	result - list of IDs of created rules
-func (c *Connection) AccessPolicyCreate(rules AccessPolicyRuleList) (ErrorList, CreateResultList, error) {
+func (c *ServerConnection) AccessPolicyCreate(rules AccessPolicyRuleList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Rules AccessPolicyRuleList `json:"rules"`
 	}{rules}
@@ -89,7 +89,7 @@ func (c *Connection) AccessPolicyCreate(rules AccessPolicyRuleList) (ErrorList, 
 // Return
 //	errors - error message list
 //	result - list of IDs of created groups
-func (c *Connection) AccessPolicyCreateGroupList(groups AccessPolicyGroupList) (ErrorList, CreateResultList, error) {
+func (c *ServerConnection) AccessPolicyCreateGroupList(groups AccessPolicyGroupList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Groups AccessPolicyGroupList `json:"groups"`
 	}{groups}
@@ -113,7 +113,7 @@ func (c *Connection) AccessPolicyCreateGroupList(groups AccessPolicyGroupList) (
 // Return
 //	list - policies
 //	totalItems - number of policies found
-func (c *Connection) AccessPolicyGet(query SearchQuery) (AccessPolicyRuleList, int, error) {
+func (c *ServerConnection) AccessPolicyGet(query SearchQuery) (AccessPolicyRuleList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
@@ -134,7 +134,7 @@ func (c *Connection) AccessPolicyGet(query SearchQuery) (AccessPolicyRuleList, i
 // AccessPolicyGetGroupList - Get the list of groups, sorted in ascending order.
 // Return
 //	groups - list of Access policy groups
-func (c *Connection) AccessPolicyGetGroupList() (AccessPolicyGroupList, error) {
+func (c *ServerConnection) AccessPolicyGetGroupList() (AccessPolicyGroupList, error) {
 	data, err := c.CallRaw("AccessPolicy.getGroupList", nil)
 	if err != nil {
 		return nil, err
@@ -151,7 +151,7 @@ func (c *Connection) AccessPolicyGetGroupList() (AccessPolicyGroupList, error) {
 // AccessPolicyGetServiceList - Get the list of services.
 // Return
 //	services - list of service info
-func (c *Connection) AccessPolicyGetServiceList() (ServiceTypeInfoList, error) {
+func (c *ServerConnection) AccessPolicyGetServiceList() (ServiceTypeInfoList, error) {
 	data, err := c.CallRaw("AccessPolicy.getServiceList", nil)
 	if err != nil {
 		return nil, err
@@ -170,7 +170,7 @@ func (c *Connection) AccessPolicyGetServiceList() (ServiceTypeInfoList, error) {
 //	ruleIds - list of IDs of policy to be removed
 // Return
 //	errors - error message list
-func (c *Connection) AccessPolicyRemove(ruleIds KIdList) (ErrorList, error) {
+func (c *ServerConnection) AccessPolicyRemove(ruleIds KIdList) (ErrorList, error) {
 	params := struct {
 		RuleIds KIdList `json:"ruleIds"`
 	}{ruleIds}
@@ -192,7 +192,7 @@ func (c *Connection) AccessPolicyRemove(ruleIds KIdList) (ErrorList, error) {
 //	groupIds - list of IDs of group policy to be removed
 // Return
 //	errors - error message list
-func (c *Connection) AccessPolicyRemoveGroupList(groupIds KIdList) (ErrorList, error) {
+func (c *ServerConnection) AccessPolicyRemoveGroupList(groupIds KIdList) (ErrorList, error) {
 	params := struct {
 		GroupIds KIdList `json:"groupIds"`
 	}{groupIds}
@@ -214,7 +214,7 @@ func (c *Connection) AccessPolicyRemoveGroupList(groupIds KIdList) (ErrorList, e
 //	rules - rules to save
 // Return
 //	errors - error message list
-func (c *Connection) AccessPolicySet(rules AccessPolicyRuleList) (ErrorList, error) {
+func (c *ServerConnection) AccessPolicySet(rules AccessPolicyRuleList) (ErrorList, error) {
 	params := struct {
 		Rules AccessPolicyRuleList `json:"rules"`
 	}{rules}
@@ -236,7 +236,7 @@ func (c *Connection) AccessPolicySet(rules AccessPolicyRuleList) (ErrorList, err
 //	groups - list of group to set
 // Return
 //	errors - error message list
-func (c *Connection) AccessPolicySetGroupList(groups AccessPolicyGroupList) (ErrorList, error) {
+func (c *ServerConnection) AccessPolicySetGroupList(groups AccessPolicyGroupList) (ErrorList, error) {
 	params := struct {
 		Groups AccessPolicyGroupList `json:"groups"`
 	}{groups}

@@ -153,7 +153,7 @@ type AdvancedOptionsSetting struct {
 // AdvancedOptionsCheckUpdates - Check for updates.
 // Return
 //	options - new version details
-func (c *Connection) AdvancedOptionsCheckUpdates() (*UpdateCheckerOptions, error) {
+func (c *ServerConnection) AdvancedOptionsCheckUpdates() (*UpdateCheckerOptions, error) {
 	data, err := c.CallRaw("AdvancedOptions.checkUpdates", nil)
 	if err != nil {
 		return nil, err
@@ -170,7 +170,7 @@ func (c *Connection) AdvancedOptionsCheckUpdates() (*UpdateCheckerOptions, error
 // AdvancedOptionsGet - Obtain Advanced options.
 // Return
 //	options - current advanced options
-func (c *Connection) AdvancedOptionsGet() (*AdvancedOptionsSetting, error) {
+func (c *ServerConnection) AdvancedOptionsGet() (*AdvancedOptionsSetting, error) {
 	data, err := c.CallRaw("AdvancedOptions.get", nil)
 	if err != nil {
 		return nil, err
@@ -187,7 +187,7 @@ func (c *Connection) AdvancedOptionsGet() (*AdvancedOptionsSetting, error) {
 // AdvancedOptionsGetFulltextStatus - Get information about index status.
 // Return
 //	info - structure with information
-func (c *Connection) AdvancedOptionsGetFulltextStatus() (*FulltextRebuildStatus, error) {
+func (c *ServerConnection) AdvancedOptionsGetFulltextStatus() (*FulltextRebuildStatus, error) {
 	data, err := c.CallRaw("AdvancedOptions.getFulltextStatus", nil)
 	if err != nil {
 		return nil, err
@@ -204,7 +204,7 @@ func (c *Connection) AdvancedOptionsGetFulltextStatus() (*FulltextRebuildStatus,
 // AdvancedOptionsSet - Set advanced options.
 // Parameters
 //	options - options to be updated
-func (c *Connection) AdvancedOptionsSet(options AdvancedOptionsSetting) error {
+func (c *ServerConnection) AdvancedOptionsSet(options AdvancedOptionsSetting) error {
 	params := struct {
 		Options AdvancedOptionsSetting `json:"options"`
 	}{options}
@@ -215,7 +215,7 @@ func (c *Connection) AdvancedOptionsSet(options AdvancedOptionsSetting) error {
 // AdvancedOptionsStartRebuildFulltext - Launch re-index according parameters.
 // Parameters
 //	parameters - parameters for launching re-index
-func (c *Connection) AdvancedOptionsStartRebuildFulltext(parameters FulltextRebuildingCommand) error {
+func (c *ServerConnection) AdvancedOptionsStartRebuildFulltext(parameters FulltextRebuildingCommand) error {
 	params := struct {
 		Parameters FulltextRebuildingCommand `json:"parameters"`
 	}{parameters}

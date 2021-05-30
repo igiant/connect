@@ -71,7 +71,7 @@ type CertificateList []Certificate
 // Return
 //	certificates - current list of certificates
 //	totalItems - count of all services on server (before the start/limit applied)
-func (c *Connection) CertificatesGet(query SearchQuery) (CertificateList, int, error) {
+func (c *ServerConnection) CertificatesGet(query SearchQuery) (CertificateList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
@@ -93,7 +93,7 @@ func (c *Connection) CertificatesGet(query SearchQuery) (CertificateList, int, e
 // Parameters
 //	id - ID of certificate to rename
 //	name - new name of the certificate
-func (c *Connection) CertificatesSetName(id KId, name string) error {
+func (c *ServerConnection) CertificatesSetName(id KId, name string) error {
 	params := struct {
 		Id   KId    `json:"id"`
 		Name string `json:"name"`
@@ -107,7 +107,7 @@ func (c *Connection) CertificatesSetName(id KId, name string) error {
 //	ids - list of identifiers of deleted user templates
 // Return
 //	errors - error message list
-func (c *Connection) CertificatesRemove(ids KIdList) (ErrorList, error) {
+func (c *ServerConnection) CertificatesRemove(ids KIdList) (ErrorList, error) {
 	params := struct {
 		Ids KIdList `json:"ids"`
 	}{ids}
@@ -132,7 +132,7 @@ func (c *Connection) CertificatesRemove(ids KIdList) (ErrorList, error) {
 //	period - time properties specified by user, not relevant for CertificateRequest
 // Return
 //	id - ID of generated certificate
-func (c *Connection) CertificatesGenerate(subject NamedValueList, name string, certificateType CertificateType, period ValidPeriod) (*KId, error) {
+func (c *ServerConnection) CertificatesGenerate(subject NamedValueList, name string, certificateType CertificateType, period ValidPeriod) (*KId, error) {
 	params := struct {
 		Subject NamedValueList  `json:"subject"`
 		Name    string          `json:"name"`
@@ -155,7 +155,7 @@ func (c *Connection) CertificatesGenerate(subject NamedValueList, name string, c
 // CertificatesGetCountryList - 1004 Access denied.  - "Insufficient rights to perform the requested operation."
 // Return
 //	countries - list of countries (name and ISO 3166 code)
-func (c *Connection) CertificatesGetCountryList() (NamedValueList, error) {
+func (c *ServerConnection) CertificatesGetCountryList() (NamedValueList, error) {
 	data, err := c.CallRaw("Certificates.getCountryList", nil)
 	if err != nil {
 		return nil, err
@@ -177,7 +177,7 @@ func (c *Connection) CertificatesGetCountryList() (NamedValueList, error) {
 //	certificateType - type of certificate to be imported, valid input is one of: InactiveCertificate/Authority/LocalAuthority
 // Return
 //	id - ID of generated certificate
-func (c *Connection) CertificatesImportCertificate(keyId KId, fileId string, name string, certificateType CertificateType) (*KId, error) {
+func (c *ServerConnection) CertificatesImportCertificate(keyId KId, fileId string, name string, certificateType CertificateType) (*KId, error) {
 	params := struct {
 		KeyId  KId             `json:"keyId"`
 		FileId string          `json:"fileId"`
@@ -203,7 +203,7 @@ func (c *Connection) CertificatesImportCertificate(keyId KId, fileId string, nam
 // Return
 //	keyId - generated ID for new key
 //	needPassword - true if private key is encrypted with password
-func (c *Connection) CertificatesImportPrivateKey(fileId string) (*KId, *bool, error) {
+func (c *ServerConnection) CertificatesImportPrivateKey(fileId string) (*KId, *bool, error) {
 	params := struct {
 		FileId string `json:"fileId"`
 	}{fileId}
@@ -225,7 +225,7 @@ func (c *Connection) CertificatesImportPrivateKey(fileId string) (*KId, *bool, e
 // Parameters
 //	keyId - ID assigned to imported private key, @see importPrivateKey
 //	password - certificate password
-func (c *Connection) CertificatesUnlockPrivateKey(keyId KId, password string) error {
+func (c *ServerConnection) CertificatesUnlockPrivateKey(keyId KId, password string) error {
 	params := struct {
 		KeyId    KId    `json:"keyId"`
 		Password string `json:"password"`
@@ -239,7 +239,7 @@ func (c *Connection) CertificatesUnlockPrivateKey(keyId KId, password string) er
 //	id - ID of the certificate or certificate request
 // Return
 //	fileDownload - description of the output file
-func (c *Connection) CertificatesExportCertificate(id KId) (*Download, error) {
+func (c *ServerConnection) CertificatesExportCertificate(id KId) (*Download, error) {
 	params := struct {
 		Id KId `json:"id"`
 	}{id}
@@ -261,7 +261,7 @@ func (c *Connection) CertificatesExportCertificate(id KId) (*Download, error) {
 //	id - ID of the certificate or certificate request
 // Return
 //	fileDownload - description of the output file
-func (c *Connection) CertificatesExportPrivateKey(id KId) (*Download, error) {
+func (c *ServerConnection) CertificatesExportPrivateKey(id KId) (*Download, error) {
 	params := struct {
 		Id KId `json:"id"`
 	}{id}
@@ -283,7 +283,7 @@ func (c *Connection) CertificatesExportPrivateKey(id KId) (*Download, error) {
 //	id - global identifier
 // Return
 //	source - certificate in plain text
-func (c *Connection) CertificatesToSource(id KId) (string, error) {
+func (c *ServerConnection) CertificatesToSource(id KId) (string, error) {
 	params := struct {
 		Id KId `json:"id"`
 	}{id}

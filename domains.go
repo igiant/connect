@@ -165,7 +165,7 @@ type UserDomainCountInfo struct {
 // Domain management
 
 // DomainsCheckPublicFoldersIntegrity - If corrupted folder is found, try to fix it.
-func (c *Connection) DomainsCheckPublicFoldersIntegrity() error {
+func (c *ServerConnection) DomainsCheckPublicFoldersIntegrity() error {
 	_, err := c.CallRaw("Domains.checkPublicFoldersIntegrity", nil)
 	return err
 }
@@ -176,7 +176,7 @@ func (c *Connection) DomainsCheckPublicFoldersIntegrity() error {
 // Return
 //	errors - error message list
 //	result - particular results for all items
-func (c *Connection) DomainsCreate(domains DomainList) (ErrorList, CreateResultList, error) {
+func (c *ServerConnection) DomainsCreate(domains DomainList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Domains DomainList `json:"domains"`
 	}{domains}
@@ -199,7 +199,7 @@ func (c *Connection) DomainsCreate(domains DomainList) (ErrorList, CreateResultL
 //	domainId - ID of the domain
 // Return
 //	password - generated password
-func (c *Connection) DomainsGeneratePassword(domainId KId) (string, error) {
+func (c *ServerConnection) DomainsGeneratePassword(domainId KId) (string, error) {
 	params := struct {
 		DomainId KId `json:"domainId"`
 	}{domainId}
@@ -221,7 +221,7 @@ func (c *Connection) DomainsGeneratePassword(domainId KId) (string, error) {
 //	query - query conditions and limits
 // Return
 //	list - domains
-func (c *Connection) DomainsGet(query SearchQuery) (DomainList, error) {
+func (c *ServerConnection) DomainsGet(query SearchQuery) (DomainList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
@@ -240,7 +240,7 @@ func (c *Connection) DomainsGet(query SearchQuery) (DomainList, error) {
 }
 
 // DomainsGetDkimDnsRecord - Returns DNS TXT record to be added into DNS.
-func (c *Connection) DomainsGetDkimDnsRecord(domain string) (string, error) {
+func (c *ServerConnection) DomainsGetDkimDnsRecord(domain string) (string, error) {
 	params := struct {
 		Domain string `json:"domain"`
 	}{domain}
@@ -260,7 +260,7 @@ func (c *Connection) DomainsGetDkimDnsRecord(domain string) (string, error) {
 // DomainsGetSettings - Get settings common in all domains.
 // Return
 //	setting - domain global setting
-func (c *Connection) DomainsGetSettings() (*DomainSetting, error) {
+func (c *ServerConnection) DomainsGetSettings() (*DomainSetting, error) {
 	data, err := c.CallRaw("Domains.getSettings", nil)
 	if err != nil {
 		return nil, err
@@ -279,7 +279,7 @@ func (c *Connection) DomainsGetSettings() (*DomainSetting, error) {
 //	domainId - ID of the domain which will be renamed
 // Return
 //	countInfo - structure with users count and limit
-func (c *Connection) DomainsGetUserCountInfo(domainId KId) (*UserDomainCountInfo, error) {
+func (c *ServerConnection) DomainsGetUserCountInfo(domainId KId) (*UserDomainCountInfo, error) {
 	params := struct {
 		DomainId KId `json:"domainId"`
 	}{domainId}
@@ -301,7 +301,7 @@ func (c *Connection) DomainsGetUserCountInfo(domainId KId) (*UserDomainCountInfo
 //	domainIds - list of global identifiers of domains to be deleted
 // Return
 //	errors - error message list
-func (c *Connection) DomainsRemove(domainIds KIdList) (ErrorList, error) {
+func (c *ServerConnection) DomainsRemove(domainIds KIdList) (ErrorList, error) {
 	params := struct {
 		DomainIds KIdList `json:"domainIds"`
 	}{domainIds}
@@ -324,7 +324,7 @@ func (c *Connection) DomainsRemove(domainIds KIdList) (ErrorList, error) {
 //	newName - new domain name
 // Return
 //	error - error message
-func (c *Connection) DomainsRename(domainId KId, newName string) (*ClusterError, error) {
+func (c *ServerConnection) DomainsRename(domainId KId, newName string) (*ClusterError, error) {
 	params := struct {
 		DomainId KId    `json:"domainId"`
 		NewName  string `json:"newName"`
@@ -347,7 +347,7 @@ func (c *Connection) DomainsRename(domainId KId, newName string) (*ClusterError,
 //	fileId - id of uploaded file
 // Return
 //	imgUrl - url to saved image
-func (c *Connection) DomainsSaveFooterImage(fileId string) (string, error) {
+func (c *ServerConnection) DomainsSaveFooterImage(fileId string) (string, error) {
 	params := struct {
 		FileId string `json:"fileId"`
 	}{fileId}
@@ -370,7 +370,7 @@ func (c *Connection) DomainsSaveFooterImage(fileId string) (string, error) {
 //	domainId - global domain identifier
 // Return
 //	logoUrl - path to the saved file
-func (c *Connection) DomainsSaveWebMailLogo(fileId string, domainId KId) (string, error) {
+func (c *ServerConnection) DomainsSaveWebMailLogo(fileId string, domainId KId) (string, error) {
 	params := struct {
 		FileId   string `json:"fileId"`
 		DomainId KId    `json:"domainId"`
@@ -394,7 +394,7 @@ func (c *Connection) DomainsSaveWebMailLogo(fileId string, domainId KId) (string
 //	pattern - pattern to use for new values
 // Return
 //	errors - error message list
-func (c *Connection) DomainsSet(domainIds KIdList, pattern Domain) (ErrorList, error) {
+func (c *ServerConnection) DomainsSet(domainIds KIdList, pattern Domain) (ErrorList, error) {
 	params := struct {
 		DomainIds KIdList `json:"domainIds"`
 		Pattern   Domain  `json:"pattern"`
@@ -415,7 +415,7 @@ func (c *Connection) DomainsSet(domainIds KIdList, pattern Domain) (ErrorList, e
 // DomainsSetSettings - Set settings for all domains.
 // Parameters
 //	setting - domain global settings
-func (c *Connection) DomainsSetSettings(setting DomainSetting) error {
+func (c *ServerConnection) DomainsSetSettings(setting DomainSetting) error {
 	params := struct {
 		Setting DomainSetting `json:"setting"`
 	}{setting}
@@ -430,7 +430,7 @@ func (c *Connection) DomainsSetSettings(setting DomainSetting) error {
 //	domainId - global domain identifier
 // Return
 //	errors - error message
-func (c *Connection) DomainsTestDomainController(hostnames StringList, config DirectoryServiceConfiguration, domainId KId) (ErrorList, error) {
+func (c *ServerConnection) DomainsTestDomainController(hostnames StringList, config DirectoryServiceConfiguration, domainId KId) (ErrorList, error) {
 	params := struct {
 		Hostnames StringList                    `json:"hostnames"`
 		Config    DirectoryServiceConfiguration `json:"config"`
@@ -454,7 +454,7 @@ func (c *Connection) DomainsTestDomainController(hostnames StringList, config Di
 //	hostnames - hostnames checked for DKIM public key in DNS
 // Return
 //	errors - error message
-func (c *Connection) DomainsTestDkimDnsStatus(hostnames StringList) (ErrorList, error) {
+func (c *ServerConnection) DomainsTestDkimDnsStatus(hostnames StringList) (ErrorList, error) {
 	params := struct {
 		Hostnames StringList `json:"hostnames"`
 	}{hostnames}
@@ -472,7 +472,7 @@ func (c *Connection) DomainsTestDkimDnsStatus(hostnames StringList) (ErrorList, 
 }
 
 // DomainsGetDomainFooterPlaceholders - Return all supported placeholders for domain footer
-func (c *Connection) DomainsGetDomainFooterPlaceholders() (NamedConstantList, error) {
+func (c *ServerConnection) DomainsGetDomainFooterPlaceholders() (NamedConstantList, error) {
 	data, err := c.CallRaw("Domains.getDomainFooterPlaceholders", nil)
 	if err != nil {
 		return nil, err

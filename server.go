@@ -1,80 +1,574 @@
 package connect
 
-import (
-	"encoding/json"
+import "encoding/json"
+
+// Entity - Available entities, entity prefix due to name collision
+type Entity string
+
+const (
+	EntityUser           Entity = "EntityUser"           // User Entity
+	EntityAlias          Entity = "EntityAlias"          // Alias Entity
+	EntityGroup          Entity = "EntityGroup"          // Group Entity
+	EntityMailingList    Entity = "EntityMailingList"    // Mailing List Entity
+	EntityResource       Entity = "EntityResource"       // Resource Scheduling Entity
+	EntityTimeRange      Entity = "EntityTimeRange"      // Time Range Entity
+	EntityTimeRangeGroup Entity = "EntityTimeRangeGroup" // Time Range Group Entity
+	EntityIpAddress      Entity = "EntityIpAddress"      // Ip Address Entity
+	EntityIpAddressGroup Entity = "EntityIpAddressGroup" // Ip Address Group Entity
+	EntityService        Entity = "EntityService"        // Service Entity
+	EntityDomain         Entity = "EntityDomain"
 )
 
+// RestrictionTuple - Restriction Items
+type RestrictionTuple struct {
+	Name   ItemName        `json:"name"`
+	Kind   RestrictionKind `json:"kind"`
+	Values StringList      `json:"values"`
+}
+
+// RestrictionTupleList - Restriction tuple for 1 entity
+type RestrictionTupleList []RestrictionTuple
+
+// Restriction - Entity name restriction definition
+type Restriction struct {
+	EntityName Entity               `json:"entityName"` // IDL entity name, eg. User
+	Tuples     RestrictionTupleList `json:"tuples"`     // Restriction tuples
+}
+
+// RestrictionList - List of restrictions
+type RestrictionList []Restriction
+
+// JavaScriptDate - JavaScript timestamp
+type JavaScriptDate string
+
+// SubscriptionInfo - Subscription information
+type SubscriptionInfo struct {
+	IsUnlimited      bool           `json:"isUnlimited"`      // is it a special license with expiration == never ?
+	ShowAlert        bool           `json:"showAlert"`        // show subscription expiration alert
+	RemainingDays    int            `json:"remainingDays"`    // days remaining to subscription expiration
+	SubscriptionDate JavaScriptDate `json:"subscriptionDate"` // last date of subscription
+}
+
+// AboutInfo - About information
+type AboutInfo struct {
+	CurrentUsers    int              `json:"currentUsers"`    // number of created users on domain
+	AllowedUsers    MaximumUsers     `json:"allowedUsers"`    // number of allowed users, take stricter limit from max. number for domain, max. number by license
+	ServerSoftware  string           `json:"serverSoftware"`  // product name and version string, same as SERVER_SOFTWARE
+	Subscription    SubscriptionInfo `json:"subscription"`    // information about subscription
+	Copyright       string           `json:"copyright"`       // copyright string
+	ProductHomepage string           `json:"productHomepage"` // url to homepage of product
+}
+
 type ServerVersion struct {
-	Product  string `json:"product"`
-	Version  string `json:"version"`
-	Major    int    `json:"major"`
-	Minor    int    `json:"minor"`
-	Revision int    `json:"revision"`
-	Build    int    `json:"build"`
+	Product  string `json:"product"`  // name of product
+	Version  string `json:"version"`  // version in string consists of values of major, minor, revision, build a dot separated
+	Major    int    `json:"major"`    // major version
+	Minor    int    `json:"minor"`    // minor version
+	Revision int    `json:"revision"` // revision number
+	Build    int    `json:"build"`    // build number
 }
 
-type WebSessionList struct {
-	ID             string `json:"id"`
-	UserName       string `json:"userName"`
-	ClientAddress  string `json:"clientAddress"`
-	ExpirationTime string `json:"expirationTime"`
-	ComponentType  string `json:"componentType"`
-	IsSecure       bool   `json:"isSecure"`
+// AlertName - Type of Alert
+type AlertName string
+
+const (
+	LicenseExpired                AlertName = "LicenseExpired"                // License has expired
+	LicenseInvalidMinVersion      AlertName = "LicenseInvalidMinVersion"      // Invalid minimal version of a product found
+	LicenseInvalidEdition         AlertName = "LicenseInvalidEdition"         // The license was not issued for this edition of the product
+	LicenseInvalidUser            AlertName = "LicenseInvalidUser"            // The license was not issued for this user
+	LicenseInvalidDomain          AlertName = "LicenseInvalidDomain"          // The license was not issued for this domain
+	LicenseInvalidOS              AlertName = "LicenseInvalidOS"              // The license was not issued for this operating system
+	LicenseCheckForwardingEnabled AlertName = "LicenseCheckForwardingEnabled" // The license was not alowed forward the message to another host
+	LicenseTooManyUsers           AlertName = "LicenseTooManyUsers"           // More users try login to their mailboxes then allowed License.
+	StorageSpaceLow               AlertName = "StorageSpaceLow"               // Low space in storage
+	SubscriptionExpired           AlertName = "SubscriptionExpired"           // Subscription has expired
+	SubscriptionSoonExpire        AlertName = "SubscriptionSoonExpire"        // Subscription soon expire
+	LicenseSoonExpire             AlertName = "LicenseSoonExpire"             // License soon expire
+	CoredumpFound                 AlertName = "CoredumpFound"                 // Some coredump was found after crash
+	MacOSServicesKeepsPorts       AlertName = "MacOSServicesKeepsPorts"       // Apache on Lion server keeps ports (Eg. port 443), which are assigned to our services. See Services.stopMacOSServices()
+	RemoteUpgradeFailed           AlertName = "RemoteUpgradeFailed"           // Remote server upgrade failed
+	RemoteUpgradeSucceeded        AlertName = "RemoteUpgradeSucceeded"        // Remote server upgrade succeeded
+)
+
+// TypeAlert - Type of Alert
+type TypeAlert string
+
+const (
+	Warning  TypeAlert = "Warning"
+	Critical TypeAlert = "Critical"
+	Info     TypeAlert = "Info"
+)
+
+// Alert - Alert
+type Alert struct {
+	AlertName     AlertName `json:"alertName"`     // Alert Id
+	AlertType     TypeAlert `json:"alertType"`     // Alert type
+	CurrentValue  string    `json:"currentValue"`  // Current Value
+	CriticalValue string    `json:"criticalValue"` // Critical Value
 }
 
-type Connections struct {
-	Proto       string `json:"proto"`
-	Extension   string `json:"extension"`
-	IsSecure    bool   `json:"isSecure"`
-	Time        string `json:"time"`
-	From        string `json:"from"`
-	User        string `json:"user"`
-	Description string `json:"description"`
+type AlertList []Alert
+
+// EntityDuplicate - Potential duplicate
+type EntityDuplicate struct {
+	Kind             Entity `json:"kind"` // which entity was found as first duplicate
+	Name             string `json:"name"` // name of duplicate
+	CollisionAddress string `json:"collisionAddress"`
+	Win              bool   `json:"win"`       // if entity is winner in this collision of mail address
+	IsPattern        bool   `json:"isPattern"` // is true if it is the pattern to check (self duplicity)
 }
 
-type ConnectionList []Connections
+type EntityDuplicateList []EntityDuplicate
 
-type DirList struct {
-	Name            string `json:"name"`
-	HasSubdirectory bool   `json:"hasSubdirectory"`
+// EntityDetail - Detail about entity to be checked. Kind or id must be filled.
+type EntityDetail struct {
+	Kind Entity `json:"kind"` // which entity is inserting
+	Id   KId    `json:"id"`   // entity global identification of updated entity
 }
 
-type ExtensionsList []string
-
-type Constant struct {
-	Name  string `json:"name"`
-	Value string `json:"value"`
-}
+type UserNameList []string
 
 type FolderInfo struct {
-	FolderName     string   `json:"folderName"`
-	ReferenceCount int      `json:"referenceCount"`
-	IndexLoaded    bool     `json:"indexLoaded"`
-	Users          []string `json:"users"`
+	FolderName     string       `json:"folderName"`
+	ReferenceCount int          `json:"referenceCount"`
+	IndexLoaded    bool         `json:"indexLoaded"`
+	Users          UserNameList `json:"users"`
 }
 
 type FolderInfoList []FolderInfo
 
+type WebSession struct {
+	Id             string       `json:"id"`
+	UserName       string       `json:"userName"`
+	ClientAddress  string       `json:"clientAddress"`  // IPv4 address
+	ExpirationTime string       `json:"expirationTime"` // format dd.mm.yyyy hh:mm:ss
+	ComponentType  WebComponent `json:"componentType"`  // what about CalDav, WebDav, ActiveSync
+	IsSecure       bool         `json:"isSecure"`       // is protocol secure
+}
+
+type WebSessionList []WebSession
+
+type Protocol string
+
+const (
+	protocolAdmin      Protocol = "protocolAdmin"
+	protocolSmtp       Protocol = "protocolSmtp"
+	protocolSmtps      Protocol = "protocolSmtps"
+	protocolSubmission Protocol = "protocolSubmission"
+	protocolPop3       Protocol = "protocolPop3"
+	protocolPop3s      Protocol = "protocolPop3s"
+	protocolImap       Protocol = "protocolImap"
+	protocolImaps      Protocol = "protocolImaps"
+	protocolNntp       Protocol = "protocolNntp"
+	protocolNntps      Protocol = "protocolNntps"
+	protocolLdap       Protocol = "protocolLdap"
+	protocolLdaps      Protocol = "protocolLdaps"
+	protocolHttp       Protocol = "protocolHttp"
+	protocolHttps      Protocol = "protocolHttps"
+	protocolXmpp       Protocol = "protocolXmpp"
+	protocolXmpps      Protocol = "protocolXmpps"
+)
+
+type HttpExtension string
+
+const (
+	NoExtension HttpExtension = "NoExtension"
+	WebGeneric  HttpExtension = "WebGeneric" // WebMail or WebMail Mini or WebAdmin
+	WebDav      HttpExtension = "WebDav"
+	CalDav      HttpExtension = "CalDav"
+	ActiveSync  HttpExtension = "ActiveSync"
+	KocOffline  HttpExtension = "KocOffline"
+	KBC         HttpExtension = "KBC" // Kerio Connector for BlackBerry Enterprise Server
+	EWS         HttpExtension = "EWS" // Exchange Web Services
+)
+
+type Connection struct {
+	Proto       Protocol      `json:"proto"`
+	Extension   HttpExtension `json:"extension"`
+	IsSecure    bool          `json:"isSecure"`
+	Time        string        `json:"time"`
+	From        string        `json:"from"`
+	User        string        `json:"user"`
+	Description string        `json:"description"`
+}
+
+type ConnectionList []Connection
+
+// Administration - Note: isEnabled, isLimited and groupId fields must be assigned if any of them is used in set methods
 type Administration struct {
-	IsEnabled                   bool   `json:"isEnabled"`
-	IsLimited                   bool   `json:"isLimited"`
-	GroupID                     string `json:"groupId"`
-	GroupName                   string `json:"groupName"`
-	BuiltInAdminEnabled         bool   `json:"builtInAdminEnabled"`
-	BuiltInAdminUsername        string `json:"builtInAdminUsername"`
-	BuiltInAdminPassword        string `json:"builtInAdminPassword"`
-	BuiltInAdminPasswordIsEmpty bool   `json:"builtInAdminPasswordIsEmpty"`
-	BuiltInAdminUsernameCollide bool   `json:"builtInAdminUsernameCollide"`
+	IsEnabled                   bool   `json:"isEnabled"`                   // administration from other that local machine is enabled/disabled
+	IsLimited                   bool   `json:"isLimited"`                   // administration is limited
+	GroupId                     KId    `json:"groupId"`                     // IP Address Group identifier on which is limit applied
+	GroupName                   string `json:"groupName"`                   // [READ-ONLY] IP Address Group name on which is limit applied
+	BuiltInAdminEnabled         bool   `json:"builtInAdminEnabled"`         // if is enabled field builtInAdminPassword is required
+	BuiltInAdminUsername        string `json:"builtInAdminUsername"`        // [READ-ONLY] user name
+	BuiltInAdminPassword        string `json:"builtInAdminPassword"`        // password
+	BuiltInAdminPasswordIsEmpty bool   `json:"builtInAdminPasswordIsEmpty"` // [READ-ONLY] password is empty
+	BuiltInAdminUsernameCollide bool   `json:"builtInAdminUsernameCollide"` // [READ-ONLY] username colide with user in primary domain
 }
 
+// ServerTimeInfo - Server time information
 type ServerTimeInfo struct {
-	TimezoneOffset int `json:"timezoneOffset"`
-	StartTime      int `json:"startTime"`
-	CurrentTime    int `json:"currentTime"`
+	TimezoneOffset int           `json:"timezoneOffset"` // +/- offset in minutes
+	StartTime      DateTimeStamp `json:"startTime"`      // +/- start time of server
+	CurrentTime    DateTimeStamp `json:"currentTime"`    // +/- current time on server
 }
 
-// ServerGetVersion obtains a information about server version.
-func (c *Connection) ServerGetVersion() (*ServerVersion, error) {
+// ServerCreatePath - Server creates an archive/backup path. If credentials aren't specified, values from current configuration of backup are used.
+// Parameters
+//	path - new directory to create
+//	credentials - (optional) user name and password required to access network disk
+// Return
+//	result - result of create action
+func (c *ServerConnection) ServerCreatePath(path string, credentials Credentials) (*DirectoryAccessResult, error) {
+	params := struct {
+		Path        string      `json:"path"`
+		Credentials Credentials `json:"credentials"`
+	}{path, credentials}
+	data, err := c.CallRaw("Server.createPath", params)
+	if err != nil {
+		return nil, err
+	}
+	result := struct {
+		Result struct {
+			Result DirectoryAccessResult `json:"result"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &result)
+	return &result.Result.Result, err
+}
+
+// ServerFindEntityByEmail - caller must be authenticated; Note: creating duplicates is often allowed but may cause unwanted effects.
+// Parameters
+//	addresses - list of email addresses (without domain) to be checked
+//	updatedEntity - identification of the current entity (to avoid self duplicity)
+//	domainId - domain identification
+// Return
+//	entities - list of found entities with e-mail address duplicate 'updatedEntity' is included in list and marked, if none duplicate is found list is empty
+func (c *ServerConnection) ServerFindEntityByEmail(addresses StringList, updatedEntity EntityDetail, domainId KId) (EntityDuplicateList, error) {
+	params := struct {
+		Addresses     StringList   `json:"addresses"`
+		UpdatedEntity EntityDetail `json:"updatedEntity"`
+		DomainId      KId          `json:"domainId"`
+	}{addresses, updatedEntity, domainId}
+	data, err := c.CallRaw("Server.findEntityByEmail", params)
+	if err != nil {
+		return nil, err
+	}
+	entities := struct {
+		Result struct {
+			Entities EntityDuplicateList `json:"entities"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &entities)
+	return entities.Result.Entities, err
+}
+
+// ServerGenerateSupportInfo - Generate a file with information for the support.
+// Return
+//	fileDownload - description of output file
+func (c *ServerConnection) ServerGenerateSupportInfo() (*Download, error) {
+	data, err := c.CallRaw("Server.generateSupportInfo", nil)
+	if err != nil {
+		return nil, err
+	}
+	fileDownload := struct {
+		Result struct {
+			FileDownload Download `json:"fileDownload"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &fileDownload)
+	return &fileDownload.Result.FileDownload, err
+}
+
+// ServerGetAboutInfo - Obtain information about server, caller must be authenticated.
+// Return
+//	aboutInformation - information about server
+func (c *ServerConnection) ServerGetAboutInfo() (*AboutInfo, error) {
+	data, err := c.CallRaw("Server.getAboutInfo", nil)
+	if err != nil {
+		return nil, err
+	}
+	aboutInformation := struct {
+		Result struct {
+			AboutInformation AboutInfo `json:"aboutInformation"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &aboutInformation)
+	return &aboutInformation.Result.AboutInformation, err
+}
+
+// ServerGetAlertList - Obtain a list of alerts.
+// Return
+//	alerts - list of alerts
+func (c *ServerConnection) ServerGetAlertList() (AlertList, error) {
+	data, err := c.CallRaw("Server.getAlertList", nil)
+	if err != nil {
+		return nil, err
+	}
+	alerts := struct {
+		Result struct {
+			Alerts AlertList `json:"alerts"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &alerts)
+	return alerts.Result.Alerts, err
+}
+
+// ServerGetBrowserLanguages - Returns a list of user-preferred languages set in browser.
+// Return
+//	calculatedLanguage - a list of 2-character language codes
+func (c *ServerConnection) ServerGetBrowserLanguages() (StringList, error) {
+	data, err := c.CallRaw("Server.getBrowserLanguages", nil)
+	if err != nil {
+		return nil, err
+	}
+	calculatedLanguage := struct {
+		Result struct {
+			CalculatedLanguage StringList `json:"calculatedLanguage"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &calculatedLanguage)
+	return calculatedLanguage.Result.CalculatedLanguage, err
+}
+
+// ServerGetClientStatistics - Obtain client statistics settings.
+func (c *ServerConnection) ServerGetClientStatistics() (bool, error) {
+	data, err := c.CallRaw("Server.getClientStatistics", nil)
+	if err != nil {
+		return false, err
+	}
+	isEnabled := struct {
+		Result struct {
+			IsEnabled bool `json:"isEnabled"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &isEnabled)
+	return isEnabled.Result.IsEnabled, err
+}
+
+// ServerGetColumnList - Obtain a list of columns dependent on callee role.
+// Parameters
+//	objectName - name of the API object
+//	methodName - name of the method of appropriate object
+// Return
+//	columns - list of available columns
+func (c *ServerConnection) ServerGetColumnList(objectName string, methodName string) (StringList, error) {
+	params := struct {
+		ObjectName string `json:"objectName"`
+		MethodName string `json:"methodName"`
+	}{objectName, methodName}
+	data, err := c.CallRaw("Server.getColumnList", params)
+	if err != nil {
+		return nil, err
+	}
+	columns := struct {
+		Result struct {
+			Columns StringList `json:"columns"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &columns)
+	return columns.Result.Columns, err
+}
+
+// ServerGetConnections - Obtain information about active connections.
+// Parameters
+//	query - condition and fields have no effect for this method
+// Return
+//	list - active connections
+//	totalItems - total number of active connections
+func (c *ServerConnection) ServerGetConnections(query SearchQuery) (ConnectionList, int, error) {
+	params := struct {
+		Query SearchQuery `json:"query"`
+	}{query}
+	data, err := c.CallRaw("Server.getConnections", params)
+	if err != nil {
+		return nil, 0, err
+	}
+	list := struct {
+		Result struct {
+			List       ConnectionList `json:"list"`
+			TotalItems int            `json:"totalItems"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &list)
+	return list.Result.List, list.Result.TotalItems, err
+}
+
+// ServerGetDirs - Obtain a list of directories in a particular path.
+// Parameters
+//	fullPath - directory for listing, if full path is empty logical drives will be listed
+// Return
+//	dirList - List of directories
+func (c *ServerConnection) ServerGetDirs(fullPath string) (DirectoryList, error) {
+	params := struct {
+		FullPath string `json:"fullPath"`
+	}{fullPath}
+	data, err := c.CallRaw("Server.getDirs", params)
+	if err != nil {
+		return nil, err
+	}
+	dirList := struct {
+		Result struct {
+			DirList DirectoryList `json:"dirList"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &dirList)
+	return dirList.Result.DirList, err
+}
+
+// ServerGetLicenseExtensionsList - Obtain list of license extensions, caller must be authenticated.
+// Return
+//	extensions - list of license extensions
+func (c *ServerConnection) ServerGetLicenseExtensionsList() (StringList, error) {
+	data, err := c.CallRaw("Server.getLicenseExtensionsList", nil)
+	if err != nil {
+		return nil, err
+	}
+	extensions := struct {
+		Result struct {
+			Extensions StringList `json:"extensions"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &extensions)
+	return extensions.Result.Extensions, err
+}
+
+// ServerGetNamedConstantList - Server side list of constants.
+// Return
+//	constants - list of constants
+func (c *ServerConnection) ServerGetNamedConstantList() (NamedConstantList, error) {
+	data, err := c.CallRaw("Server.getNamedConstantList", nil)
+	if err != nil {
+		return nil, err
+	}
+	constants := struct {
+		Result struct {
+			Constants NamedConstantList `json:"constants"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &constants)
+	return constants.Result.Constants, err
+}
+
+// ServerGetOpenedFoldersInfo - Obtain information about folders opened on server.
+// Parameters
+//	query - condition and fields have no effect for this method
+// Return
+//	list - opened folders with info
+//	totalItems - total number of opened folders
+func (c *ServerConnection) ServerGetOpenedFoldersInfo(query SearchQuery) (FolderInfoList, int, error) {
+	params := struct {
+		Query SearchQuery `json:"query"`
+	}{query}
+	data, err := c.CallRaw("Server.getOpenedFoldersInfo", params)
+	if err != nil {
+		return nil, 0, err
+	}
+	list := struct {
+		Result struct {
+			List       FolderInfoList `json:"list"`
+			TotalItems int            `json:"totalItems"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &list)
+	return list.Result.List, list.Result.TotalItems, err
+}
+
+// ServerGetProductInfo - Get basic information about product and its version.
+// Return
+//	info - structure with basic information about product
+func (c *ServerConnection) ServerGetProductInfo() (*ProductInfo, error) {
+	data, err := c.CallRaw("Server.getProductInfo", nil)
+	if err != nil {
+		return nil, err
+	}
+	info := struct {
+		Result struct {
+			Info ProductInfo `json:"info"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &info)
+	return &info.Result.Info, err
+}
+
+// ServerGetRemoteAdministration - Obtain information about remote administration settings.
+// Return
+//	setting - current settings
+func (c *ServerConnection) ServerGetRemoteAdministration() (*Administration, error) {
+	data, err := c.CallRaw("Server.getRemoteAdministration", nil)
+	if err != nil {
+		return nil, err
+	}
+	setting := struct {
+		Result struct {
+			Setting Administration `json:"setting"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &setting)
+	return &setting.Result.Setting, err
+}
+
+// ServerGetServerHash - Obtain a hash string created from product name, version, and installation time.
+// Return
+//	serverHash - server hash
+func (c *ServerConnection) ServerGetServerHash() (string, error) {
+	data, err := c.CallRaw("Server.getServerHash", nil)
+	if err != nil {
+		return "", err
+	}
+	serverHash := struct {
+		Result struct {
+			ServerHash string `json:"serverHash"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &serverHash)
+	return serverHash.Result.ServerHash, err
+}
+
+// ServerGetServerIpAddresses - List all server IP addresses.
+// Return
+//	addresses - all IP addresses of the server
+func (c *ServerConnection) ServerGetServerIpAddresses() (StringList, error) {
+	data, err := c.CallRaw("Server.getServerIpAddresses", nil)
+	if err != nil {
+		return nil, err
+	}
+	addresses := struct {
+		Result struct {
+			Addresses StringList `json:"addresses"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &addresses)
+	return addresses.Result.Addresses, err
+}
+
+// ServerGetServerTime - Get server time information.
+// Return
+//	info - structure with time information
+func (c *ServerConnection) ServerGetServerTime() (*ServerTimeInfo, error) {
+	data, err := c.CallRaw("Server.getServerTime", nil)
+	if err != nil {
+		return nil, err
+	}
+	info := struct {
+		Result struct {
+			Info ServerTimeInfo `json:"info"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &info)
+	return &info.Result.Info, err
+}
+
+// ServerGetVersion - Obtain information about server version.
+// Return
+//	product - name of product
+//	version - version in string consists of values of major, minor, revision, build a dot separated
+//	major - major version
+//	minor - minor version
+//	revision - revision number
+//	build - build number
+func (c *ServerConnection) ServerGetVersion() (*ServerVersion, error) {
 	data, err := c.CallRaw("Server.getVersion", nil)
 	if err != nil {
 		return nil, err
@@ -88,233 +582,107 @@ func (c *Connection) ServerGetVersion() (*ServerVersion, error) {
 	return &serverVersion.Result.ServerVersion, err
 }
 
-// ServerGetServerHash obtains a hash string created from product name, version, and installation time.
-func (c *Connection) ServerGetServerHash() (string, error) {
-	data, err := c.CallRaw("Server.getServerHash", nil)
-	if err != nil {
-		return "", err
-	}
-	serverHash := ""
-	err = json.Unmarshal(data, &serverHash)
-	return serverHash, err
-}
-
-// ServerGetProductInfo gets basic information about product and its version.
-func (c *Connection) ServerGetProductInfo() (*ProductInfo, error) {
-	data, err := c.CallRaw("Server.getProductInfo", nil)
-	if err != nil {
-		return nil, err
-	}
-	productInfo := struct {
-		Result struct {
-			ProductInfo `json:"info"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &productInfo)
-	return &productInfo.Result.ProductInfo, err
-}
-
-// ServerGetRemoteAdministration obtains a information about remote administration settings.
-func (c *Connection) ServerGetRemoteAdministration() (*Administration, error) {
-	data, err := c.CallRaw("Server.getRemoteAdministration", nil)
-	if err != nil {
-		return nil, err
-	}
-	administration := struct {
-		Result struct {
-			Administration `json:"setting"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &administration)
-	return &administration.Result.Administration, err
-}
-
-// ServerSetRemoteAdministration obtains a information about remote administration settings.
-func (c *Connection) ServerSetRemoteAdministration(setting *Administration) error {
+// ServerGetWebSessions - Obtain information about web component sessions.
+// Parameters
+//	query - condition and fields have no effect for this method
+// Return
+//	list - web component sessions
+func (c *ServerConnection) ServerGetWebSessions(query SearchQuery) (WebSessionList, error) {
 	params := struct {
-		Administration `json:"setting"`
-	}{*setting}
-	_, err := c.CallRaw("Server.setRemoteAdministration", params)
-	return err
-}
-
-// ServerValidateRemoteAdministration obtains a information about remote administration settings.
-func (c *Connection) ServerValidateRemoteAdministration(setting *Administration) error {
-	params := struct {
-		Administration `json:"setting"`
-	}{*setting}
-	_, err := c.CallRaw("Server.validateRemoteAdministration", params)
-	return err
-}
-
-// ServerGetBrowserLanguages returns a list of user-preferred languages set in browser.
-func (c *Connection) ServerGetBrowserLanguages() ([]string, error) {
-	data, err := c.CallRaw("Server.getBrowserLanguages", nil)
-	if err != nil {
-		return nil, err
-	}
-	calculatedLanguage := struct {
-		Result struct {
-			Languages []string `json:"calculatedLanguage"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &calculatedLanguage)
-	return calculatedLanguage.Result.Languages, err
-}
-
-// ServerGetServerIpAddresses obtains a list all server IP addresses.
-func (c *Connection) ServerGetServerIpAddresses() ([]string, error) {
-	data, err := c.CallRaw("Server.getServerIpAddresses", nil)
-	if err != nil {
-		return nil, err
-	}
-	addresses := struct {
-		Result struct {
-			Addresses []string `json:"addresses"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &addresses)
-	return addresses.Result.Addresses, err
-}
-
-// ServerGetColumnList obtains a list of columns dependent on callee role.
-func (c *Connection) ServerGetColumnList(objectName, methodName string) ([]string, error) {
-	params := struct {
-		ObjectName string `json:"objectName"`
-		MethodName string `json:"methodName"`
-	}{objectName, methodName}
-	data, err := c.CallRaw("Server.getColumnList", params)
-	if err != nil {
-		return nil, err
-	}
-	columnList := struct {
-		Result struct {
-			ColumnList []string `json:"columns"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &columnList)
-	return columnList.Result.ColumnList, err
-}
-
-// ServerGetDownloadProgress obtains a progress of installation package downloading.
-func (c *Connection) ServerGetDownloadProgress() (int, error) {
-	data, err := c.CallRaw("Server.getDownloadProgress", nil)
-	if err != nil {
-		return 0, err
-	}
-	downloadProgress := struct {
-		Result struct {
-			Progress int `json:"progress"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &downloadProgress)
-	return downloadProgress.Result.Progress, err
-}
-
-// ServerGetServerTime obtains server time information.
-func (c *Connection) ServerGetServerTime() (*ServerTimeInfo, error) {
-	data, err := c.CallRaw("Server.getServerTime", nil)
-	if err != nil {
-		return nil, err
-	}
-	serverTimeInfo := struct {
-		Result struct {
-			ServerTimeInfo `json:"info"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &serverTimeInfo)
-	return &serverTimeInfo.Result.ServerTimeInfo, err
-}
-
-// ServerGetClientStatistics obtains client statistics settings.
-func (c *Connection) ServerGetClientStatistics() (bool, error) {
-	data, err := c.CallRaw("Server.getClientStatistics", nil)
-	if err != nil {
-		return false, err
-	}
-	clientStatistics := struct {
-		Result struct {
-			ClientStatistics bool `json:"isEnabled"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &clientStatistics)
-	return clientStatistics.Result.ClientStatistics, err
-}
-
-// ServerSetClientStatistics set client statistics settings.
-func (c *Connection) ServerSetClientStatistics(isEnabled bool) error {
-	params := struct {
-		IsEnabled bool `json:"isEnabled"`
-	}{isEnabled}
-	_, err := c.CallRaw("Server.getClientStatistics", params)
-	return err
-}
-
-// ServerGetLicenseExtensionsList obtains a list of license extensionsList, caller must be authenticated.
-func (c *Connection) ServerGetLicenseExtensionsList() (ExtensionsList, error) {
-	data, err := c.CallRaw("Server.getLicenseExtensionsList", nil)
-	if err != nil {
-		return nil, err
-	}
-	extensions := struct {
-		Result struct {
-			ExtensionsList `json:"extensions"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &extensions)
-	return extensions.Result.ExtensionsList, err
-}
-
-// ServerGetNamedConstantList obtains server side list of constants.
-func (c *Connection) ServerGetNamedConstantList() (NamedConstantList, error) {
-	data, err := c.CallRaw("Server.getNamedConstantList", nil)
-	if err != nil {
-		return nil, err
-	}
-	namedConstantList := struct {
-		Result struct {
-			NamedConstantList `json:"constants"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &namedConstantList)
-	return namedConstantList.Result.NamedConstantList, err
-}
-
-// ServerGetWebSessions obtains a information about web component sessions.
-func (c *Connection) ServerGetWebSessions(query SearchQuery) ([]WebSessionList, error) {
-	q := struct {
-		SearchQuery `json:"query"`
+		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Server.getWebSessions", q)
+	data, err := c.CallRaw("Server.getWebSessions", params)
 	if err != nil {
 		return nil, err
 	}
-	webSessionList := struct {
+	list := struct {
 		Result struct {
-			WebSessions []WebSessionList `json:"list"`
+			List       WebSessionList `json:"list"`
+			TotalItems int            `json:"totalItems"`
 		} `json:"result"`
 	}{}
-	err = json.Unmarshal(data, &webSessionList)
-	return webSessionList.Result.WebSessions, err
+	err = json.Unmarshal(data, &list)
+	return list.Result.List, err
 }
 
-// ServerKillWebSessions Terminate actual web sessions.
-func (c *Connection) ServerKillWebSessions(ids []string) error {
+// ServerKillWebSessions - Terminate actual web sessions.
+// Parameters
+//	ids - list of web sessions IDs to terminate
+func (c *ServerConnection) ServerKillWebSessions(ids KIdList) error {
 	params := struct {
-		IDs []string `json:"ids"`
+		Ids KIdList `json:"ids"`
 	}{ids}
 	_, err := c.CallRaw("Server.killWebSessions", params)
 	return err
 }
 
-// ServerSendBugReport send a bug report to Kerio.
-// Parameters:
-//      name	    - name of sender
-//      email	    - email of sender
-//      language	- language of report
-//      subject     - summary of report
-//      description	- description of problem
-func (c *Connection) ServerSendBugReport(name, email, language, subject, description string) error {
+// ServerPathExists - Check if the selected path exists and is accessible from the server.
+// Parameters
+//	path - directory name
+//	credentials - (optional) user name and password required to access network disk
+// Return
+//	result - result of check
+func (c *ServerConnection) ServerPathExists(path string, credentials Credentials) (DirectoryAccessResult, error) {
+	params := struct {
+		Path        string      `json:"path"`
+		Credentials Credentials `json:"credentials"`
+	}{path, credentials}
+	data, err := c.CallRaw("Server.pathExists", params)
+	if err != nil {
+		return "", err
+	}
+	result := struct {
+		Result struct {
+			Result DirectoryAccessResult `json:"result"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &result)
+	return result.Result.Result, err
+}
+
+// ServerReboot - Reboot the host system.
+func (c *ServerConnection) ServerReboot() error {
+	_, err := c.CallRaw("Server.reboot", nil)
+	return err
+}
+
+// ServerRestart - Restart server. The server must run as service.
+func (c *ServerConnection) ServerRestart() error {
+	_, err := c.CallRaw("Server.restart", nil)
+	return err
+}
+
+// ServerUpgrade - Upgrade server to the latest version. The server must run as service.
+func (c *ServerConnection) ServerUpgrade() error {
+	_, err := c.CallRaw("Server.upgrade", nil)
+	return err
+}
+
+// ServerGetDownloadProgress - Get progress of installation package downloading
+// Return
+//	progress - download progress in percents (0-100)
+func (c *ServerConnection) ServerGetDownloadProgress() (int, error) {
+	data, err := c.CallRaw("Server.getDownloadProgress", nil)
+	if err != nil {
+		return 0, err
+	}
+	progress := struct {
+		Result struct {
+			Progress int `json:"progress"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &progress)
+	return progress.Result.Progress, err
+}
+
+// ServerSendBugReport - Send a bug report to Kerio.
+// Parameters
+//	name - name of sender
+//	email - email of sender
+//	language - language of report
+//	subject - summary of report
+//	description - description of problem
+func (c *ServerConnection) ServerSendBugReport(name string, email string, language string, subject string, description string) error {
 	params := struct {
 		Name        string `json:"name"`
 		Email       string `json:"email"`
@@ -326,97 +694,61 @@ func (c *Connection) ServerSendBugReport(name, email, language, subject, descrip
 	return err
 }
 
-// ServerGetConnections obtains a information about active connections.
-func (c *Connection) ServerGetConnections(query SearchQuery) (ConnectionList, error) {
-	q := struct {
-		SearchQuery `json:"query"`
-	}{query}
-	data, err := c.CallRaw("Server.getConnections", q)
-	if err != nil {
-		return nil, err
-	}
-	connectionList := struct {
-		Result struct {
-			ConnectionList `json:"list"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &connectionList)
-	return connectionList.Result.ConnectionList, err
-}
-
-// ServerGetOpenedFoldersInfo obtains a information about folders opened on server.
-func (c *Connection) ServerGetOpenedFoldersInfo(query SearchQuery) (FolderInfoList, error) {
-	q := struct {
-		SearchQuery `json:"query"`
-	}{query}
-	data, err := c.CallRaw("Server.getOpenedFoldersInfo", q)
-	if err != nil {
-		return nil, err
-	}
-	folderInfoList := struct {
-		Result struct {
-			FolderInfoList `json:"list"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &folderInfoList)
-	return folderInfoList.Result.FolderInfoList, err
-}
-
-// ServerGetDirs obtains a list of directories in a particular path.
-func (c *Connection) ServerGetDirs(path string) ([]DirList, error) {
+// ServerSetClientStatistics - Set client statistics settings.
+func (c *ServerConnection) ServerSetClientStatistics(isEnabled bool) error {
 	params := struct {
-		FullPath string `json:"fullPath"`
-	}{path}
-	data, err := c.CallRaw("Server.getDirs", params)
-	if err != nil {
-		return nil, err
-	}
-	dirList := struct {
-		Result struct {
-			Dirs []DirList `json:"dirList"`
-		} `json:"result"`
-	}{}
-	err = json.Unmarshal(data, &dirList)
-	return dirList.Result.Dirs, err
+		IsEnabled bool `json:"isEnabled"`
+	}{isEnabled}
+	_, err := c.CallRaw("Server.setClientStatistics", params)
+	return err
 }
 
-// ServerPathExists checks if the selected path exists and is accessible from the server.
-// Parameters:
-//      path	    - directory name
-//      credentials	- (optional) user name and password required to access network disk
-//      result	    - result of check
-func (c *Connection) ServerPathExists(username, password, path string) (string, error) {
+// ServerSetRemoteAdministration - Set new remote administration parameters.
+// Parameters
+//	setting - new settings
+func (c *ServerConnection) ServerSetRemoteAdministration(setting Administration) error {
 	params := struct {
-		Credentials Credentials `json:"credentials"`
-		Path        string      `json:"path"`
-	}{Credentials{username, password}, path}
-	data, err := c.CallRaw("Server.pathExists", params)
+		Setting Administration `json:"setting"`
+	}{setting}
+	_, err := c.CallRaw("Server.setRemoteAdministration", params)
+	return err
+}
+
+// ServerUploadLicense - Upload license manually from a file.
+// Parameters
+//	fileId - ID of the uploaded file
+func (c *ServerConnection) ServerUploadLicense(fileId string) error {
+	params := struct {
+		FileId string `json:"fileId"`
+	}{fileId}
+	_, err := c.CallRaw("Server.uploadLicense", params)
+	return err
+}
+
+// ServerValidateRemoteAdministration - Validate whether the administrator can cut off him/herself from the administration.
+// Parameters
+//	setting - new setting
+func (c *ServerConnection) ServerValidateRemoteAdministration(setting Administration) error {
+	params := struct {
+		Setting Administration `json:"setting"`
+	}{setting}
+	_, err := c.CallRaw("Server.validateRemoteAdministration", params)
+	return err
+}
+
+// ServerIsBritishPreferred - Determine whether to use British or American flag for English.
+// Return
+//	preferred - use British flag
+func (c *ServerConnection) ServerIsBritishPreferred() (bool, error) {
+	data, err := c.CallRaw("Server.isBritishPreferred", nil)
 	if err != nil {
-		return "", err
+		return false, err
 	}
-	directoryAccessResult := struct {
+	preferred := struct {
 		Result struct {
-			Result string `json:"result"`
+			Preferred bool `json:"preferred"`
 		} `json:"result"`
 	}{}
-	err = json.Unmarshal(data, &directoryAccessResult)
-	return directoryAccessResult.Result.Result, err
-}
-
-// ServerReboot - reboot the host system
-func (c *Connection) ServerReboot() error {
-	_, err := c.CallRaw("Server.reboot", nil)
-	return err
-}
-
-// ServerRestart - restart server. The server must run as service.
-func (c *Connection) ServerRestart() error {
-	_, err := c.CallRaw("Server.restart", nil)
-	return err
-}
-
-// ServerUpgrade - upgrade server to the latest version. The server must run as service.
-func (c *Connection) ServerUpgrade() error {
-	_, err := c.CallRaw("Server.upgrade", nil)
-	return err
+	err = json.Unmarshal(data, &preferred)
+	return preferred.Result.Preferred, err
 }

@@ -7,18 +7,18 @@ import (
 	"net/http/cookiejar"
 )
 
-type Connection struct {
+type ServerConnection struct {
 	Config *Config
 	Token  *string
 	client *http.Client
 }
 
-func (c *Config) NewConnection() (*Connection, error) {
+func (c *Config) NewConnection() (*ServerConnection, error) {
 	client, err := newClient()
 	if err != nil {
 		return nil, err
 	}
-	connection := Connection{
+	connection := ServerConnection{
 		Config: c,
 		client: client,
 	}
@@ -33,7 +33,7 @@ func newClient() (*http.Client, error) {
 	return &http.Client{Jar: jar}, nil
 }
 
-func (c *Connection) CallRaw(method string, params interface{}) ([]byte, error) {
+func (c *ServerConnection) CallRaw(method string, params interface{}) ([]byte, error) {
 	buffer, err := marshal(c.Config.getID(), method, c.Token, params)
 	if err != nil {
 		return nil, err

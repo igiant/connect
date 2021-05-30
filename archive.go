@@ -32,7 +32,7 @@ type ArchiveOptions struct {
 // ArchiveGet - Obtain archive options.
 // Return
 //	options - current archive options
-func (c *Connection) ArchiveGet() (*ArchiveOptions, error) {
+func (c *ServerConnection) ArchiveGet() (*ArchiveOptions, error) {
 	data, err := c.CallRaw("Archive.get", nil)
 	if err != nil {
 		return nil, err
@@ -49,7 +49,7 @@ func (c *Connection) ArchiveGet() (*ArchiveOptions, error) {
 // ArchiveSet - Set archive options.
 // Parameters
 //	options - archive options
-func (c *Connection) ArchiveSet(options ArchiveOptions) error {
+func (c *ServerConnection) ArchiveSet(options ArchiveOptions) error {
 	params := struct {
 		Options ArchiveOptions `json:"options"`
 	}{options}
@@ -58,7 +58,7 @@ func (c *Connection) ArchiveSet(options ArchiveOptions) error {
 }
 
 // ArchiveGetXmppArchiveFiles - Returns links to available Instant Messaging archive files
-func (c *Connection) ArchiveGetXmppArchiveFiles() (DownloadList, error) {
+func (c *ServerConnection) ArchiveGetXmppArchiveFiles() (DownloadList, error) {
 	data, err := c.CallRaw("Archive.getXmppArchiveFiles", nil)
 	if err != nil {
 		return nil, err
@@ -73,7 +73,7 @@ func (c *Connection) ArchiveGetXmppArchiveFiles() (DownloadList, error) {
 }
 
 // ArchiveGetImArchiveFile - Returns link to IM archive file in given period
-func (c *Connection) ArchiveGetImArchiveFile(fromDate Date, toDate Date) (*Download, error) {
+func (c *ServerConnection) ArchiveGetImArchiveFile(fromDate Date, toDate Date) (*Download, error) {
 	params := struct {
 		FromDate Date `json:"fromDate"`
 		ToDate   Date `json:"toDate"`

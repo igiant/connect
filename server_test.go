@@ -58,7 +58,7 @@ func TestServerRequests(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if len(sessionList) == 0 || sessionList[0].ID == "" {
+	if len(sessionList) == 0 || sessionList[0].Id == "" {
 		t.Error("domains information not received")
 	}
 	dirs, err := conn.ServerGetDirs("/")
@@ -93,7 +93,7 @@ func TestServerRequests(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	result, err := conn.ServerPathExists("", "", "/")
+	result, err := conn.ServerPathExists("/", Credentials{"", ""})
 	if err != nil {
 		t.Error(err)
 	}
@@ -105,7 +105,7 @@ func TestServerRequests(t *testing.T) {
 		t.Error(err)
 	}
 	if admin != nil {
-		err = conn.ServerValidateRemoteAdministration(admin)
+		err = conn.ServerValidateRemoteAdministration(*admin)
 		if err != nil {
 			t.Error(err)
 		}

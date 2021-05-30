@@ -56,7 +56,7 @@ type AliasTargetList []AliasTarget
 //	checkString - string to be checked
 // Return
 //	result - list of expansions
-func (c *Connection) AliasesCheck(checkString string) (StringList, error) {
+func (c *ServerConnection) AliasesCheck(checkString string) (StringList, error) {
 	params := struct {
 		CheckString string `json:"checkString"`
 	}{checkString}
@@ -79,7 +79,7 @@ func (c *Connection) AliasesCheck(checkString string) (StringList, error) {
 // Return
 //	errors - list of error messages for appropriate new aliases
 //	result - list of IDs of created aliases
-func (c *Connection) AliasesCreate(aliases AliasList) (ErrorList, CreateResultList, error) {
+func (c *ServerConnection) AliasesCreate(aliases AliasList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Aliases AliasList `json:"aliases"`
 	}{aliases}
@@ -102,7 +102,7 @@ func (c *Connection) AliasesCreate(aliases AliasList) (ErrorList, CreateResultLi
 //	query - query conditions and limits
 // Return
 //	list - aliases
-func (c *Connection) AliasesGet(query SearchQuery, domainId KId) (AliasList, error) {
+func (c *ServerConnection) AliasesGet(query SearchQuery, domainId KId) (AliasList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
@@ -125,7 +125,7 @@ func (c *Connection) AliasesGet(query SearchQuery, domainId KId) (AliasList, err
 //	domainId - global identification of the domain
 // Return
 //	publicFolderList - list of public folders
-func (c *Connection) AliasesGetMailPublicFolderList(domainId KId) (PublicFolderList, error) {
+func (c *ServerConnection) AliasesGetMailPublicFolderList(domainId KId) (PublicFolderList, error) {
 	params := struct {
 		DomainId KId `json:"domainId"`
 	}{domainId}
@@ -148,7 +148,7 @@ func (c *Connection) AliasesGetMailPublicFolderList(domainId KId) (PublicFolderL
 //	domainId - global identification of the domain
 // Return
 //	list - alias targets
-func (c *Connection) AliasesGetTargetList(query SearchQuery, domainId KId) (AliasTargetList, error) {
+func (c *ServerConnection) AliasesGetTargetList(query SearchQuery, domainId KId) (AliasTargetList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
@@ -169,7 +169,7 @@ func (c *Connection) AliasesGetTargetList(query SearchQuery, domainId KId) (Alia
 // AliasesRemove - Delete aliases.
 // Return
 //	errors - error message list
-func (c *Connection) AliasesRemove(aliasIds KIdList) (ErrorList, error) {
+func (c *ServerConnection) AliasesRemove(aliasIds KIdList) (ErrorList, error) {
 	params := struct {
 		AliasIds KIdList `json:"aliasIds"`
 	}{aliasIds}
@@ -192,7 +192,7 @@ func (c *Connection) AliasesRemove(aliasIds KIdList) (ErrorList, error) {
 //	pattern - pattern to use for new values
 // Return
 //	errors - error message list
-func (c *Connection) AliasesSet(aliasIds KIdList, pattern Alias) (ErrorList, error) {
+func (c *ServerConnection) AliasesSet(aliasIds KIdList, pattern Alias) (ErrorList, error) {
 	params := struct {
 		AliasIds KIdList `json:"aliasIds"`
 		Pattern  Alias   `json:"pattern"`

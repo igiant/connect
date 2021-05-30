@@ -26,7 +26,7 @@ type CompanyContactList []CompanyContact
 // Return
 //	errors - error message list
 //	result - particular results for all items
-func (c *Connection) CompanyContactsCreate(companyContacts CompanyContactList) (ErrorList, CreateResultList, error) {
+func (c *ServerConnection) CompanyContactsCreate(companyContacts CompanyContactList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		CompanyContacts CompanyContactList `json:"companyContacts"`
 	}{companyContacts}
@@ -50,7 +50,7 @@ func (c *Connection) CompanyContactsCreate(companyContacts CompanyContactList) (
 // Return
 //	list - list of company contacts
 //	totalItems - amount of company contacts for given search condition, useful when limit is defined in kerio::web::SearchQuery
-func (c *Connection) CompanyContactsGet(query SearchQuery) (CompanyContactList, int, error) {
+func (c *ServerConnection) CompanyContactsGet(query SearchQuery) (CompanyContactList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
@@ -73,7 +73,7 @@ func (c *Connection) CompanyContactsGet(query SearchQuery) (CompanyContactList, 
 //	domainId - Only company contacts for given domain and global company contacts are listed.
 // Return
 //	companyContactList - list of user templates
-func (c *Connection) CompanyContactsGetAvailable(domainId KId) (CompanyContactList, error) {
+func (c *ServerConnection) CompanyContactsGetAvailable(domainId KId) (CompanyContactList, error) {
 	params := struct {
 		DomainId KId `json:"domainId"`
 	}{domainId}
@@ -93,7 +93,7 @@ func (c *Connection) CompanyContactsGetAvailable(domainId KId) (CompanyContactLi
 // CompanyContactsRemove - Remove company contacts.
 // Return
 //	errors - error message list
-func (c *Connection) CompanyContactsRemove(companyContactsIds KIdList) (ErrorList, error) {
+func (c *ServerConnection) CompanyContactsRemove(companyContactsIds KIdList) (ErrorList, error) {
 	params := struct {
 		CompanyContactsIds KIdList `json:"companyContactsIds"`
 	}{companyContactsIds}
@@ -116,7 +116,7 @@ func (c *Connection) CompanyContactsRemove(companyContactsIds KIdList) (ErrorLis
 //	pattern - pattern to use for new values
 // Return
 //	errors - error message list
-func (c *Connection) CompanyContactsSet(companyContactsIds KIdList, pattern CompanyContact) (ErrorList, error) {
+func (c *ServerConnection) CompanyContactsSet(companyContactsIds KIdList, pattern CompanyContact) (ErrorList, error) {
 	params := struct {
 		CompanyContactsIds KIdList        `json:"companyContactsIds"`
 		Pattern            CompanyContact `json:"pattern"`

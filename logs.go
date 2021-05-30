@@ -163,7 +163,7 @@ const (
 // LogsCancelSearch - Cancel search on server (useful for large logs).
 // Parameters
 //	searchId - identifier from search()
-func (c *Connection) LogsCancelSearch(searchId string) error {
+func (c *ServerConnection) LogsCancelSearch(searchId string) error {
 	params := struct {
 		SearchId string `json:"searchId"`
 	}{searchId}
@@ -174,7 +174,7 @@ func (c *Connection) LogsCancelSearch(searchId string) error {
 // LogsClear - Delete all log lines.
 // Parameters
 //	logName - unique name of the log
-func (c *Connection) LogsClear(logName LogType) error {
+func (c *ServerConnection) LogsClear(logName LogType) error {
 	params := struct {
 		LogName LogType `json:"logName"`
 	}{logName}
@@ -190,7 +190,7 @@ func (c *Connection) LogsClear(logName LogType) error {
 //	type - export file type
 // Return
 //	fileDownload - file download structure
-func (c *Connection) LogsExportLog(logName LogType, fromLine int, countLines int, format ExportFormat) (*Download, error) {
+func (c *ServerConnection) LogsExportLog(logName LogType, fromLine int, countLines int, format ExportFormat) (*Download, error) {
 	params := struct {
 		LogName    LogType      `json:"logName"`
 		FromLine   int          `json:"fromLine"`
@@ -218,7 +218,7 @@ func (c *Connection) LogsExportLog(logName LogType, fromLine int, countLines int
 //	type - export file type
 // Return
 //	fileDownload - file download structure
-func (c *Connection) LogsExportLogRelative(logName LogType, fromLine int, countLines int, format ExportFormat) (*Download, error) {
+func (c *ServerConnection) LogsExportLogRelative(logName LogType, fromLine int, countLines int, format ExportFormat) (*Download, error) {
 	params := struct {
 		LogName    LogType      `json:"logName"`
 		FromLine   int          `json:"fromLine"`
@@ -245,7 +245,7 @@ func (c *Connection) LogsExportLogRelative(logName LogType, fromLine int, countL
 //	countLines - number of lines to transfer
 // Return
 //	viewport - list of log lines; count of lines = min(count, NUMBER_OF_CURRENT LINES - from)
-func (c *Connection) LogsGet(logName LogType, fromLine int, countLines int) (LogRowList, error) {
+func (c *ServerConnection) LogsGet(logName LogType, fromLine int, countLines int) (LogRowList, error) {
 	params := struct {
 		LogName    LogType `json:"logName"`
 		FromLine   int     `json:"fromLine"`
@@ -267,7 +267,7 @@ func (c *Connection) LogsGet(logName LogType, fromLine int, countLines int) (Log
 // LogsGetHighlightRules - Obtain a list of sorted highlighting rules.
 // Return
 //	rules - highlight rules
-func (c *Connection) LogsGetHighlightRules() (*HighlightRules, error) {
+func (c *ServerConnection) LogsGetHighlightRules() (*HighlightRules, error) {
 	data, err := c.CallRaw("Logs.getHighlightRules", nil)
 	if err != nil {
 		return nil, err
@@ -284,7 +284,7 @@ func (c *Connection) LogsGetHighlightRules() (*HighlightRules, error) {
 // LogsGetLogSet - Retrieve set of valid logs.
 // Return
 //	logSet - list of valid logs
-func (c *Connection) LogsGetLogSet() (*LogSet, error) {
+func (c *ServerConnection) LogsGetLogSet() (*LogSet, error) {
 	data, err := c.CallRaw("Logs.getLogSet", nil)
 	if err != nil {
 		return nil, err
@@ -301,7 +301,7 @@ func (c *Connection) LogsGetLogSet() (*LogSet, error) {
 // LogsGetMessages - Obtain log message settings; make sense only if LogItem.hasMessages == true.
 // Return
 //	messages - tree of log messages
-func (c *Connection) LogsGetMessages() (TreeLeafList, error) {
+func (c *ServerConnection) LogsGetMessages() (TreeLeafList, error) {
 	data, err := c.CallRaw("Logs.getMessages", nil)
 	if err != nil {
 		return nil, err
@@ -324,7 +324,7 @@ func (c *Connection) LogsGetMessages() (TreeLeafList, error) {
 //	firstLine - first matching line
 //	status - current status of the search
 //	percentage - already finished search <0;100>
-func (c *Connection) LogsGetSearchProgress(countLines int, searchId string) (LogRowList, int, *SearchStatus, int, error) {
+func (c *ServerConnection) LogsGetSearchProgress(countLines int, searchId string) (LogRowList, int, *SearchStatus, int, error) {
 	params := struct {
 		CountLines int    `json:"countLines"`
 		SearchId   string `json:"searchId"`
@@ -350,7 +350,7 @@ func (c *Connection) LogsGetSearchProgress(countLines int, searchId string) (Log
 //	logName - unique name of the log
 // Return
 //	currentSettings - current valid settings (or undefined data on failure)
-func (c *Connection) LogsGetSettings(logName LogType) (*LogSettings, error) {
+func (c *ServerConnection) LogsGetSettings(logName LogType) (*LogSettings, error) {
 	params := struct {
 		LogName LogType `json:"logName"`
 	}{logName}
@@ -376,7 +376,7 @@ func (c *Connection) LogsGetSettings(logName LogType) (*LogSettings, error) {
 //	forward - direction of the search; true = forward, false = backward
 // Return
 //	searchId - identifier that can be used for cancelSearch and getSearchProgress
-func (c *Connection) LogsSearch(logName LogType, what string, fromLine int, toLine int, forward bool) (*string, error) {
+func (c *ServerConnection) LogsSearch(logName LogType, what string, fromLine int, toLine int, forward bool) (*string, error) {
 	params := struct {
 		LogName  LogType `json:"logName"`
 		What     string  `json:"what"`
@@ -400,7 +400,7 @@ func (c *Connection) LogsSearch(logName LogType, what string, fromLine int, toLi
 // LogsSetHighlightRules - Set highlighting rules, rules have to be sorted purposely, the only way to change a rule is to change the whole ruleset.
 // Parameters
 //	rules - highlight rules (ordered by priority)
-func (c *Connection) LogsSetHighlightRules(rules HighlightRules) error {
+func (c *ServerConnection) LogsSetHighlightRules(rules HighlightRules) error {
 	params := struct {
 		Rules HighlightRules `json:"rules"`
 	}{rules}
@@ -411,7 +411,7 @@ func (c *Connection) LogsSetHighlightRules(rules HighlightRules) error {
 // LogsSetMessages - Change log message settings; makes sense only if LogItem.hasMessages == true.
 // Parameters
 //	messages - tree of log messages
-func (c *Connection) LogsSetMessages(messages TreeLeafList) error {
+func (c *ServerConnection) LogsSetMessages(messages TreeLeafList) error {
 	params := struct {
 		Messages TreeLeafList `json:"messages"`
 	}{messages}
@@ -423,7 +423,7 @@ func (c *Connection) LogsSetMessages(messages TreeLeafList) error {
 // Parameters
 //	logName - unique name of the log
 //	newSettings
-func (c *Connection) LogsSetSettings(logName LogType, newSettings LogSettings) error {
+func (c *ServerConnection) LogsSetSettings(logName LogType, newSettings LogSettings) error {
 	params := struct {
 		LogName     LogType     `json:"logName"`
 		NewSettings LogSettings `json:"newSettings"`

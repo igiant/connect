@@ -12,7 +12,7 @@ type DumpList []CoreDump
 // DumpsGet - Obtain list of available crash dumps
 // Return
 //	dumps - list of all available crash dumps
-func (c *Connection) DumpsGet() (DumpList, error) {
+func (c *ServerConnection) DumpsGet() (DumpList, error) {
 	data, err := c.CallRaw("Dumps.get", nil)
 	if err != nil {
 		return nil, err
@@ -27,7 +27,7 @@ func (c *Connection) DumpsGet() (DumpList, error) {
 }
 
 // DumpsRemove - Remove all crash dumps from server disk
-func (c *Connection) DumpsRemove() error {
+func (c *ServerConnection) DumpsRemove() error {
 	_, err := c.CallRaw("Dumps.remove", nil)
 	return err
 }
@@ -36,7 +36,7 @@ func (c *Connection) DumpsRemove() error {
 // Parameters
 //	description - plain text information to be sent with crash dump
 //	email - contact information to be sent with crash dump
-func (c *Connection) DumpsSend(description string, email string) error {
+func (c *ServerConnection) DumpsSend(description string, email string) error {
 	params := struct {
 		Description string `json:"description"`
 		Email       string `json:"email"`
