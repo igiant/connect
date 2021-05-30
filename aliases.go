@@ -2,45 +2,61 @@ package connect
 
 import "encoding/json"
 
+// AliasType - Alias type definition
+type AliasType string
+
+const (
+	TypePublicFolder AliasType = "TypePublicFolder" // messages are delivered to public folder
+	TypeEmailAddress AliasType = "TypeEmailAddress" // messages are delivered to email account
+)
+
+// Alias - Alias details
 type Alias struct {
-	ID          KId        `json:"id"`
-	DomainID    KId        `json:"domainId"`
-	Name        string     `json:"name"`
-	DeliverToID KId        `json:"deliverToId"`
-	DeliverTo   string     `json:"deliverTo"`
-	Type        string     `json:"type"`
-	Description string     `json:"description"`
-	HomeServer  HomeServer `json:"homeServer"`
+	Id          KId        `json:"id"`          // global identification of alias
+	DomainId    KId        `json:"domainId"`    // [REQUIRED FOR CREATE] identification in which domain alias exists
+	Name        string     `json:"name"`        // [REQUIRED FOR CREATE] [USED BY QUICKSEARCH] left side of alias
+	DeliverToId KId        `json:"deliverToId"` // empty if email or contains public folder kid
+	DeliverTo   string     `json:"deliverTo"`   // [REQUIRED FOR CREATE] [USED BY QUICKSEARCH] email address or public folder name
+	Type        AliasType  `json:"type"`        // type of the alias
+	Description string     `json:"description"` // description
+	HomeServer  HomeServer `json:"homeServer"`  // [READ-ONLY] Id of alias homeserver if server is in Cluster
 }
 
+// AliasList - List of aliases
 type AliasList []Alias
 
-// HomeServer User's home server in a distributed domain.
-type HomeServer struct {
-	ID   KId    `json:"id"`   // server's id
-	Name string `json:"name"` // server's Internet hostname
-}
+// AliasTargetType - Alias Target discriminator
+type AliasTargetType string
 
+const (
+	TypeUser  AliasTargetType = "TypeUser"  // user
+	TypeGroup AliasTargetType = "TypeGroup" // group
+)
+
+// AliasTarget - Alias target can be a user or group
 type AliasTarget struct {
-	ID           string     `json:"id"`           // unique identifier
-	Type         string     `json:"type"`         // item type discriminator
-	Name         string     `json:"name"`         // loginName for the User, name in square brackets for the Group
-	FullName     string     `json:"fullName"`     // fullname for the User, empty string for the Group
-	Description  string     `json:"description"`  // description of User/Group
-	IsEnabled    string     `json:"isEnabled"`    // is the User/Group enabled?
-	ItemSource   string     `json:"itemSource"`   // is the User/Group stored internally or by LDAP?
-	EmailAddress string     `json:"emailAddress"` // first email address
-	HomeServer   HomeServer `json:"homeServer"`   // id of users homeserver if server is in Cluster; groups haven't homeserver
+	Id           KId             `json:"id"`           // unique identifier
+	Type         AliasTargetType `json:"type"`         // item type discriminator
+	Name         string          `json:"name"`         // loginName for the User, name in square brackets for the Group
+	FullName     string          `json:"fullName"`     // fullname for the User, empty string for the Group
+	Description  string          `json:"description"`  // description of User/Group
+	IsEnabled    bool            `json:"isEnabled"`    // is the User/Group enabled?
+	ItemSource   DataSource      `json:"itemSource"`   // is the User/Group stored internally or by LDAP?
+	EmailAddress string          `json:"emailAddress"` // first email address
+	HomeServer   HomeServer      `json:"homeServer"`   // id of users homeserver if server is in Cluster; groups haven't homeserver
 }
 
+// AliasTargetList - List of alias targets
 type AliasTargetList []AliasTarget
 
-// AliasesCheck obtains a list of mail addresses and/or public folders on which given string will be expanded.
+// Alias management
+
+// AliasesCheck - Obtain a list of mail addresses and/or public folders on which given string will be expanded.
 // Parameters
-//      checkString	- string to be checked
+//	checkString - string to be checked
 // Return
-//      list of expansions
-func (c *Connection) AliasesCheck(checkString string) ([]string, error) {
+//	result - list of expansions
+func (c *Connection) AliasesCheck(checkString string) (StringList, error) {
 	params := struct {
 		CheckString string `json:"checkString"`
 	}{checkString}
@@ -50,20 +66,20 @@ func (c *Connection) AliasesCheck(checkString string) ([]string, error) {
 	}
 	result := struct {
 		Result struct {
-			Result []string `json:"result"`
+			Result StringList `json:"result"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &result)
 	return result.Result.Result, err
 }
 
-// AliasesCreate - create new aliases.
+// AliasesCreate - Create new aliases
 // Parameters
-//      aliases	- new alias entities
+//	aliases - new alias entities
 // Return
-//  list of IDs of created aliases
-//  list of error messages for appropriate new aliases
-func (c *Connection) AliasesCreate(aliases AliasList) (CreateResultList, ErrorList, error) {
+//	errors - list of error messages for appropriate new aliases
+//	result - list of IDs of created aliases
+func (c *Connection) AliasesCreate(aliases AliasList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Aliases AliasList `json:"aliases"`
 	}{aliases}
@@ -71,128 +87,125 @@ func (c *Connection) AliasesCreate(aliases AliasList) (CreateResultList, ErrorLi
 	if err != nil {
 		return nil, nil, err
 	}
-	result := struct {
+	errors := struct {
 		Result struct {
-			Result CreateResultList `json:"result"`
 			Errors ErrorList        `json:"errors"`
+			Result CreateResultList `json:"result"`
 		} `json:"result"`
 	}{}
-	err = json.Unmarshal(data, &result)
-	return result.Result.Result, result.Result.Errors, err
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, errors.Result.Result, err
 }
 
-// AliasesGet obtains a list of aliases.
+// AliasesGet - Obtain list of aliases.
 // Parameters
-//      query	    - query conditions and limits
-//      domainKId	- domain identification
+//	query - query conditions and limits
 // Return
-//      aliases
-func (c *Connection) AliasesGet(domainID string, query SearchQuery) (AliasList, error) {
+//	list - aliases
+func (c *Connection) AliasesGet(query SearchQuery, domainId KId) (AliasList, error) {
 	params := struct {
-		DomainID string      `json:"domainId"`
 		Query    SearchQuery `json:"query"`
-	}{domainID, query}
+		DomainId KId         `json:"domainId"`
+	}{query, domainId}
 	data, err := c.CallRaw("Aliases.get", params)
 	if err != nil {
 		return nil, err
 	}
-	aliasList := struct {
+	list := struct {
 		Result struct {
-			AliasList `json:"list"`
+			List AliasList `json:"list"`
 		} `json:"result"`
 	}{}
-	err = json.Unmarshal(data, &aliasList)
-	return aliasList.Result.AliasList, err
+	err = json.Unmarshal(data, &list)
+	return list.Result.List, err
 }
 
-// AliasesGetMailPublicFolderList obtains a list of mail public folders in the given domain.
+// AliasesGetMailPublicFolderList - Obtain a list of mail public folders in the given domain.
 // Parameters
-//      domainId	- global identification of the domain
+//	domainId - global identification of the domain
 // Return
-//      list of public folders
-func (c *Connection) AliasesGetMailPublicFolderList(domainID string) (PublicFolderList, error) {
+//	publicFolderList - list of public folders
+func (c *Connection) AliasesGetMailPublicFolderList(domainId KId) (PublicFolderList, error) {
 	params := struct {
-		DomainID string `json:"domainId"`
-	}{domainID}
+		DomainId KId `json:"domainId"`
+	}{domainId}
 	data, err := c.CallRaw("Aliases.getMailPublicFolderList", params)
 	if err != nil {
 		return nil, err
 	}
 	publicFolderList := struct {
 		Result struct {
-			PublicFolderList `json:"publicFolderList"`
+			PublicFolderList PublicFolderList `json:"publicFolderList"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &publicFolderList)
 	return publicFolderList.Result.PublicFolderList, err
 }
 
-// AliasesGetTargetList obtains a list of alias targets.
+// AliasesGetTargetList - Obtain a list of alias targets.
 // Parameters
-//      query	    - query conditions and limits
-//      domainId	- global identification of the domain
+//	query - query conditions and limits
+//	domainId - global identification of the domain
 // Return
-//      alias targets
-func (c *Connection) AliasesGetTargetList(domainID string, query SearchQuery) (AliasTargetList, error) {
+//	list - alias targets
+func (c *Connection) AliasesGetTargetList(query SearchQuery, domainId KId) (AliasTargetList, error) {
 	params := struct {
-		DomainID string      `json:"domainId"`
 		Query    SearchQuery `json:"query"`
-	}{domainID, query}
+		DomainId KId         `json:"domainId"`
+	}{query, domainId}
 	data, err := c.CallRaw("Aliases.getTargetList", params)
 	if err != nil {
 		return nil, err
 	}
-	aliasTargetList := struct {
+	list := struct {
 		Result struct {
-			AliasTargetList `json:"list"`
+			List AliasTargetList `json:"list"`
 		} `json:"result"`
 	}{}
-	err = json.Unmarshal(data, &aliasTargetList)
-	return aliasTargetList.Result.AliasTargetList, err
+	err = json.Unmarshal(data, &list)
+	return list.Result.List, err
 }
 
 // AliasesRemove - Delete aliases.
-// Parameters
-//      aliasList	- list of global identifiers of aliases to be deleted
 // Return
-//      error message list
-func (c *Connection) AliasesRemove(aliasIDs []string) (ErrorList, error) {
+//	errors - error message list
+func (c *Connection) AliasesRemove(aliasIds KIdList) (ErrorList, error) {
 	params := struct {
-		AliasIDs []string `json:"aliasIds"`
-	}{aliasIDs}
+		AliasIds KIdList `json:"aliasIds"`
+	}{aliasIds}
 	data, err := c.CallRaw("Aliases.remove", params)
 	if err != nil {
 		return nil, err
 	}
-	errorList := struct {
+	errors := struct {
 		Result struct {
-			ErrorList `json:"errors"`
+			Errors ErrorList `json:"errors"`
 		} `json:"result"`
 	}{}
-	err = json.Unmarshal(data, &errorList)
-	return errorList.Result.ErrorList, err
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, err
 }
 
 // AliasesSet - Set an existing alias.
 // Parameters
-//      aliasList   - list of alias global identifier(s)
-//      pattern     - pattern to use for new values
+//	aliasIds - list of alias global identifier(s)
+//	pattern - pattern to use for new values
 // Return
-//      error message list
-func (c *Connection) AliasesSet(aliasIDs []string, pattern Alias) (ErrorList, error) {
+//	errors - error message list
+func (c *Connection) AliasesSet(aliasIds KIdList, pattern Alias) (ErrorList, error) {
 	params := struct {
-		AliasIDs []string `json:"aliasIds"`
-		Pattern  Alias    `json:"pattern"`
-	}{aliasIDs, pattern}
+		AliasIds KIdList `json:"aliasIds"`
+		Pattern  Alias   `json:"pattern"`
+	}{aliasIds, pattern}
 	data, err := c.CallRaw("Aliases.set", params)
 	if err != nil {
 		return nil, err
 	}
-	errorList := struct {
+	errors := struct {
 		Result struct {
-			ErrorList `json:"errors"`
+			Errors ErrorList `json:"errors"`
 		} `json:"result"`
 	}{}
-	err = json.Unmarshal(data, &errorList)
-	return errorList.Result.ErrorList, err
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, err
 }

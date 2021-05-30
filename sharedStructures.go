@@ -106,8 +106,6 @@ type LocalizableMessage struct {
 	Plurality            int        `json:"plurality"`            // count of items, used to distinguish among singular/paucal/plural; 1 for messages with no counted items
 }
 
-type LocalizableMessageList []LocalizableMessage
-
 // ManipulationError - error structure to be used when manipulating with globally addressable list items
 type ManipulationError struct {
 	Id           KId                `json:"id"` // entity KId, can be user, group, alias, ML...
