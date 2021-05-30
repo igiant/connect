@@ -123,16 +123,6 @@ type Directory struct {
 // List of restrictions
 type DirectoryList []Directory
 
-type BuildType string
-
-const (
-	Alpha BuildType = "Alpha"
-	Beta  BuildType = "Beta"
-	Rc    BuildType = "Rc"
-	Final BuildType = "Final"
-	Patch BuildType = "Patch"
-)
-
 type DeployedType string
 
 const (

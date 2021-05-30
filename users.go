@@ -1,5 +1,7 @@
 package connect
 
+import "encoding/json"
+
 type PublicFolder struct {
 	Id   KId    `json:"id"`
 	Name string `json:"name"`
@@ -246,3 +248,615 @@ const (
 	AuthDenied       AuthResult = "AuthDenied"       // User is denied to log in.
 	AuthTryLater     AuthResult = "AuthTryLater"     // User cannot to log in at this moment, try later.
 )
+
+// User accounts management.
+
+// UsersActivate - Activate user(s) from a directory service.
+// Parameters
+//	userIds - list of global user identifiers
+// Return
+//	errors - list of error messages for appropriate users
+func (c *ServerConnection) UsersActivate(userIds KIdList) (ErrorList, error) {
+	params := struct {
+		UserIds KIdList `json:"userIds"`
+	}{userIds}
+	data, err := c.CallRaw("Users.activate", params)
+	if err != nil {
+		return nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList `json:"errors"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, err
+}
+
+// UsersActivateOnServer - Activate user(s) from a directory service in distributed domain environment.
+// Parameters
+//	userIds - list of global user identifiers
+//	homeServerId - Id of server in distributed domain on which users will be activated
+// Return
+//	errors - list of error messages for appropriate users
+func (c *ServerConnection) UsersActivateOnServer(userIds KIdList, homeServerId KId) (ErrorList, error) {
+	params := struct {
+		UserIds      KIdList `json:"userIds"`
+		HomeServerId KId     `json:"homeServerId"`
+	}{userIds, homeServerId}
+	data, err := c.CallRaw("Users.activateOnServer", params)
+	if err != nil {
+		return nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList `json:"errors"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, err
+}
+
+// UsersConnectFromExternalService - Register connection.
+// Parameters
+//	service - service name (should be some real service ID, returned by Services.get)
+//	connectionId - unique connection identifier
+//	port - host port
+//	isSecure - ssl connection
+func (c *ServerConnection) UsersConnectFromExternalService(service string, connectionId string, clientIpAddress string, port int, isSecure bool) (bool, error) {
+	params := struct {
+		Service         string `json:"service"`
+		ConnectionId    string `json:"connectionId"`
+		ClientIpAddress string `json:"clientIpAddress"`
+		Port            int    `json:"port"`
+		IsSecure        bool   `json:"isSecure"`
+	}{service, connectionId, clientIpAddress, port, isSecure}
+	data, err := c.CallRaw("Users.connectFromExternalService", params)
+	if err != nil {
+		return false, err
+	}
+	result := struct {
+		Result struct {
+			Result bool `json:"result"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &result)
+	return result.Result.Result, err
+}
+
+// UsersAuthenticateConnectionFromExternalService - Authenticate given user and create session. connectionId must be registered by function connectFromExternalService otherwise authenticate fails.
+// Parameters
+//	userName - login name + domain name (can be omitted if primary) of the user to be logged in, e.g. "jdoe" or "jdoe@company.com"
+//	password - password of the user to be authenticate (base64-encoded)
+//	connectionId - connection identifier, must be the same as in connectFromExternalService
+//	isSecure - ssl connection
+// Return
+//	result - resut of autentication.
+func (c *ServerConnection) UsersAuthenticateConnectionFromExternalService(userName string, password string, service string, connectionId string, isSecure bool) (*AuthResult, error) {
+	params := struct {
+		UserName     string `json:"userName"`
+		Password     string `json:"password"`
+		Service      string `json:"service"`
+		ConnectionId string `json:"connectionId"`
+		IsSecure     bool   `json:"isSecure"`
+	}{userName, password, service, connectionId, isSecure}
+	data, err := c.CallRaw("Users.authenticateConnectionFromExternalService", params)
+	if err != nil {
+		return nil, err
+	}
+	result := struct {
+		Result struct {
+			Result AuthResult `json:"result"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &result)
+	return &result.Result.Result, err
+}
+
+// UsersDisconnectFromExternalService - Unregister connection registered by connectFromExternalService and destroy session created if authenticateFromExternalService was called.
+// Parameters
+//	service - service name
+//	connectionId - unique connection identifier
+func (c *ServerConnection) UsersDisconnectFromExternalService(service string, connectionId string) error {
+	params := struct {
+		Service      string `json:"service"`
+		ConnectionId string `json:"connectionId"`
+	}{service, connectionId}
+	_, err := c.CallRaw("Users.disconnectFromExternalService", params)
+	return err
+}
+
+// UsersCancelWipeMobileDevice - Cancel wiping of user's mobile device.
+// Parameters
+//	userId - global user identifier
+//	deviceId - ID of user's mobile device to cancel wipe
+func (c *ServerConnection) UsersCancelWipeMobileDevice(userId KId, deviceId string) error {
+	params := struct {
+		UserId   KId    `json:"userId"`
+		DeviceId string `json:"deviceId"`
+	}{userId, deviceId}
+	_, err := c.CallRaw("Users.cancelWipeMobileDevice", params)
+	return err
+}
+
+// UsersCheckMailboxIntegrity - If corrupted folder is found, try to fix it.
+// Parameters
+//	userIds - list of user identifiers
+func (c *ServerConnection) UsersCheckMailboxIntegrity(userIds KIdList) error {
+	params := struct {
+		UserIds KIdList `json:"userIds"`
+	}{userIds}
+	_, err := c.CallRaw("Users.checkMailboxIntegrity", params)
+	return err
+}
+
+// UsersCreate - Create new users.
+// Parameters
+//	users - new user entities
+// Return
+//	errors - error message list
+//	result - list of IDs of created users
+func (c *ServerConnection) UsersCreate(users UserList) (ErrorList, CreateResultList, error) {
+	params := struct {
+		Users UserList `json:"users"`
+	}{users}
+	data, err := c.CallRaw("Users.create", params)
+	if err != nil {
+		return nil, nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList        `json:"errors"`
+			Result CreateResultList `json:"result"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, errors.Result.Result, err
+}
+
+// UsersCreateLdap - Create new users in directory service
+// Parameters
+//	users - new user entities
+// Return
+//	errors - error message list
+//	result - list of IDs of created users
+func (c *ServerConnection) UsersCreateLdap(users UserList) (ErrorList, CreateResultList, error) {
+	params := struct {
+		Users UserList `json:"users"`
+	}{users}
+	data, err := c.CallRaw("Users.createLdap", params)
+	if err != nil {
+		return nil, nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList        `json:"errors"`
+			Result CreateResultList `json:"result"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, errors.Result.Result, err
+}
+
+// UsersExportStatistics - Export statistics of given users in given format.
+// Parameters
+//	userIds - list of IDs of given users
+//	format - output data format
+// Return
+//	fileDownload - description of output file
+func (c *ServerConnection) UsersExportStatistics(userIds KIdList, format FileFormatType) (*Download, error) {
+	params := struct {
+		UserIds KIdList        `json:"userIds"`
+		Format  FileFormatType `json:"format"`
+	}{userIds, format}
+	data, err := c.CallRaw("Users.exportStatistics", params)
+	if err != nil {
+		return nil, err
+	}
+	fileDownload := struct {
+		Result struct {
+			FileDownload Download `json:"fileDownload"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &fileDownload)
+	return &fileDownload.Result.FileDownload, err
+}
+
+// UsersExportToCsv - Export given domain users to comma-separated values file format.
+// Parameters
+//	filename - part of filename; full filename is compound as user_<domainname>_<filename>_<date>.csv
+//	query - query attributes and limits
+//	domainId - domain identification
+// Return
+//	fileDownload - description of output file
+func (c *ServerConnection) UsersExportToCsv(filename string, query SearchQuery, domainId KId) (*Download, error) {
+	params := struct {
+		Filename string      `json:"filename"`
+		Query    SearchQuery `json:"query"`
+		DomainId KId         `json:"domainId"`
+	}{filename, query, domainId}
+	data, err := c.CallRaw("Users.exportToCsv", params)
+	if err != nil {
+		return nil, err
+	}
+	fileDownload := struct {
+		Result struct {
+			FileDownload Download `json:"fileDownload"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &fileDownload)
+	return &fileDownload.Result.FileDownload, err
+}
+
+// UsersGet - Obtain a list of users in given domain.
+// Parameters
+//	query - query attributes and limits
+//	domainId - domain identification
+// Return
+//	list - users
+//	totalItems - number of users found in given domain
+func (c *ServerConnection) UsersGet(query SearchQuery, domainId KId) (UserList, int, error) {
+	params := struct {
+		Query    SearchQuery `json:"query"`
+		DomainId KId         `json:"domainId"`
+	}{query, domainId}
+	data, err := c.CallRaw("Users.get", params)
+	if err != nil {
+		return nil, 0, err
+	}
+	list := struct {
+		Result struct {
+			List       UserList `json:"list"`
+			TotalItems int      `json:"totalItems"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &list)
+	return list.Result.List, list.Result.TotalItems, err
+}
+
+// UsersGetContactPublicFolderList - Obtain a list of contact public folders in given domain.
+// Parameters
+//	domainId - global identification of domain
+func (c *ServerConnection) UsersGetContactPublicFolderList(domainId KId) (PublicFolderList, error) {
+	params := struct {
+		DomainId KId `json:"domainId"`
+	}{domainId}
+	data, err := c.CallRaw("Users.getContactPublicFolderList", params)
+	if err != nil {
+		return nil, err
+	}
+	publicFolders := struct {
+		Result struct {
+			PublicFolders PublicFolderList `json:"publicFolders"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &publicFolders)
+	return publicFolders.Result.PublicFolders, err
+}
+
+// UsersGetFromServer - Obtain list of users from given LDAP server potentially importable to the Connect server.
+// Parameters
+//	importServer - properties of the server to import from
+//	domainToImport - the mailserver domain where users are imported
+// Return
+//	newUsers - list of users
+func (c *ServerConnection) UsersGetFromServer(importServer ImportServer, domainToImport KId) (ImporteeList, error) {
+	params := struct {
+		ImportServer   ImportServer `json:"importServer"`
+		DomainToImport KId          `json:"domainToImport"`
+	}{importServer, domainToImport}
+	data, err := c.CallRaw("Users.getFromServer", params)
+	if err != nil {
+		return nil, err
+	}
+	newUsers := struct {
+		Result struct {
+			NewUsers ImporteeList `json:"newUsers"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &newUsers)
+	return newUsers.Result.NewUsers, err
+}
+
+// UsersGetMailboxCount - This method may take a long time if a directory service for mapped users is not available.
+// Return
+//	count - Number of users created on the server and number of active mailboxes.
+func (c *ServerConnection) UsersGetMailboxCount() (*MailboxCount, error) {
+	data, err := c.CallRaw("Users.getMailboxCount", nil)
+	if err != nil {
+		return nil, err
+	}
+	count := struct {
+		Result struct {
+			Count MailboxCount `json:"count"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &count)
+	return &count.Result.Count, err
+}
+
+// UsersGetMobileDeviceList - Obtain a list of mobile devices of given user.
+// Parameters
+//	userId - name of user
+//	query - query attributes and limits
+// Return
+//	list - mobile devices of given user
+func (c *ServerConnection) UsersGetMobileDeviceList(userId KId, query SearchQuery) (MobileDeviceList, error) {
+	params := struct {
+		UserId KId         `json:"userId"`
+		Query  SearchQuery `json:"query"`
+	}{userId, query}
+	data, err := c.CallRaw("Users.getMobileDeviceList", params)
+	if err != nil {
+		return nil, err
+	}
+	list := struct {
+		Result struct {
+			List       MobileDeviceList `json:"list"`
+			TotalItems int              `json:"totalItems"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &list)
+	return list.Result.List, err
+}
+
+// UsersGetNotActivated - Only user's ID, loginName, fullName, description are set in structures.
+// Parameters
+//	domainId - global identification of domain
+// Return
+//	newUsers - list of users
+func (c *ServerConnection) UsersGetNotActivated(domainId KId) (ImporteeList, error) {
+	params := struct {
+		DomainId KId `json:"domainId"`
+	}{domainId}
+	data, err := c.CallRaw("Users.getNotActivated", params)
+	if err != nil {
+		return nil, err
+	}
+	newUsers := struct {
+		Result struct {
+			NewUsers ImporteeList `json:"newUsers"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &newUsers)
+	return newUsers.Result.NewUsers, err
+}
+
+// UsersGetRecoveryDeletedItemsSize - Obtain a size of items stored for recovering.
+// Parameters
+//	userIds - global identification of user
+// Return
+//	errors - error message list
+func (c *ServerConnection) UsersGetRecoveryDeletedItemsSize(userIds KIdList) (ErrorList, QuotaUsageList, error) {
+	params := struct {
+		UserIds KIdList `json:"userIds"`
+	}{userIds}
+	data, err := c.CallRaw("Users.getRecoveryDeletedItemsSize", params)
+	if err != nil {
+		return nil, nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors   ErrorList      `json:"errors"`
+			SizeList QuotaUsageList `json:"sizeList"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, errors.Result.SizeList, err
+}
+
+// UsersGetStatistics - Obtain statistics of given users.
+// Parameters
+//	userIds - list of IDs of given users
+//	query - query parameters and limits
+// Return
+//	list - users' statistics
+func (c *ServerConnection) UsersGetStatistics(userIds KIdList, query SearchQuery) (UserStatList, error) {
+	params := struct {
+		UserIds KIdList     `json:"userIds"`
+		Query   SearchQuery `json:"query"`
+	}{userIds, query}
+	data, err := c.CallRaw("Users.getStatistics", params)
+	if err != nil {
+		return nil, err
+	}
+	list := struct {
+		Result struct {
+			List UserStatList `json:"list"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &list)
+	return list.Result.List, err
+}
+
+// UsersParseFromCsv - 'PRESERVE_FROM_CSV': preserve domain from CSV file (use primary if not defined)
+// Parameters
+//	fileId - ID of the uploaded file
+//	domainToImport - import to given domain, magic constants
+// Return
+//	users - list of parsed users with appropriate status and message
+func (c *ServerConnection) UsersParseFromCsv(fileId string, domainToImport KId) (ImporteeList, error) {
+	params := struct {
+		FileId         string `json:"fileId"`
+		DomainToImport KId    `json:"domainToImport"`
+	}{fileId, domainToImport}
+	data, err := c.CallRaw("Users.parseFromCsv", params)
+	if err != nil {
+		return nil, err
+	}
+	users := struct {
+		Result struct {
+			Users ImporteeList `json:"users"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &users)
+	return users.Result.Users, err
+}
+
+// UsersRecoverDeletedItems - If the user quota is exceeded an error with code 4000 will be returned.
+// Parameters
+//	userIds - list of user IDs
+// Return
+//	recoveryMessages - list of recovery messages
+func (c *ServerConnection) UsersRecoverDeletedItems(userIds KIdList) (ErrorList, ResultTripletList, error) {
+	params := struct {
+		UserIds KIdList `json:"userIds"`
+	}{userIds}
+	data, err := c.CallRaw("Users.recoverDeletedItems", params)
+	if err != nil {
+		return nil, nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors           ErrorList         `json:"errors"`
+			RecoveryMessages ResultTripletList `json:"recoveryMessages"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, errors.Result.RecoveryMessages, err
+}
+
+// UsersRemove - Remove user(s).
+// Parameters
+//	requests - list of user IDs to be removed, method, and owner of deleted messages
+// Return
+//	errors - list of users failed to remove only (successfully removed are NOT listed)
+func (c *ServerConnection) UsersRemove(requests RemovalRequestList) (ErrorList, error) {
+	params := struct {
+		Requests RemovalRequestList `json:"requests"`
+	}{requests}
+	data, err := c.CallRaw("Users.remove", params)
+	if err != nil {
+		return nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList `json:"errors"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, err
+}
+
+// UsersRemoveMobileDevice - Remove mobile device from the list of user's mobile devices.
+// Parameters
+//	userId - name of user
+//	deviceId - ID of user's mobile device to be removed
+func (c *ServerConnection) UsersRemoveMobileDevice(userId KId, deviceId string) error {
+	params := struct {
+		UserId   KId    `json:"userId"`
+		DeviceId string `json:"deviceId"`
+	}{userId, deviceId}
+	_, err := c.CallRaw("Users.removeMobileDevice", params)
+	return err
+}
+
+// UsersResetBuddyList - IM: Reset buddy list of selected users
+// Parameters
+//	userIds - list of user identifiers
+func (c *ServerConnection) UsersResetBuddyList(userIds KIdList) error {
+	params := struct {
+		UserIds KIdList `json:"userIds"`
+	}{userIds}
+	_, err := c.CallRaw("Users.resetBuddyList", params)
+	return err
+}
+
+// UsersGetEffectiveUserRights - Obtains user effective rights (inherited from groups)
+// Parameters
+//	userIds - list of IDs of users
+// Return
+//	errors - list of users failed to get effective rights
+//	result - list of effective rights
+func (c *ServerConnection) UsersGetEffectiveUserRights(userIds KIdList) (ErrorList, EffectiveUserRightsList, error) {
+	params := struct {
+		UserIds KIdList `json:"userIds"`
+	}{userIds}
+	data, err := c.CallRaw("Users.getEffectiveUserRights", params)
+	if err != nil {
+		return nil, nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList               `json:"errors"`
+			Result EffectiveUserRightsList `json:"result"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, errors.Result.Result, err
+}
+
+// UsersSet - Set users' details according given pattern.
+// Parameters
+//	userIds - list of IDs of users to be changed
+//	pattern - pattern to use for new values
+// Return
+//	errors - create a new user
+func (c *ServerConnection) UsersSet(userIds KIdList, pattern User) (ErrorList, error) {
+	params := struct {
+		UserIds KIdList `json:"userIds"`
+		Pattern User    `json:"pattern"`
+	}{userIds, pattern}
+	data, err := c.CallRaw("Users.set", params)
+	if err != nil {
+		return nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList `json:"errors"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, err
+}
+
+// UsersWipeMobileDevice - Wipe user's mobile device.
+// Parameters
+//	userId - global user identifier
+//	deviceId - ID of user's mobile device to be wiped
+func (c *ServerConnection) UsersWipeMobileDevice(userId KId, deviceId string) error {
+	params := struct {
+		UserId   KId    `json:"userId"`
+		DeviceId string `json:"deviceId"`
+	}{userId, deviceId}
+	_, err := c.CallRaw("Users.wipeMobileDevice", params)
+	return err
+}
+
+// UsersGetPersonalContact - Get personal user contacts
+func (c *ServerConnection) UsersGetPersonalContact(userIds KIdList) (ErrorList, PersonalContactList, error) {
+	params := struct {
+		UserIds KIdList `json:"userIds"`
+	}{userIds}
+	data, err := c.CallRaw("Users.getPersonalContact", params)
+	if err != nil {
+		return nil, nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors   ErrorList           `json:"errors"`
+			Contacts PersonalContactList `json:"contacts"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, errors.Result.Contacts, err
+}
+
+// UsersSetPersonalContact - Set personal user contacts
+func (c *ServerConnection) UsersSetPersonalContact(userIds KIdList, contact PersonalContact) (ErrorList, error) {
+	params := struct {
+		UserIds KIdList         `json:"userIds"`
+		Contact PersonalContact `json:"contact"`
+	}{userIds, contact}
+	data, err := c.CallRaw("Users.setPersonalContact", params)
+	if err != nil {
+		return nil, err
+	}
+	errors := struct {
+		Result struct {
+			Errors ErrorList `json:"errors"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &errors)
+	return errors.Result.Errors, err
+}

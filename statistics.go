@@ -1,5 +1,7 @@
 package connect
 
+import "encoding/json"
+
 type TypeExpStatistics string
 
 const (
@@ -180,4 +182,92 @@ type ChartData struct {
 	CountRows   int                `json:"countRows"`   // A count of rows
 	RowNames    ChartRowNamesList  `json:"rowNames"`    // Array of names of rows
 	RowValues   ChartRowValuesList `json:"rowValues"`   // Array of values of rows
+}
+
+// StatisticsExportToHtml - Export server statistics to HTML format.
+// Parameters
+//	type - export type
+//	lang - export language
+// Return
+//	fileDownload - description of output file
+func (c *ServerConnection) StatisticsExportToHtml(typeExpStatistics TypeExpStatistics, lang string) (*Download, error) {
+	params := struct {
+		Type TypeExpStatistics `json:"type"`
+		Lang string            `json:"lang"`
+	}{typeExpStatistics, lang}
+	data, err := c.CallRaw("Statistics.exportToHtml", params)
+	if err != nil {
+		return nil, err
+	}
+	fileDownload := struct {
+		Result struct {
+			FileDownload Download `json:"fileDownload"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &fileDownload)
+	return &fileDownload.Result.FileDownload, err
+}
+
+// StatisticsGet - Obtain overall server statistics.
+func (c *ServerConnection) StatisticsGet() (*ServerStatistics, error) {
+	data, err := c.CallRaw("Statistics.get", nil)
+	if err != nil {
+		return nil, err
+	}
+	statistics := struct {
+		Result struct {
+			Statistics ServerStatistics `json:"statistics"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &statistics)
+	return &statistics.Result.Statistics, err
+}
+
+// StatisticsGetCharts - Obtain descriptions of charts graphs.
+// Return
+//	chartList - list of descriptions of charts graphs
+func (c *ServerConnection) StatisticsGetCharts() (ChartList, error) {
+	data, err := c.CallRaw("Statistics.getCharts", nil)
+	if err != nil {
+		return nil, err
+	}
+	chartList := struct {
+		Result struct {
+			ChartList ChartList `json:"chartList"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &chartList)
+	return chartList.Result.ChartList, err
+}
+
+// StatisticsGetChartData - Obtain values of charts graph.
+// Parameters
+//	classname - classname of charts graph
+//	name - name of charts graph
+//	scaleId - ID of scale
+// Return
+//	chartData - values of charts graph
+func (c *ServerConnection) StatisticsGetChartData(classname string, name string, scaleId int) (*ChartData, error) {
+	params := struct {
+		Classname string `json:"classname"`
+		Name      string `json:"name"`
+		ScaleId   int    `json:"scaleId"`
+	}{classname, name, scaleId}
+	data, err := c.CallRaw("Statistics.getChartData", params)
+	if err != nil {
+		return nil, err
+	}
+	chartData := struct {
+		Result struct {
+			ChartData ChartData `json:"chartData"`
+		} `json:"result"`
+	}{}
+	err = json.Unmarshal(data, &chartData)
+	return &chartData.Result.ChartData, err
+}
+
+// StatisticsReset - Reset statistics data.
+func (c *ServerConnection) StatisticsReset() error {
+	_, err := c.CallRaw("Statistics.reset", nil)
+	return err
 }

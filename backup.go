@@ -52,7 +52,7 @@ type BackupSchedule struct {
 	Id        KId        `json:"id"`        // [READ-ONLY]
 	IsEnabled bool       `json:"isEnabled"` // True if backup schedule is enabled
 	Type      BackupType `json:"type"`      // Backup type
-	// Day Day `json:"day"` // Backup schedule day of week TODO
+	// DayType DayType `json:"day"` // Backup schedule day of week TODO
 	Time        TimeHMS `json:"time"`        // Backup schedule start time - days are ignored!
 	Description string  `json:"description"` // description of the backup schedule
 }
