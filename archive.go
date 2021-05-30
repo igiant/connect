@@ -25,4 +25,4 @@ type ArchiveOptions struct {
 	IsEnabledPerDomain        bool               `json:"isEnabledPerDomain"`        // Enable custom per domain settings
 }
 
-//TODO Add methods
+// TODO Add methods

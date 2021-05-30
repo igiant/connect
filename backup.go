@@ -19,7 +19,7 @@ const (
 // BackupInfo - [READ-ONLY]
 type BackupInfo struct {
 	IsCreated bool `json:"isCreated"` // True, if backup was successfully created
-	//Created UtcDateTime `json:"created"` // Time when backup started (always in GTM) TODO
+	// Created UtcDateTime `json:"created"` // Time when backup started (always in GTM) TODO
 	Size ByteValueWithUnits `json:"size"` // Compressed size of a backup
 }
 
@@ -50,11 +50,11 @@ type BackupSchedule struct {
 	Id        KId        `json:"id"`        // [READ-ONLY]
 	IsEnabled bool       `json:"isEnabled"` // True if backup schedule is enabled
 	Type      BackupType `json:"type"`      // Backup type
-	//Day Day `json:"day"` // Backup schedule day of week TODO
+	// Day Day `json:"day"` // Backup schedule day of week TODO
 	Time        TimeHMS `json:"time"`        // Backup schedule start time - days are ignored!
 	Description string  `json:"description"` // description of the backup schedule
 }
 
 type BackupScheduleList []BackupSchedule
 
-//TODO Add Methods
+// TODO Add Methods

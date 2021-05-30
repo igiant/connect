@@ -182,7 +182,7 @@ func (c *Connection) AliasesRemove(aliasIDs []string) (ErrorList, error) {
 func (c *Connection) AliasesSet(aliasIDs []string, pattern Alias) (ErrorList, error) {
 	params := struct {
 		AliasIDs []string `json:"aliasIds"`
-		Pattern  Alias
+		Pattern  Alias    `json:"pattern"`
 	}{aliasIDs, pattern}
 	data, err := c.CallRaw("Aliases.set", params)
 	if err != nil {
