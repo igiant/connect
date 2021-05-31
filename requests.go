@@ -33,20 +33,20 @@ func newClient() (*http.Client, error) {
 	return &http.Client{Jar: jar}, nil
 }
 
-func (c *ServerConnection) CallRaw(method string, params interface{}) ([]byte, error) {
-	buffer, err := marshal(c.Config.getID(), method, c.Token, params)
+func (s *ServerConnection) CallRaw(method string, params interface{}) ([]byte, error) {
+	buffer, err := marshal(s.Config.getID(), method, s.Token, params)
 	if err != nil {
 		return nil, err
 	}
-	req, err := http.NewRequest("POST", c.Config.url, bytes.NewBuffer(buffer))
+	req, err := http.NewRequest("POST", s.Config.url, bytes.NewBuffer(buffer))
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Set("Content-Type", "ApiApplication/json-rpc")
-	if c.Token != nil {
-		req.Header.Add("X-Token", *c.Token)
+	if s.Token != nil {
+		req.Header.Add("X-Token", *s.Token)
 	}
-	resp, err := c.client.Do(req)
+	resp, err := s.client.Do(req)
 	if err != nil {
 		return nil, err
 	}

@@ -220,12 +220,12 @@ type ServerTimeInfo struct {
 //	credentials - (optional) user name and password required to access network disk
 // Return
 //	result - result of create action
-func (c *ServerConnection) ServerCreatePath(path string, credentials Credentials) (*DirectoryAccessResult, error) {
+func (s *ServerConnection) ServerCreatePath(path string, credentials Credentials) (*DirectoryAccessResult, error) {
 	params := struct {
 		Path        string      `json:"path"`
 		Credentials Credentials `json:"credentials"`
 	}{path, credentials}
-	data, err := c.CallRaw("Server.createPath", params)
+	data, err := s.CallRaw("Server.createPath", params)
 	if err != nil {
 		return nil, err
 	}
@@ -245,13 +245,13 @@ func (c *ServerConnection) ServerCreatePath(path string, credentials Credentials
 //	domainId - domain identification
 // Return
 //	entities - list of found entities with e-mail address duplicate 'updatedEntity' is included in list and marked, if none duplicate is found list is empty
-func (c *ServerConnection) ServerFindEntityByEmail(addresses StringList, updatedEntity EntityDetail, domainId KId) (EntityDuplicateList, error) {
+func (s *ServerConnection) ServerFindEntityByEmail(addresses StringList, updatedEntity EntityDetail, domainId KId) (EntityDuplicateList, error) {
 	params := struct {
 		Addresses     StringList   `json:"addresses"`
 		UpdatedEntity EntityDetail `json:"updatedEntity"`
 		DomainId      KId          `json:"domainId"`
 	}{addresses, updatedEntity, domainId}
-	data, err := c.CallRaw("Server.findEntityByEmail", params)
+	data, err := s.CallRaw("Server.findEntityByEmail", params)
 	if err != nil {
 		return nil, err
 	}
@@ -267,8 +267,8 @@ func (c *ServerConnection) ServerFindEntityByEmail(addresses StringList, updated
 // ServerGenerateSupportInfo - Generate a file with information for the support.
 // Return
 //	fileDownload - description of output file
-func (c *ServerConnection) ServerGenerateSupportInfo() (*Download, error) {
-	data, err := c.CallRaw("Server.generateSupportInfo", nil)
+func (s *ServerConnection) ServerGenerateSupportInfo() (*Download, error) {
+	data, err := s.CallRaw("Server.generateSupportInfo", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -284,8 +284,8 @@ func (c *ServerConnection) ServerGenerateSupportInfo() (*Download, error) {
 // ServerGetAboutInfo - Obtain information about server, caller must be authenticated.
 // Return
 //	aboutInformation - information about server
-func (c *ServerConnection) ServerGetAboutInfo() (*AboutInfo, error) {
-	data, err := c.CallRaw("Server.getAboutInfo", nil)
+func (s *ServerConnection) ServerGetAboutInfo() (*AboutInfo, error) {
+	data, err := s.CallRaw("Server.getAboutInfo", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -301,8 +301,8 @@ func (c *ServerConnection) ServerGetAboutInfo() (*AboutInfo, error) {
 // ServerGetAlertList - Obtain a list of alerts.
 // Return
 //	alerts - list of alerts
-func (c *ServerConnection) ServerGetAlertList() (AlertList, error) {
-	data, err := c.CallRaw("Server.getAlertList", nil)
+func (s *ServerConnection) ServerGetAlertList() (AlertList, error) {
+	data, err := s.CallRaw("Server.getAlertList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -318,8 +318,8 @@ func (c *ServerConnection) ServerGetAlertList() (AlertList, error) {
 // ServerGetBrowserLanguages - Returns a list of user-preferred languages set in browser.
 // Return
 //	calculatedLanguage - a list of 2-character language codes
-func (c *ServerConnection) ServerGetBrowserLanguages() (StringList, error) {
-	data, err := c.CallRaw("Server.getBrowserLanguages", nil)
+func (s *ServerConnection) ServerGetBrowserLanguages() (StringList, error) {
+	data, err := s.CallRaw("Server.getBrowserLanguages", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -333,8 +333,8 @@ func (c *ServerConnection) ServerGetBrowserLanguages() (StringList, error) {
 }
 
 // ServerGetClientStatistics - Obtain client statistics settings.
-func (c *ServerConnection) ServerGetClientStatistics() (bool, error) {
-	data, err := c.CallRaw("Server.getClientStatistics", nil)
+func (s *ServerConnection) ServerGetClientStatistics() (bool, error) {
+	data, err := s.CallRaw("Server.getClientStatistics", nil)
 	if err != nil {
 		return false, err
 	}
@@ -353,12 +353,12 @@ func (c *ServerConnection) ServerGetClientStatistics() (bool, error) {
 //	methodName - name of the method of appropriate object
 // Return
 //	columns - list of available columns
-func (c *ServerConnection) ServerGetColumnList(objectName string, methodName string) (StringList, error) {
+func (s *ServerConnection) ServerGetColumnList(objectName string, methodName string) (StringList, error) {
 	params := struct {
 		ObjectName string `json:"objectName"`
 		MethodName string `json:"methodName"`
 	}{objectName, methodName}
-	data, err := c.CallRaw("Server.getColumnList", params)
+	data, err := s.CallRaw("Server.getColumnList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -376,11 +376,11 @@ func (c *ServerConnection) ServerGetColumnList(objectName string, methodName str
 //	query - condition and fields have no effect for this method
 // Return
 //	list - active connections
-func (c *ServerConnection) ServerGetConnections(query SearchQuery) (ConnectionList, error) {
+func (s *ServerConnection) ServerGetConnections(query SearchQuery) (ConnectionList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Server.getConnections", params)
+	data, err := s.CallRaw("Server.getConnections", params)
 	if err != nil {
 		return nil, err
 	}
@@ -398,11 +398,11 @@ func (c *ServerConnection) ServerGetConnections(query SearchQuery) (ConnectionLi
 //	fullPath - directory for listing, if full path is empty logical drives will be listed
 // Return
 //	dirList - List of directories
-func (c *ServerConnection) ServerGetDirs(fullPath string) (DirectoryList, error) {
+func (s *ServerConnection) ServerGetDirs(fullPath string) (DirectoryList, error) {
 	params := struct {
 		FullPath string `json:"fullPath"`
 	}{fullPath}
-	data, err := c.CallRaw("Server.getDirs", params)
+	data, err := s.CallRaw("Server.getDirs", params)
 	if err != nil {
 		return nil, err
 	}
@@ -418,8 +418,8 @@ func (c *ServerConnection) ServerGetDirs(fullPath string) (DirectoryList, error)
 // ServerGetLicenseExtensionsList - Obtain list of license extensions, caller must be authenticated.
 // Return
 //	extensions - list of license extensions
-func (c *ServerConnection) ServerGetLicenseExtensionsList() (StringList, error) {
-	data, err := c.CallRaw("Server.getLicenseExtensionsList", nil)
+func (s *ServerConnection) ServerGetLicenseExtensionsList() (StringList, error) {
+	data, err := s.CallRaw("Server.getLicenseExtensionsList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -435,8 +435,8 @@ func (c *ServerConnection) ServerGetLicenseExtensionsList() (StringList, error) 
 // ServerGetNamedConstantList - Server side list of constants.
 // Return
 //	constants - list of constants
-func (c *ServerConnection) ServerGetNamedConstantList() (NamedConstantList, error) {
-	data, err := c.CallRaw("Server.getNamedConstantList", nil)
+func (s *ServerConnection) ServerGetNamedConstantList() (NamedConstantList, error) {
+	data, err := s.CallRaw("Server.getNamedConstantList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -454,11 +454,11 @@ func (c *ServerConnection) ServerGetNamedConstantList() (NamedConstantList, erro
 //	query - condition and fields have no effect for this method
 // Return
 //	list - opened folders with info
-func (c *ServerConnection) ServerGetOpenedFoldersInfo(query SearchQuery) (FolderInfoList, error) {
+func (s *ServerConnection) ServerGetOpenedFoldersInfo(query SearchQuery) (FolderInfoList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Server.getOpenedFoldersInfo", params)
+	data, err := s.CallRaw("Server.getOpenedFoldersInfo", params)
 	if err != nil {
 		return nil, err
 	}
@@ -474,8 +474,8 @@ func (c *ServerConnection) ServerGetOpenedFoldersInfo(query SearchQuery) (Folder
 // ServerGetProductInfo - Get basic information about product and its version.
 // Return
 //	info - structure with basic information about product
-func (c *ServerConnection) ServerGetProductInfo() (*ProductInfo, error) {
-	data, err := c.CallRaw("Server.getProductInfo", nil)
+func (s *ServerConnection) ServerGetProductInfo() (*ProductInfo, error) {
+	data, err := s.CallRaw("Server.getProductInfo", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -491,8 +491,8 @@ func (c *ServerConnection) ServerGetProductInfo() (*ProductInfo, error) {
 // ServerGetRemoteAdministration - Obtain information about remote administration settings.
 // Return
 //	setting - current settings
-func (c *ServerConnection) ServerGetRemoteAdministration() (*Administration, error) {
-	data, err := c.CallRaw("Server.getRemoteAdministration", nil)
+func (s *ServerConnection) ServerGetRemoteAdministration() (*Administration, error) {
+	data, err := s.CallRaw("Server.getRemoteAdministration", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -508,8 +508,8 @@ func (c *ServerConnection) ServerGetRemoteAdministration() (*Administration, err
 // ServerGetServerHash - Obtain a hash string created from product name, version, and installation time.
 // Return
 //	serverHash - server hash
-func (c *ServerConnection) ServerGetServerHash() (string, error) {
-	data, err := c.CallRaw("Server.getServerHash", nil)
+func (s *ServerConnection) ServerGetServerHash() (string, error) {
+	data, err := s.CallRaw("Server.getServerHash", nil)
 	if err != nil {
 		return "", err
 	}
@@ -525,8 +525,8 @@ func (c *ServerConnection) ServerGetServerHash() (string, error) {
 // ServerGetServerIpAddresses - List all server IP addresses.
 // Return
 //	addresses - all IP addresses of the server
-func (c *ServerConnection) ServerGetServerIpAddresses() (StringList, error) {
-	data, err := c.CallRaw("Server.getServerIpAddresses", nil)
+func (s *ServerConnection) ServerGetServerIpAddresses() (StringList, error) {
+	data, err := s.CallRaw("Server.getServerIpAddresses", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -542,8 +542,8 @@ func (c *ServerConnection) ServerGetServerIpAddresses() (StringList, error) {
 // ServerGetServerTime - Get server time information.
 // Return
 //	info - structure with time information
-func (c *ServerConnection) ServerGetServerTime() (*ServerTimeInfo, error) {
-	data, err := c.CallRaw("Server.getServerTime", nil)
+func (s *ServerConnection) ServerGetServerTime() (*ServerTimeInfo, error) {
+	data, err := s.CallRaw("Server.getServerTime", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -564,8 +564,8 @@ func (c *ServerConnection) ServerGetServerTime() (*ServerTimeInfo, error) {
 //	minor - minor version
 //	revision - revision number
 //	build - build number
-func (c *ServerConnection) ServerGetVersion() (*ServerVersion, error) {
-	data, err := c.CallRaw("Server.getVersion", nil)
+func (s *ServerConnection) ServerGetVersion() (*ServerVersion, error) {
+	data, err := s.CallRaw("Server.getVersion", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -583,11 +583,11 @@ func (c *ServerConnection) ServerGetVersion() (*ServerVersion, error) {
 //	query - condition and fields have no effect for this method
 // Return
 //	list - web component sessions
-func (c *ServerConnection) ServerGetWebSessions(query SearchQuery) (WebSessionList, error) {
+func (s *ServerConnection) ServerGetWebSessions(query SearchQuery) (WebSessionList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Server.getWebSessions", params)
+	data, err := s.CallRaw("Server.getWebSessions", params)
 	if err != nil {
 		return nil, err
 	}
@@ -603,11 +603,11 @@ func (c *ServerConnection) ServerGetWebSessions(query SearchQuery) (WebSessionLi
 // ServerKillWebSessions - Terminate actual web sessions.
 // Parameters
 //	ids - list of web sessions IDs to terminate
-func (c *ServerConnection) ServerKillWebSessions(ids KIdList) error {
+func (s *ServerConnection) ServerKillWebSessions(ids KIdList) error {
 	params := struct {
 		Ids KIdList `json:"ids"`
 	}{ids}
-	_, err := c.CallRaw("Server.killWebSessions", params)
+	_, err := s.CallRaw("Server.killWebSessions", params)
 	return err
 }
 
@@ -617,12 +617,12 @@ func (c *ServerConnection) ServerKillWebSessions(ids KIdList) error {
 //	credentials - (optional) user name and password required to access network disk
 // Return
 //	result - result of check
-func (c *ServerConnection) ServerPathExists(path string, credentials Credentials) (DirectoryAccessResult, error) {
+func (s *ServerConnection) ServerPathExists(path string, credentials Credentials) (DirectoryAccessResult, error) {
 	params := struct {
 		Path        string      `json:"path"`
 		Credentials Credentials `json:"credentials"`
 	}{path, credentials}
-	data, err := c.CallRaw("Server.pathExists", params)
+	data, err := s.CallRaw("Server.pathExists", params)
 	if err != nil {
 		return "", err
 	}
@@ -636,28 +636,28 @@ func (c *ServerConnection) ServerPathExists(path string, credentials Credentials
 }
 
 // ServerReboot - Reboot the host system.
-func (c *ServerConnection) ServerReboot() error {
-	_, err := c.CallRaw("Server.reboot", nil)
+func (s *ServerConnection) ServerReboot() error {
+	_, err := s.CallRaw("Server.reboot", nil)
 	return err
 }
 
 // ServerRestart - Restart server. The server must run as service.
-func (c *ServerConnection) ServerRestart() error {
-	_, err := c.CallRaw("Server.restart", nil)
+func (s *ServerConnection) ServerRestart() error {
+	_, err := s.CallRaw("Server.restart", nil)
 	return err
 }
 
 // ServerUpgrade - Upgrade server to the latest version. The server must run as service.
-func (c *ServerConnection) ServerUpgrade() error {
-	_, err := c.CallRaw("Server.upgrade", nil)
+func (s *ServerConnection) ServerUpgrade() error {
+	_, err := s.CallRaw("Server.upgrade", nil)
 	return err
 }
 
 // ServerGetDownloadProgress - Get progress of installation package downloading
 // Return
 //	progress - download progress in percents (0-100)
-func (c *ServerConnection) ServerGetDownloadProgress() (int, error) {
-	data, err := c.CallRaw("Server.getDownloadProgress", nil)
+func (s *ServerConnection) ServerGetDownloadProgress() (int, error) {
+	data, err := s.CallRaw("Server.getDownloadProgress", nil)
 	if err != nil {
 		return 0, err
 	}
@@ -677,7 +677,7 @@ func (c *ServerConnection) ServerGetDownloadProgress() (int, error) {
 //	language - language of report
 //	subject - summary of report
 //	description - description of problem
-func (c *ServerConnection) ServerSendBugReport(name string, email string, language string, subject string, description string) error {
+func (s *ServerConnection) ServerSendBugReport(name string, email string, language string, subject string, description string) error {
 	params := struct {
 		Name        string `json:"name"`
 		Email       string `json:"email"`
@@ -685,57 +685,57 @@ func (c *ServerConnection) ServerSendBugReport(name string, email string, langua
 		Subject     string `json:"subject"`
 		Description string `json:"description"`
 	}{name, email, language, subject, description}
-	_, err := c.CallRaw("Server.sendBugReport", params)
+	_, err := s.CallRaw("Server.sendBugReport", params)
 	return err
 }
 
 // ServerSetClientStatistics - Set client statistics settings.
-func (c *ServerConnection) ServerSetClientStatistics(isEnabled bool) error {
+func (s *ServerConnection) ServerSetClientStatistics(isEnabled bool) error {
 	params := struct {
 		IsEnabled bool `json:"isEnabled"`
 	}{isEnabled}
-	_, err := c.CallRaw("Server.setClientStatistics", params)
+	_, err := s.CallRaw("Server.setClientStatistics", params)
 	return err
 }
 
 // ServerSetRemoteAdministration - Set new remote administration parameters.
 // Parameters
 //	setting - new settings
-func (c *ServerConnection) ServerSetRemoteAdministration(setting Administration) error {
+func (s *ServerConnection) ServerSetRemoteAdministration(setting Administration) error {
 	params := struct {
 		Setting Administration `json:"setting"`
 	}{setting}
-	_, err := c.CallRaw("Server.setRemoteAdministration", params)
+	_, err := s.CallRaw("Server.setRemoteAdministration", params)
 	return err
 }
 
 // ServerUploadLicense - Upload license manually from a file.
 // Parameters
 //	fileId - ID of the uploaded file
-func (c *ServerConnection) ServerUploadLicense(fileId string) error {
+func (s *ServerConnection) ServerUploadLicense(fileId string) error {
 	params := struct {
 		FileId string `json:"fileId"`
 	}{fileId}
-	_, err := c.CallRaw("Server.uploadLicense", params)
+	_, err := s.CallRaw("Server.uploadLicense", params)
 	return err
 }
 
 // ServerValidateRemoteAdministration - Validate whether the administrator can cut off him/herself from the administration.
 // Parameters
 //	setting - new setting
-func (c *ServerConnection) ServerValidateRemoteAdministration(setting Administration) error {
+func (s *ServerConnection) ServerValidateRemoteAdministration(setting Administration) error {
 	params := struct {
 		Setting Administration `json:"setting"`
 	}{setting}
-	_, err := c.CallRaw("Server.validateRemoteAdministration", params)
+	_, err := s.CallRaw("Server.validateRemoteAdministration", params)
 	return err
 }
 
 // ServerIsBritishPreferred - Determine whether to use British or American flag for English.
 // Return
 //	preferred - use British flag
-func (c *ServerConnection) ServerIsBritishPreferred() (bool, error) {
-	data, err := c.CallRaw("Server.isBritishPreferred", nil)
+func (s *ServerConnection) ServerIsBritishPreferred() (bool, error) {
+	data, err := s.CallRaw("Server.isBritishPreferred", nil)
 	if err != nil {
 		return false, err
 	}

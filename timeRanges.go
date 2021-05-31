@@ -69,11 +69,11 @@ type TimeRangeGroupList []TimeRangeGroup
 // Return
 //	errors - possible errors: - "This time range already exists!" duplicate name-value
 //	result - list of IDs of created TimeRanges
-func (c *ServerConnection) TimeRangesCreate(ranges TimeRangeEntryList) (ErrorList, CreateResultList, error) {
+func (s *ServerConnection) TimeRangesCreate(ranges TimeRangeEntryList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Ranges TimeRangeEntryList `json:"ranges"`
 	}{ranges}
-	data, err := c.CallRaw("TimeRanges.create", params)
+	data, err := s.CallRaw("TimeRanges.create", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -91,11 +91,11 @@ func (c *ServerConnection) TimeRangesCreate(ranges TimeRangeEntryList) (ErrorLis
 // Parameters
 //	query - conditions and limits. Included from weblib. KWF engine implementation notes: - LIKE matches substring (second argument) in a string (first argument). There are no wildcards. - sort and match are case insensitive. - column alias (first operand):
 // Return
-func (c *ServerConnection) TimeRangesGet(query SearchQuery) (TimeRangeEntryList, error) {
+func (s *ServerConnection) TimeRangesGet(query SearchQuery) (TimeRangeEntryList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("TimeRanges.get", params)
+	data, err := s.CallRaw("TimeRanges.get", params)
 	if err != nil {
 		return nil, err
 	}
@@ -111,8 +111,8 @@ func (c *ServerConnection) TimeRangesGet(query SearchQuery) (TimeRangeEntryList,
 // TimeRangesGetGroupList - Get the list of groups, sorted in ascending order.
 // Return
 //	groups - list of all groups
-func (c *ServerConnection) TimeRangesGetGroupList() (TimeRangeGroupList, error) {
-	data, err := c.CallRaw("TimeRanges.getGroupList", nil)
+func (s *ServerConnection) TimeRangesGetGroupList() (TimeRangeGroupList, error) {
+	data, err := s.CallRaw("TimeRanges.getGroupList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -130,11 +130,11 @@ func (c *ServerConnection) TimeRangesGetGroupList() (TimeRangeGroupList, error) 
 //	rangeIds - IDs of ranges that should be removed
 // Return
 //	errors - Errors by removing ranges
-func (c *ServerConnection) TimeRangesRemove(rangeIds KIdList) (ErrorList, error) {
+func (s *ServerConnection) TimeRangesRemove(rangeIds KIdList) (ErrorList, error) {
 	params := struct {
 		RangeIds KIdList `json:"rangeIds"`
 	}{rangeIds}
-	data, err := c.CallRaw("TimeRanges.remove", params)
+	data, err := s.CallRaw("TimeRanges.remove", params)
 	if err != nil {
 		return nil, err
 	}
@@ -153,12 +153,12 @@ func (c *ServerConnection) TimeRangesRemove(rangeIds KIdList) (ErrorList, error)
 //	details - details for update. Field "KId" is ignored. All other fields must be filled in and they are written to all ranges specified by rangeIds.
 // Return
 //	errors - possible errors: - "This time range already exists!" duplicate name-value
-func (c *ServerConnection) TimeRangesSet(rangeIds KIdList, details TimeRangeEntry) (ErrorList, error) {
+func (s *ServerConnection) TimeRangesSet(rangeIds KIdList, details TimeRangeEntry) (ErrorList, error) {
 	params := struct {
 		RangeIds KIdList        `json:"rangeIds"`
 		Details  TimeRangeEntry `json:"details"`
 	}{rangeIds, details}
-	data, err := c.CallRaw("TimeRanges.set", params)
+	data, err := s.CallRaw("TimeRanges.set", params)
 	if err != nil {
 		return nil, err
 	}

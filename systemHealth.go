@@ -32,11 +32,11 @@ type SystemHealthData struct {
 }
 
 // SystemHealthGet -
-func (c *ServerConnection) SystemHealthGet(histogramType HistogramType) (*SystemHealthData, error) {
+func (s *ServerConnection) SystemHealthGet(histogramType HistogramType) (*SystemHealthData, error) {
 	params := struct {
 		Type HistogramType `json:"type"`
 	}{histogramType}
-	data, err := c.CallRaw("SystemHealth.get", params)
+	data, err := s.CallRaw("SystemHealth.get", params)
 	if err != nil {
 		return nil, err
 	}
@@ -51,12 +51,12 @@ func (c *ServerConnection) SystemHealthGet(histogramType HistogramType) (*System
 }
 
 // SystemHealthGetInc -
-func (c *ServerConnection) SystemHealthGetInc(histogramIntervalType HistogramIntervalType, startSampleTime DateTimeStamp) (*SystemHealthData, *DateTimeStamp, error) {
+func (s *ServerConnection) SystemHealthGetInc(histogramIntervalType HistogramIntervalType, startSampleTime DateTimeStamp) (*SystemHealthData, *DateTimeStamp, error) {
 	params := struct {
 		Type            HistogramIntervalType `json:"type"`
 		StartSampleTime DateTimeStamp         `json:"startSampleTime"`
 	}{histogramIntervalType, startSampleTime}
-	data, err := c.CallRaw("SystemHealth.getInc", params)
+	data, err := s.CallRaw("SystemHealth.getInc", params)
 	if err != nil {
 		return nil, nil, err
 	}

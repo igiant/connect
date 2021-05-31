@@ -104,8 +104,8 @@ type DeliveryRuleList []DeliveryRule
 // SmtpGet - Obtain SMTP server settings.
 // Return
 //	server - SMTP settings
-func (c *ServerConnection) SmtpGet() (*SmtpServerSettings, error) {
-	data, err := c.CallRaw("Smtp.get", nil)
+func (s *ServerConnection) SmtpGet() (*SmtpServerSettings, error) {
+	data, err := s.CallRaw("Smtp.get", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -121,17 +121,17 @@ func (c *ServerConnection) SmtpGet() (*SmtpServerSettings, error) {
 // SmtpSet - Change SMTP server settings.
 // Parameters
 //	server - SMTP settings
-func (c *ServerConnection) SmtpSet(server SmtpServerSettings) error {
+func (s *ServerConnection) SmtpSet(server SmtpServerSettings) error {
 	params := struct {
 		Server SmtpServerSettings `json:"server"`
 	}{server}
-	_, err := c.CallRaw("Smtp.set", params)
+	_, err := s.CallRaw("Smtp.set", params)
 	return err
 }
 
 // SmtpGetRelayDeliveryRuleList - Change SMTP server settings.
-func (c *ServerConnection) SmtpGetRelayDeliveryRuleList() (RelayDeliveryRuleList, error) {
-	data, err := c.CallRaw("Smtp.getRelayDeliveryRuleList", nil)
+func (s *ServerConnection) SmtpGetRelayDeliveryRuleList() (RelayDeliveryRuleList, error) {
+	data, err := s.CallRaw("Smtp.getRelayDeliveryRuleList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -145,17 +145,17 @@ func (c *ServerConnection) SmtpGetRelayDeliveryRuleList() (RelayDeliveryRuleList
 }
 
 // SmtpSetRelayDeliveryRuleList - Change SMTP server settings.
-func (c *ServerConnection) SmtpSetRelayDeliveryRuleList(list RelayDeliveryRuleList) error {
+func (s *ServerConnection) SmtpSetRelayDeliveryRuleList(list RelayDeliveryRuleList) error {
 	params := struct {
 		List RelayDeliveryRuleList `json:"list"`
 	}{list}
-	_, err := c.CallRaw("Smtp.setRelayDeliveryRuleList", params)
+	_, err := s.CallRaw("Smtp.setRelayDeliveryRuleList", params)
 	return err
 }
 
 // SmtpGetIncomingRuleList - Change SMTP server settings.
-func (c *ServerConnection) SmtpGetIncomingRuleList() (DeliveryRuleList, error) {
-	data, err := c.CallRaw("Smtp.getIncomingRuleList", nil)
+func (s *ServerConnection) SmtpGetIncomingRuleList() (DeliveryRuleList, error) {
+	data, err := s.CallRaw("Smtp.getIncomingRuleList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -169,17 +169,17 @@ func (c *ServerConnection) SmtpGetIncomingRuleList() (DeliveryRuleList, error) {
 }
 
 // SmtpSetIncomingRuleList - Change SMTP server settings.
-func (c *ServerConnection) SmtpSetIncomingRuleList(list DeliveryRuleList) error {
+func (s *ServerConnection) SmtpSetIncomingRuleList(list DeliveryRuleList) error {
 	params := struct {
 		List DeliveryRuleList `json:"list"`
 	}{list}
-	_, err := c.CallRaw("Smtp.setIncomingRuleList", params)
+	_, err := s.CallRaw("Smtp.setIncomingRuleList", params)
 	return err
 }
 
 // SmtpGetOutgoingRuleList - Change SMTP server settings.
-func (c *ServerConnection) SmtpGetOutgoingRuleList() (DeliveryRuleList, error) {
-	data, err := c.CallRaw("Smtp.getOutgoingRuleList", nil)
+func (s *ServerConnection) SmtpGetOutgoingRuleList() (DeliveryRuleList, error) {
+	data, err := s.CallRaw("Smtp.getOutgoingRuleList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -193,10 +193,10 @@ func (c *ServerConnection) SmtpGetOutgoingRuleList() (DeliveryRuleList, error) {
 }
 
 // SmtpSetOutgoingRuleList - Change SMTP server settings.
-func (c *ServerConnection) SmtpSetOutgoingRuleList(list DeliveryRuleList) error {
+func (s *ServerConnection) SmtpSetOutgoingRuleList(list DeliveryRuleList) error {
 	params := struct {
 		List DeliveryRuleList `json:"list"`
 	}{list}
-	_, err := c.CallRaw("Smtp.setOutgoingRuleList", params)
+	_, err := s.CallRaw("Smtp.setOutgoingRuleList", params)
 	return err
 }

@@ -153,8 +153,8 @@ type AdvancedOptionsSetting struct {
 // AdvancedOptionsCheckUpdates - Check for updates.
 // Return
 //	options - new version details
-func (c *ServerConnection) AdvancedOptionsCheckUpdates() (*UpdateCheckerOptions, error) {
-	data, err := c.CallRaw("AdvancedOptions.checkUpdates", nil)
+func (s *ServerConnection) AdvancedOptionsCheckUpdates() (*UpdateCheckerOptions, error) {
+	data, err := s.CallRaw("AdvancedOptions.checkUpdates", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -170,8 +170,8 @@ func (c *ServerConnection) AdvancedOptionsCheckUpdates() (*UpdateCheckerOptions,
 // AdvancedOptionsGet - Obtain Advanced options.
 // Return
 //	options - current advanced options
-func (c *ServerConnection) AdvancedOptionsGet() (*AdvancedOptionsSetting, error) {
-	data, err := c.CallRaw("AdvancedOptions.get", nil)
+func (s *ServerConnection) AdvancedOptionsGet() (*AdvancedOptionsSetting, error) {
+	data, err := s.CallRaw("AdvancedOptions.get", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -187,8 +187,8 @@ func (c *ServerConnection) AdvancedOptionsGet() (*AdvancedOptionsSetting, error)
 // AdvancedOptionsGetFulltextStatus - Get information about index status.
 // Return
 //	info - structure with information
-func (c *ServerConnection) AdvancedOptionsGetFulltextStatus() (*FulltextRebuildStatus, error) {
-	data, err := c.CallRaw("AdvancedOptions.getFulltextStatus", nil)
+func (s *ServerConnection) AdvancedOptionsGetFulltextStatus() (*FulltextRebuildStatus, error) {
+	data, err := s.CallRaw("AdvancedOptions.getFulltextStatus", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -204,21 +204,21 @@ func (c *ServerConnection) AdvancedOptionsGetFulltextStatus() (*FulltextRebuildS
 // AdvancedOptionsSet - Set advanced options.
 // Parameters
 //	options - options to be updated
-func (c *ServerConnection) AdvancedOptionsSet(options AdvancedOptionsSetting) error {
+func (s *ServerConnection) AdvancedOptionsSet(options AdvancedOptionsSetting) error {
 	params := struct {
 		Options AdvancedOptionsSetting `json:"options"`
 	}{options}
-	_, err := c.CallRaw("AdvancedOptions.set", params)
+	_, err := s.CallRaw("AdvancedOptions.set", params)
 	return err
 }
 
 // AdvancedOptionsStartRebuildFulltext - Launch re-index according parameters.
 // Parameters
 //	parameters - parameters for launching re-index
-func (c *ServerConnection) AdvancedOptionsStartRebuildFulltext(parameters FulltextRebuildingCommand) error {
+func (s *ServerConnection) AdvancedOptionsStartRebuildFulltext(parameters FulltextRebuildingCommand) error {
 	params := struct {
 		Parameters FulltextRebuildingCommand `json:"parameters"`
 	}{parameters}
-	_, err := c.CallRaw("AdvancedOptions.startRebuildFulltext", params)
+	_, err := s.CallRaw("AdvancedOptions.startRebuildFulltext", params)
 	return err
 }

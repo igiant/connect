@@ -7,11 +7,11 @@ import "encoding/json"
 // UploadsRemove - Remove uploaded file.
 // Parameters
 //	id - identifier of uploaded file
-func (c *ServerConnection) UploadsRemove(id string) error {
+func (s *ServerConnection) UploadsRemove(id string) error {
 	params := struct {
 		Id string `json:"id"`
 	}{id}
-	_, err := c.CallRaw("Uploads.remove", params)
+	_, err := s.CallRaw("Uploads.remove", params)
 	return err
 }
 
@@ -20,11 +20,11 @@ func (c *ServerConnection) UploadsRemove(id string) error {
 //	ids - identifiers of uploaded files
 // Return
 //	errors - list of errors
-func (c *ServerConnection) UploadsRemoveList(ids StringList) (ErrorList, error) {
+func (s *ServerConnection) UploadsRemoveList(ids StringList) (ErrorList, error) {
 	params := struct {
 		Ids StringList `json:"ids"`
 	}{ids}
-	data, err := c.CallRaw("Uploads.removeList", params)
+	data, err := s.CallRaw("Uploads.removeList", params)
 	if err != nil {
 		return nil, err
 	}

@@ -44,11 +44,11 @@ type UserTemplateList []UserTemplate
 // Return
 //	errors - error message list
 //	result - list of IDs of created templates
-func (c *ServerConnection) UserTemplatesCreate(userTemplates UserTemplateList) (ErrorList, CreateResultList, error) {
+func (s *ServerConnection) UserTemplatesCreate(userTemplates UserTemplateList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		UserTemplates UserTemplateList `json:"userTemplates"`
 	}{userTemplates}
-	data, err := c.CallRaw("UserTemplates.create", params)
+	data, err := s.CallRaw("UserTemplates.create", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -67,11 +67,11 @@ func (c *ServerConnection) UserTemplatesCreate(userTemplates UserTemplateList) (
 //	query - query attributes and limits
 // Return
 //	userTemplateList - list of user templates
-func (c *ServerConnection) UserTemplatesGet(query SearchQuery) (UserTemplateList, error) {
+func (s *ServerConnection) UserTemplatesGet(query SearchQuery) (UserTemplateList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("UserTemplates.get", params)
+	data, err := s.CallRaw("UserTemplates.get", params)
 	if err != nil {
 		return nil, err
 	}
@@ -89,11 +89,11 @@ func (c *ServerConnection) UserTemplatesGet(query SearchQuery) (UserTemplateList
 //	domainId - only templates with this domain and templates without domain are listed
 // Return
 //	userTemplateList - list of user templates
-func (c *ServerConnection) UserTemplatesGetAvailable(domainId KId) (UserTemplateList, error) {
+func (s *ServerConnection) UserTemplatesGetAvailable(domainId KId) (UserTemplateList, error) {
 	params := struct {
 		DomainId KId `json:"domainId"`
 	}{domainId}
-	data, err := c.CallRaw("UserTemplates.getAvailable", params)
+	data, err := s.CallRaw("UserTemplates.getAvailable", params)
 	if err != nil {
 		return nil, err
 	}
@@ -111,11 +111,11 @@ func (c *ServerConnection) UserTemplatesGetAvailable(domainId KId) (UserTemplate
 //	idList - list of identifiers of deleted user templates
 // Return
 //	errors - error message list
-func (c *ServerConnection) UserTemplatesRemove(idList KIdList) (ErrorList, error) {
+func (s *ServerConnection) UserTemplatesRemove(idList KIdList) (ErrorList, error) {
 	params := struct {
 		IdList KIdList `json:"idList"`
 	}{idList}
-	data, err := c.CallRaw("UserTemplates.remove", params)
+	data, err := s.CallRaw("UserTemplates.remove", params)
 	if err != nil {
 		return nil, err
 	}
@@ -134,12 +134,12 @@ func (c *ServerConnection) UserTemplatesRemove(idList KIdList) (ErrorList, error
 //	pattern - pattern to use for new values
 // Return
 //	errors - error message list
-func (c *ServerConnection) UserTemplatesSet(idList KIdList, pattern UserTemplate) (ErrorList, error) {
+func (s *ServerConnection) UserTemplatesSet(idList KIdList, pattern UserTemplate) (ErrorList, error) {
 	params := struct {
 		IdList  KIdList      `json:"idList"`
 		Pattern UserTemplate `json:"pattern"`
 	}{idList, pattern}
-	data, err := c.CallRaw("UserTemplates.set", params)
+	data, err := s.CallRaw("UserTemplates.set", params)
 	if err != nil {
 		return nil, err
 	}

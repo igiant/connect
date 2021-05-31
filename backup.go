@@ -64,8 +64,8 @@ type BackupScheduleList []BackupSchedule
 // BackupGet - Obtain backup options.
 // Return
 //	options - current backup options
-func (c *ServerConnection) BackupGet() (*BackupOptions, error) {
-	data, err := c.CallRaw("Backup.get", nil)
+func (s *ServerConnection) BackupGet() (*BackupOptions, error) {
+	data, err := s.CallRaw("Backup.get", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -83,11 +83,11 @@ func (c *ServerConnection) BackupGet() (*BackupOptions, error) {
 //	query - order by, limits
 // Return
 //	scheduleList
-func (c *ServerConnection) BackupGetScheduleList(query SearchQuery) (BackupScheduleList, error) {
+func (s *ServerConnection) BackupGetScheduleList(query SearchQuery) (BackupScheduleList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Backup.getScheduleList", params)
+	data, err := s.CallRaw("Backup.getScheduleList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -103,8 +103,8 @@ func (c *ServerConnection) BackupGetScheduleList(query SearchQuery) (BackupSched
 // BackupGetStatus - Return current backup status.
 // Return
 //	status - backup status
-func (c *ServerConnection) BackupGetStatus() (*BackupStatus, error) {
-	data, err := c.CallRaw("Backup.getStatus", nil)
+func (s *ServerConnection) BackupGetStatus() (*BackupStatus, error) {
+	data, err := s.CallRaw("Backup.getStatus", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -120,32 +120,32 @@ func (c *ServerConnection) BackupGetStatus() (*BackupStatus, error) {
 // BackupSet - Set backup options.
 // Parameters
 //	options - backup options
-func (c *ServerConnection) BackupSet(options BackupOptions) error {
+func (s *ServerConnection) BackupSet(options BackupOptions) error {
 	params := struct {
 		Options BackupOptions `json:"options"`
 	}{options}
-	_, err := c.CallRaw("Backup.set", params)
+	_, err := s.CallRaw("Backup.set", params)
 	return err
 }
 
 // BackupSetScheduleList - Set all backup schedules.
 // Parameters
 //	scheduleList
-func (c *ServerConnection) BackupSetScheduleList(scheduleList BackupScheduleList) error {
+func (s *ServerConnection) BackupSetScheduleList(scheduleList BackupScheduleList) error {
 	params := struct {
 		ScheduleList BackupScheduleList `json:"scheduleList"`
 	}{scheduleList}
-	_, err := c.CallRaw("Backup.setScheduleList", params)
+	_, err := s.CallRaw("Backup.setScheduleList", params)
 	return err
 }
 
 // BackupStart - Start backup according to current settings.
 // Parameters
 //	backupType - backup type
-func (c *ServerConnection) BackupStart(backupType BackupType) error {
+func (s *ServerConnection) BackupStart(backupType BackupType) error {
 	params := struct {
 		BackupType BackupType `json:"backupType"`
 	}{backupType}
-	_, err := c.CallRaw("Backup.start", params)
+	_, err := s.CallRaw("Backup.start", params)
 	return err
 }

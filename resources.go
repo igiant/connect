@@ -63,11 +63,11 @@ type ResourceList []Resource
 // Return
 //	errors - error message list
 //	result - list of IDs of created resources
-func (c *ServerConnection) ResourcesCreate(resources ResourceList) (ErrorList, CreateResultList, error) {
+func (s *ServerConnection) ResourcesCreate(resources ResourceList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Resources ResourceList `json:"resources"`
 	}{resources}
-	data, err := c.CallRaw("Resources.create", params)
+	data, err := s.CallRaw("Resources.create", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -87,12 +87,12 @@ func (c *ServerConnection) ResourcesCreate(resources ResourceList) (ErrorList, C
 //	domainId - domain identification
 // Return
 //	list - resources
-func (c *ServerConnection) ResourcesGet(query SearchQuery, domainId KId) (ResourceList, error) {
+func (s *ServerConnection) ResourcesGet(query SearchQuery, domainId KId) (ResourceList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
-	data, err := c.CallRaw("Resources.get", params)
+	data, err := s.CallRaw("Resources.get", params)
 	if err != nil {
 		return nil, err
 	}
@@ -110,12 +110,12 @@ func (c *ServerConnection) ResourcesGet(query SearchQuery, domainId KId) (Resour
 //	query - query attributes and limits
 // Return
 //	list - principals
-func (c *ServerConnection) ResourcesGetPrincipalList(query SearchQuery, domainId KId) (PrincipalList, error) {
+func (s *ServerConnection) ResourcesGetPrincipalList(query SearchQuery, domainId KId) (PrincipalList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
-	data, err := c.CallRaw("Resources.getPrincipalList", params)
+	data, err := s.CallRaw("Resources.getPrincipalList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -133,11 +133,11 @@ func (c *ServerConnection) ResourcesGetPrincipalList(query SearchQuery, domainId
 //	resourceIds - list of global identifiers of resource(s) to be deleted
 // Return
 //	errors - error message list
-func (c *ServerConnection) ResourcesRemove(resourceIds KIdList) (ErrorList, error) {
+func (s *ServerConnection) ResourcesRemove(resourceIds KIdList) (ErrorList, error) {
 	params := struct {
 		ResourceIds KIdList `json:"resourceIds"`
 	}{resourceIds}
-	data, err := c.CallRaw("Resources.remove", params)
+	data, err := s.CallRaw("Resources.remove", params)
 	if err != nil {
 		return nil, err
 	}
@@ -156,12 +156,12 @@ func (c *ServerConnection) ResourcesRemove(resourceIds KIdList) (ErrorList, erro
 //	pattern - pattern to use for new values
 // Return
 //	errors - error message list
-func (c *ServerConnection) ResourcesSet(resourceIds KIdList, pattern Resource) (ErrorList, error) {
+func (s *ServerConnection) ResourcesSet(resourceIds KIdList, pattern Resource) (ErrorList, error) {
 	params := struct {
 		ResourceIds KIdList  `json:"resourceIds"`
 		Pattern     Resource `json:"pattern"`
 	}{resourceIds, pattern}
-	data, err := c.CallRaw("Resources.set", params)
+	data, err := s.CallRaw("Resources.set", params)
 	if err != nil {
 		return nil, err
 	}

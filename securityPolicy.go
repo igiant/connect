@@ -34,8 +34,8 @@ type SecurityPolicyOptions struct {
 // SecurityPolicyGet - Obtain Security Policy options.
 // Return
 //	options - current security options
-func (c *ServerConnection) SecurityPolicyGet() (*SecurityPolicyOptions, error) {
-	data, err := c.CallRaw("SecurityPolicy.get", nil)
+func (s *ServerConnection) SecurityPolicyGet() (*SecurityPolicyOptions, error) {
+	data, err := s.CallRaw("SecurityPolicy.get", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -51,16 +51,16 @@ func (c *ServerConnection) SecurityPolicyGet() (*SecurityPolicyOptions, error) {
 // SecurityPolicySet - Set Security Policy options.
 // Parameters
 //	options - options to be updated
-func (c *ServerConnection) SecurityPolicySet(options SecurityPolicyOptions) error {
+func (s *ServerConnection) SecurityPolicySet(options SecurityPolicyOptions) error {
 	params := struct {
 		Options SecurityPolicyOptions `json:"options"`
 	}{options}
-	_, err := c.CallRaw("SecurityPolicy.set", params)
+	_, err := s.CallRaw("SecurityPolicy.set", params)
 	return err
 }
 
 // SecurityPolicyUnlockAllAccounts - Unlock all locked accounts immediately.
-func (c *ServerConnection) SecurityPolicyUnlockAllAccounts() error {
-	_, err := c.CallRaw("SecurityPolicy.unlockAllAccounts", nil)
+func (s *ServerConnection) SecurityPolicyUnlockAllAccounts() error {
+	_, err := s.CallRaw("SecurityPolicy.unlockAllAccounts", nil)
 	return err
 }

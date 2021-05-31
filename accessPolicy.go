@@ -65,11 +65,11 @@ type AccessPolicyGroupList []AccessPolicyGroup
 // Return
 //	errors - error message list
 //	result - list of IDs of created rules
-func (c *ServerConnection) AccessPolicyCreate(rules AccessPolicyRuleList) (ErrorList, CreateResultList, error) {
+func (s *ServerConnection) AccessPolicyCreate(rules AccessPolicyRuleList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Rules AccessPolicyRuleList `json:"rules"`
 	}{rules}
-	data, err := c.CallRaw("AccessPolicy.create", params)
+	data, err := s.CallRaw("AccessPolicy.create", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -89,11 +89,11 @@ func (c *ServerConnection) AccessPolicyCreate(rules AccessPolicyRuleList) (Error
 // Return
 //	errors - error message list
 //	result - list of IDs of created groups
-func (c *ServerConnection) AccessPolicyCreateGroupList(groups AccessPolicyGroupList) (ErrorList, CreateResultList, error) {
+func (s *ServerConnection) AccessPolicyCreateGroupList(groups AccessPolicyGroupList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Groups AccessPolicyGroupList `json:"groups"`
 	}{groups}
-	data, err := c.CallRaw("AccessPolicy.createGroupList", params)
+	data, err := s.CallRaw("AccessPolicy.createGroupList", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -112,11 +112,11 @@ func (c *ServerConnection) AccessPolicyCreateGroupList(groups AccessPolicyGroupL
 //	query - query attributes and limits
 // Return
 //	list - policies
-func (c *ServerConnection) AccessPolicyGet(query SearchQuery) (AccessPolicyRuleList, error) {
+func (s *ServerConnection) AccessPolicyGet(query SearchQuery) (AccessPolicyRuleList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("AccessPolicy.get", params)
+	data, err := s.CallRaw("AccessPolicy.get", params)
 	if err != nil {
 		return nil, err
 	}
@@ -132,8 +132,8 @@ func (c *ServerConnection) AccessPolicyGet(query SearchQuery) (AccessPolicyRuleL
 // AccessPolicyGetGroupList - Get the list of groups, sorted in ascending order.
 // Return
 //	groups - list of Access policy groups
-func (c *ServerConnection) AccessPolicyGetGroupList() (AccessPolicyGroupList, error) {
-	data, err := c.CallRaw("AccessPolicy.getGroupList", nil)
+func (s *ServerConnection) AccessPolicyGetGroupList() (AccessPolicyGroupList, error) {
+	data, err := s.CallRaw("AccessPolicy.getGroupList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -149,8 +149,8 @@ func (c *ServerConnection) AccessPolicyGetGroupList() (AccessPolicyGroupList, er
 // AccessPolicyGetServiceList - Get the list of services.
 // Return
 //	services - list of service info
-func (c *ServerConnection) AccessPolicyGetServiceList() (ServiceTypeInfoList, error) {
-	data, err := c.CallRaw("AccessPolicy.getServiceList", nil)
+func (s *ServerConnection) AccessPolicyGetServiceList() (ServiceTypeInfoList, error) {
+	data, err := s.CallRaw("AccessPolicy.getServiceList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -168,11 +168,11 @@ func (c *ServerConnection) AccessPolicyGetServiceList() (ServiceTypeInfoList, er
 //	ruleIds - list of IDs of policy to be removed
 // Return
 //	errors - error message list
-func (c *ServerConnection) AccessPolicyRemove(ruleIds KIdList) (ErrorList, error) {
+func (s *ServerConnection) AccessPolicyRemove(ruleIds KIdList) (ErrorList, error) {
 	params := struct {
 		RuleIds KIdList `json:"ruleIds"`
 	}{ruleIds}
-	data, err := c.CallRaw("AccessPolicy.remove", params)
+	data, err := s.CallRaw("AccessPolicy.remove", params)
 	if err != nil {
 		return nil, err
 	}
@@ -190,11 +190,11 @@ func (c *ServerConnection) AccessPolicyRemove(ruleIds KIdList) (ErrorList, error
 //	groupIds - list of IDs of group policy to be removed
 // Return
 //	errors - error message list
-func (c *ServerConnection) AccessPolicyRemoveGroupList(groupIds KIdList) (ErrorList, error) {
+func (s *ServerConnection) AccessPolicyRemoveGroupList(groupIds KIdList) (ErrorList, error) {
 	params := struct {
 		GroupIds KIdList `json:"groupIds"`
 	}{groupIds}
-	data, err := c.CallRaw("AccessPolicy.removeGroupList", params)
+	data, err := s.CallRaw("AccessPolicy.removeGroupList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -212,11 +212,11 @@ func (c *ServerConnection) AccessPolicyRemoveGroupList(groupIds KIdList) (ErrorL
 //	rules - rules to save
 // Return
 //	errors - error message list
-func (c *ServerConnection) AccessPolicySet(rules AccessPolicyRuleList) (ErrorList, error) {
+func (s *ServerConnection) AccessPolicySet(rules AccessPolicyRuleList) (ErrorList, error) {
 	params := struct {
 		Rules AccessPolicyRuleList `json:"rules"`
 	}{rules}
-	data, err := c.CallRaw("AccessPolicy.set", params)
+	data, err := s.CallRaw("AccessPolicy.set", params)
 	if err != nil {
 		return nil, err
 	}
@@ -234,11 +234,11 @@ func (c *ServerConnection) AccessPolicySet(rules AccessPolicyRuleList) (ErrorLis
 //	groups - list of group to set
 // Return
 //	errors - error message list
-func (c *ServerConnection) AccessPolicySetGroupList(groups AccessPolicyGroupList) (ErrorList, error) {
+func (s *ServerConnection) AccessPolicySetGroupList(groups AccessPolicyGroupList) (ErrorList, error) {
 	params := struct {
 		Groups AccessPolicyGroupList `json:"groups"`
 	}{groups}
-	data, err := c.CallRaw("AccessPolicy.setGroupList", params)
+	data, err := s.CallRaw("AccessPolicy.setGroupList", params)
 	if err != nil {
 		return nil, err
 	}

@@ -11,8 +11,8 @@ type SenderPolicyOptions struct {
 // SenderPolicyGet - Obtain Sender Policy options.
 // Return
 //	options - current sender options
-func (c *ServerConnection) SenderPolicyGet() (*SenderPolicyOptions, error) {
-	data, err := c.CallRaw("SenderPolicy.get", nil)
+func (s *ServerConnection) SenderPolicyGet() (*SenderPolicyOptions, error) {
+	data, err := s.CallRaw("SenderPolicy.get", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -28,10 +28,10 @@ func (c *ServerConnection) SenderPolicyGet() (*SenderPolicyOptions, error) {
 // SenderPolicySet - Set Sender Policy options.
 // Parameters
 //	options - options to be updated
-func (c *ServerConnection) SenderPolicySet(options SenderPolicyOptions) error {
+func (s *ServerConnection) SenderPolicySet(options SenderPolicyOptions) error {
 	params := struct {
 		Options SenderPolicyOptions `json:"options"`
 	}{options}
-	_, err := c.CallRaw("SenderPolicy.set", params)
+	_, err := s.CallRaw("SenderPolicy.set", params)
 	return err
 }

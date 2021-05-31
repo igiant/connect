@@ -101,13 +101,13 @@ type ClusterServerList []ClusterServer
 //	password - administrator's password
 // Return
 //	result - if ClusterErrorType is not clSuccess, error argument contains additional error info
-func (c *ServerConnection) DistributedDomainConnect(hostName string, adminUser string, password string) (*ClusterError, error) {
+func (s *ServerConnection) DistributedDomainConnect(hostName string, adminUser string, password string) (*ClusterError, error) {
 	params := struct {
 		HostName  string `json:"hostName"`
 		AdminUser string `json:"adminUser"`
 		Password  string `json:"password"`
 	}{hostName, adminUser, password}
-	data, err := c.CallRaw("DistributedDomain.connect", params)
+	data, err := s.CallRaw("DistributedDomain.connect", params)
 	if err != nil {
 		return nil, err
 	}
@@ -123,17 +123,17 @@ func (c *ServerConnection) DistributedDomainConnect(hostName string, adminUser s
 // DistributedDomainCopy - Copy domain from the master server.
 // Parameters
 //	domainName - name of the domain on the master server that you want to copy. Name can be obtained by using method getDomainsFromServer.
-func (c *ServerConnection) DistributedDomainCopy(domainName string) error {
+func (s *ServerConnection) DistributedDomainCopy(domainName string) error {
 	params := struct {
 		DomainName string `json:"domainName"`
 	}{domainName}
-	_, err := c.CallRaw("DistributedDomain.copy", params)
+	_, err := s.CallRaw("DistributedDomain.copy", params)
 	return err
 }
 
 // DistributedDomainDisconnect - Disconnect server from the cluster.
-func (c *ServerConnection) DistributedDomainDisconnect() error {
-	_, err := c.CallRaw("DistributedDomain.disconnect", nil)
+func (s *ServerConnection) DistributedDomainDisconnect() error {
+	_, err := s.CallRaw("DistributedDomain.disconnect", nil)
 	return err
 }
 
@@ -143,12 +143,12 @@ func (c *ServerConnection) DistributedDomainDisconnect() error {
 //	authentication - Structure with a credential. Credential will be used when connected is false.
 // Return
 //	domainNames - List of domains which can be distributed (they have a directory service set).
-func (c *ServerConnection) DistributedDomainGetDistributable(authentication ClusterAuthentication, connected bool) (StringList, error) {
+func (s *ServerConnection) DistributedDomainGetDistributable(authentication ClusterAuthentication, connected bool) (StringList, error) {
 	params := struct {
 		Authentication ClusterAuthentication `json:"authentication"`
 		Connected      bool                  `json:"connected"`
 	}{authentication, connected}
-	data, err := c.CallRaw("DistributedDomain.getDistributable", params)
+	data, err := s.CallRaw("DistributedDomain.getDistributable", params)
 	if err != nil {
 		return nil, err
 	}
@@ -162,8 +162,8 @@ func (c *ServerConnection) DistributedDomainGetDistributable(authentication Clus
 }
 
 // DistributedDomainGetRole - Return server role in the cluster.
-func (c *ServerConnection) DistributedDomainGetRole() (*ClusterRole, bool, error) {
-	data, err := c.CallRaw("DistributedDomain.getRole", nil)
+func (s *ServerConnection) DistributedDomainGetRole() (*ClusterRole, bool, error) {
+	data, err := s.CallRaw("DistributedDomain.getRole", nil)
 	if err != nil {
 		return nil, false, err
 	}
@@ -180,8 +180,8 @@ func (c *ServerConnection) DistributedDomainGetRole() (*ClusterRole, bool, error
 // DistributedDomainGetServerList - Retrieve information about servers in the cluster.
 // Return
 //	servers - List of all servers in cluster.
-func (c *ServerConnection) DistributedDomainGetServerList() (ClusterServerList, error) {
-	data, err := c.CallRaw("DistributedDomain.getServerList", nil)
+func (s *ServerConnection) DistributedDomainGetServerList() (ClusterServerList, error) {
+	data, err := s.CallRaw("DistributedDomain.getServerList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -197,8 +197,8 @@ func (c *ServerConnection) DistributedDomainGetServerList() (ClusterServerList, 
 // DistributedDomainGetHomeServerList - Retrieve information about servers in the cluster.
 // Return
 //	servers - List of all servers in cluster.
-func (c *ServerConnection) DistributedDomainGetHomeServerList() (HomeServerList, error) {
-	data, err := c.CallRaw("DistributedDomain.getHomeServerList", nil)
+func (s *ServerConnection) DistributedDomainGetHomeServerList() (HomeServerList, error) {
+	data, err := s.CallRaw("DistributedDomain.getHomeServerList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -215,8 +215,8 @@ func (c *ServerConnection) DistributedDomainGetHomeServerList() (HomeServerList,
 // Return
 //	isInCluster true if server is not standalone
 //	isError status of error in cluster
-func (c *ServerConnection) DistributedDomainGetStatus() (bool, bool, error) {
-	data, err := c.CallRaw("DistributedDomain.getStatus", nil)
+func (s *ServerConnection) DistributedDomainGetStatus() (bool, bool, error) {
+	data, err := s.CallRaw("DistributedDomain.getStatus", nil)
 	if err != nil {
 		return false, false, err
 	}

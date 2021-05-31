@@ -47,11 +47,11 @@ type MigrationTaskList []MigrationTask
 //	taskIdList - Identifiers of migration tasks which should be canceled
 // Return
 //	errors - error message list
-func (c *ServerConnection) MigrationCancel(taskIdList KIdList) (ErrorList, error) {
+func (s *ServerConnection) MigrationCancel(taskIdList KIdList) (ErrorList, error) {
 	params := struct {
 		TaskIdList KIdList `json:"taskIdList"`
 	}{taskIdList}
-	data, err := c.CallRaw("Migration.cancel", params)
+	data, err := s.CallRaw("Migration.cancel", params)
 	if err != nil {
 		return nil, err
 	}
@@ -69,11 +69,11 @@ func (c *ServerConnection) MigrationCancel(taskIdList KIdList) (ErrorList, error
 //	query - query attributes and limits
 // Return
 //	list - migration tasks
-func (c *ServerConnection) MigrationGet(query SearchQuery) (MigrationTaskList, error) {
+func (s *ServerConnection) MigrationGet(query SearchQuery) (MigrationTaskList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Migration.get", params)
+	data, err := s.CallRaw("Migration.get", params)
 	if err != nil {
 		return nil, err
 	}
@@ -89,8 +89,8 @@ func (c *ServerConnection) MigrationGet(query SearchQuery) (MigrationTaskList, e
 // MigrationGetCurrentHomeServer - Note: This method should be moved to DistributedDomain
 // Return
 //	homeServer - homeserver attributes
-func (c *ServerConnection) MigrationGetCurrentHomeServer() (*HomeServer, error) {
-	data, err := c.CallRaw("Migration.getCurrentHomeServer", nil)
+func (s *ServerConnection) MigrationGetCurrentHomeServer() (*HomeServer, error) {
+	data, err := s.CallRaw("Migration.getCurrentHomeServer", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -107,8 +107,8 @@ func (c *ServerConnection) MigrationGetCurrentHomeServer() (*HomeServer, error) 
 // Return
 //	taskId - migration task identifier
 //	status - migration task status
-func (c *ServerConnection) MigrationGetCurrentStatus() (*KId, *MigrationStatus, error) {
-	data, err := c.CallRaw("Migration.getCurrentStatus", nil)
+func (s *ServerConnection) MigrationGetCurrentStatus() (*KId, *MigrationStatus, error) {
+	data, err := s.CallRaw("Migration.getCurrentStatus", nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -127,11 +127,11 @@ func (c *ServerConnection) MigrationGetCurrentStatus() (*KId, *MigrationStatus, 
 //	taskId - migration task identifier
 // Return
 //	status - migration task status
-func (c *ServerConnection) MigrationGetStatus(taskId KId) (*MigrationStatus, error) {
+func (s *ServerConnection) MigrationGetStatus(taskId KId) (*MigrationStatus, error) {
 	params := struct {
 		TaskId KId `json:"taskId"`
 	}{taskId}
-	data, err := c.CallRaw("Migration.getStatus", params)
+	data, err := s.CallRaw("Migration.getStatus", params)
 	if err != nil {
 		return nil, err
 	}
@@ -147,8 +147,8 @@ func (c *ServerConnection) MigrationGetStatus(taskId KId) (*MigrationStatus, err
 // MigrationIsInProgress - Note: This method may fail if caller does not have full admin rights.
 // Return
 //	isInProgress - is there any migration task running?
-func (c *ServerConnection) MigrationIsInProgress() (bool, error) {
-	data, err := c.CallRaw("Migration.isInProgress", nil)
+func (s *ServerConnection) MigrationIsInProgress() (bool, error) {
+	data, err := s.CallRaw("Migration.isInProgress", nil)
 	if err != nil {
 		return false, err
 	}
@@ -167,11 +167,11 @@ func (c *ServerConnection) MigrationIsInProgress() (bool, error) {
 // Return
 //	errors - error message list
 //	result
-func (c *ServerConnection) MigrationStart(userIds KIdList) (ErrorList, CreateResultList, error) {
+func (s *ServerConnection) MigrationStart(userIds KIdList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		UserIds KIdList `json:"userIds"`
 	}{userIds}
-	data, err := c.CallRaw("Migration.start", params)
+	data, err := s.CallRaw("Migration.start", params)
 	if err != nil {
 		return nil, nil, err
 	}

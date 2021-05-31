@@ -12,8 +12,8 @@ type SignOn struct {
 // UnitySignOnGet - Obtain Kerio Unity Sign On settings
 // Return
 //	settings - Sign On settings
-func (c *ServerConnection) UnitySignOnGet() (*SignOn, error) {
-	data, err := c.CallRaw("UnitySignOn.get", nil)
+func (s *ServerConnection) UnitySignOnGet() (*SignOn, error) {
+	data, err := s.CallRaw("UnitySignOn.get", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -29,11 +29,11 @@ func (c *ServerConnection) UnitySignOnGet() (*SignOn, error) {
 // UnitySignOnSet - Set Kerio Unity Sign On settings
 // Parameters
 //	settings - Sign On settings
-func (c *ServerConnection) UnitySignOnSet(settings SignOn) error {
+func (s *ServerConnection) UnitySignOnSet(settings SignOn) error {
 	params := struct {
 		Settings SignOn `json:"settings"`
 	}{settings}
-	_, err := c.CallRaw("UnitySignOn.set", params)
+	_, err := s.CallRaw("UnitySignOn.set", params)
 	return err
 }
 
@@ -43,12 +43,12 @@ func (c *ServerConnection) UnitySignOnSet(settings SignOn) error {
 //	credentials - authentication information
 // Return
 //	errors - error messages list; If no error is listed, connection is successful
-func (c *ServerConnection) UnitySignOnTestConnection(hostNames StringList, credentials Credentials) (ErrorList, error) {
+func (s *ServerConnection) UnitySignOnTestConnection(hostNames StringList, credentials Credentials) (ErrorList, error) {
 	params := struct {
 		HostNames   StringList  `json:"hostNames"`
 		Credentials Credentials `json:"credentials"`
 	}{hostNames, credentials}
-	data, err := c.CallRaw("UnitySignOn.testConnection", params)
+	data, err := s.CallRaw("UnitySignOn.testConnection", params)
 	if err != nil {
 		return nil, err
 	}

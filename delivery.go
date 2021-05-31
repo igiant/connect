@@ -137,11 +137,11 @@ type InternetSettings struct {
 //	downloads - new ETRN download records
 // Return
 //	errors - list of error messages
-func (c *ServerConnection) DeliveryAddEtrnDownloadList(downloads EtrnDownloadList) (ErrorList, error) {
+func (s *ServerConnection) DeliveryAddEtrnDownloadList(downloads EtrnDownloadList) (ErrorList, error) {
 	params := struct {
 		Downloads EtrnDownloadList `json:"downloads"`
 	}{downloads}
-	data, err := c.CallRaw("Delivery.addEtrnDownloadList", params)
+	data, err := s.CallRaw("Delivery.addEtrnDownloadList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -159,11 +159,11 @@ func (c *ServerConnection) DeliveryAddEtrnDownloadList(downloads EtrnDownloadLis
 //	accounts - new POP3 account records
 // Return
 //	errors - list of error messages
-func (c *ServerConnection) DeliveryAddPop3AccountList(accounts Pop3AccountList) (ErrorList, error) {
+func (s *ServerConnection) DeliveryAddPop3AccountList(accounts Pop3AccountList) (ErrorList, error) {
 	params := struct {
 		Accounts Pop3AccountList `json:"accounts"`
 	}{accounts}
-	data, err := c.CallRaw("Delivery.addPop3AccountList", params)
+	data, err := s.CallRaw("Delivery.addPop3AccountList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -181,11 +181,11 @@ func (c *ServerConnection) DeliveryAddPop3AccountList(accounts Pop3AccountList) 
 //	sortings - new POP3 sorting records
 // Return
 //	errors - list of error messages
-func (c *ServerConnection) DeliveryAddPop3SortingList(sortings Pop3SortingList) (ErrorList, error) {
+func (s *ServerConnection) DeliveryAddPop3SortingList(sortings Pop3SortingList) (ErrorList, error) {
 	params := struct {
 		Sortings Pop3SortingList `json:"sortings"`
 	}{sortings}
-	data, err := c.CallRaw("Delivery.addPop3SortingList", params)
+	data, err := s.CallRaw("Delivery.addPop3SortingList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -203,11 +203,11 @@ func (c *ServerConnection) DeliveryAddPop3SortingList(sortings Pop3SortingList) 
 //	actions - new scheduler actions
 // Return
 //	errors - list of error messages
-func (c *ServerConnection) DeliveryAddScheduledActionList(actions ScheduledActionList) (ErrorList, error) {
+func (s *ServerConnection) DeliveryAddScheduledActionList(actions ScheduledActionList) (ErrorList, error) {
 	params := struct {
 		Actions ScheduledActionList `json:"actions"`
 	}{actions}
-	data, err := c.CallRaw("Delivery.addScheduledActionList", params)
+	data, err := s.CallRaw("Delivery.addScheduledActionList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -221,8 +221,8 @@ func (c *ServerConnection) DeliveryAddScheduledActionList(actions ScheduledActio
 }
 
 // DeliveryDownloadEtrn - Start ETRN downloads.
-func (c *ServerConnection) DeliveryDownloadEtrn() error {
-	_, err := c.CallRaw("Delivery.downloadEtrn", nil)
+func (s *ServerConnection) DeliveryDownloadEtrn() error {
+	_, err := s.CallRaw("Delivery.downloadEtrn", nil)
 	return err
 }
 
@@ -231,11 +231,11 @@ func (c *ServerConnection) DeliveryDownloadEtrn() error {
 //	query - query conditions and limits
 // Return
 //	list - ETRN download records
-func (c *ServerConnection) DeliveryGetEtrnDownloadList(query SearchQuery) (EtrnDownloadList, error) {
+func (s *ServerConnection) DeliveryGetEtrnDownloadList(query SearchQuery) (EtrnDownloadList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Delivery.getEtrnDownloadList", params)
+	data, err := s.CallRaw("Delivery.getEtrnDownloadList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -251,8 +251,8 @@ func (c *ServerConnection) DeliveryGetEtrnDownloadList(query SearchQuery) (EtrnD
 // DeliveryGetEtrnTimeout - Get timeout for ETRN reply on dial-up line
 // Return
 //	seconds - number of seconds for ETRN timeout
-func (c *ServerConnection) DeliveryGetEtrnTimeout() (int, error) {
-	data, err := c.CallRaw("Delivery.getEtrnTimeout", nil)
+func (s *ServerConnection) DeliveryGetEtrnTimeout() (int, error) {
+	data, err := s.CallRaw("Delivery.getEtrnTimeout", nil)
 	if err != nil {
 		return 0, err
 	}
@@ -268,8 +268,8 @@ func (c *ServerConnection) DeliveryGetEtrnTimeout() (int, error) {
 // DeliveryGetInternetSettings - Obtain Internet connection settings.
 // Return
 //	settings - Internet connection settings
-func (c *ServerConnection) DeliveryGetInternetSettings() (*InternetSettings, error) {
-	data, err := c.CallRaw("Delivery.getInternetSettings", nil)
+func (s *ServerConnection) DeliveryGetInternetSettings() (*InternetSettings, error) {
+	data, err := s.CallRaw("Delivery.getInternetSettings", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -287,11 +287,11 @@ func (c *ServerConnection) DeliveryGetInternetSettings() (*InternetSettings, err
 //	query - query conditions and limits
 // Return
 //	list - POP3 accounts
-func (c *ServerConnection) DeliveryGetPop3AccountList(query SearchQuery) (Pop3AccountList, error) {
+func (s *ServerConnection) DeliveryGetPop3AccountList(query SearchQuery) (Pop3AccountList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Delivery.getPop3AccountList", params)
+	data, err := s.CallRaw("Delivery.getPop3AccountList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -309,11 +309,11 @@ func (c *ServerConnection) DeliveryGetPop3AccountList(query SearchQuery) (Pop3Ac
 //	query - query conditions and limits
 // Return
 //	list - POP3 sorting records
-func (c *ServerConnection) DeliveryGetPop3SortingList(query SearchQuery) (Pop3SortingList, error) {
+func (s *ServerConnection) DeliveryGetPop3SortingList(query SearchQuery) (Pop3SortingList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Delivery.getPop3SortingList", params)
+	data, err := s.CallRaw("Delivery.getPop3SortingList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -329,8 +329,8 @@ func (c *ServerConnection) DeliveryGetPop3SortingList(query SearchQuery) (Pop3So
 // DeliveryGetRasNames - Obtain Remote Access Service. Valid information available on Windows only.
 // Return
 //	names - list of available RAS names
-func (c *ServerConnection) DeliveryGetRasNames() (StringList, error) {
-	data, err := c.CallRaw("Delivery.getRasNames", nil)
+func (s *ServerConnection) DeliveryGetRasNames() (StringList, error) {
+	data, err := s.CallRaw("Delivery.getRasNames", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -348,11 +348,11 @@ func (c *ServerConnection) DeliveryGetRasNames() (StringList, error) {
 //	query - query conditions and limits
 // Return
 //	list - scheduler actions
-func (c *ServerConnection) DeliveryGetScheduledActionList(query SearchQuery) (ScheduledActionList, error) {
+func (s *ServerConnection) DeliveryGetScheduledActionList(query SearchQuery) (ScheduledActionList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Delivery.getScheduledActionList", params)
+	data, err := s.CallRaw("Delivery.getScheduledActionList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -370,11 +370,11 @@ func (c *ServerConnection) DeliveryGetScheduledActionList(query SearchQuery) (Sc
 //	ids - identifier list of ETRN download records to be deleted
 // Return
 //	errors - error message list
-func (c *ServerConnection) DeliveryRemoveEtrnDownloadList(ids KIdList) (ErrorList, error) {
+func (s *ServerConnection) DeliveryRemoveEtrnDownloadList(ids KIdList) (ErrorList, error) {
 	params := struct {
 		Ids KIdList `json:"ids"`
 	}{ids}
-	data, err := c.CallRaw("Delivery.removeEtrnDownloadList", params)
+	data, err := s.CallRaw("Delivery.removeEtrnDownloadList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -392,11 +392,11 @@ func (c *ServerConnection) DeliveryRemoveEtrnDownloadList(ids KIdList) (ErrorLis
 //	ids - identifier list of POP3 account records to be deleted
 // Return
 //	errors - list of error messages
-func (c *ServerConnection) DeliveryRemovePop3AccountList(ids KIdList) (ErrorList, error) {
+func (s *ServerConnection) DeliveryRemovePop3AccountList(ids KIdList) (ErrorList, error) {
 	params := struct {
 		Ids KIdList `json:"ids"`
 	}{ids}
-	data, err := c.CallRaw("Delivery.removePop3AccountList", params)
+	data, err := s.CallRaw("Delivery.removePop3AccountList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -414,11 +414,11 @@ func (c *ServerConnection) DeliveryRemovePop3AccountList(ids KIdList) (ErrorList
 //	ids - identifier list of POP3 sorting records to be deleted
 // Return
 //	errors - list of error messages
-func (c *ServerConnection) DeliveryRemovePop3SortingList(ids KIdList) (ErrorList, error) {
+func (s *ServerConnection) DeliveryRemovePop3SortingList(ids KIdList) (ErrorList, error) {
 	params := struct {
 		Ids KIdList `json:"ids"`
 	}{ids}
-	data, err := c.CallRaw("Delivery.removePop3SortingList", params)
+	data, err := s.CallRaw("Delivery.removePop3SortingList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -436,11 +436,11 @@ func (c *ServerConnection) DeliveryRemovePop3SortingList(ids KIdList) (ErrorList
 //	ids - identifier list of scheduler actions to be deleted
 // Return
 //	errors - error message list
-func (c *ServerConnection) DeliveryRemoveScheduledActionList(ids KIdList) (ErrorList, error) {
+func (s *ServerConnection) DeliveryRemoveScheduledActionList(ids KIdList) (ErrorList, error) {
 	params := struct {
 		Ids KIdList `json:"ids"`
 	}{ids}
-	data, err := c.CallRaw("Delivery.removeScheduledActionList", params)
+	data, err := s.CallRaw("Delivery.removeScheduledActionList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -454,8 +454,8 @@ func (c *ServerConnection) DeliveryRemoveScheduledActionList(ids KIdList) (Error
 }
 
 // DeliveryRunPop3Downloads - Proceed all POP3 downloads right now.
-func (c *ServerConnection) DeliveryRunPop3Downloads() error {
-	_, err := c.CallRaw("Delivery.runPop3Downloads", nil)
+func (s *ServerConnection) DeliveryRunPop3Downloads() error {
+	_, err := s.CallRaw("Delivery.runPop3Downloads", nil)
 	return err
 }
 
@@ -463,34 +463,34 @@ func (c *ServerConnection) DeliveryRunPop3Downloads() error {
 // Parameters
 //	downloadId - updated ETRN download identifier
 //	download - new ETRN download record
-func (c *ServerConnection) DeliverySetEtrnDownload(downloadId KId, download EtrnDownload) error {
+func (s *ServerConnection) DeliverySetEtrnDownload(downloadId KId, download EtrnDownload) error {
 	params := struct {
 		DownloadId KId          `json:"downloadId"`
 		Download   EtrnDownload `json:"download"`
 	}{downloadId, download}
-	_, err := c.CallRaw("Delivery.setEtrnDownload", params)
+	_, err := s.CallRaw("Delivery.setEtrnDownload", params)
 	return err
 }
 
 // DeliverySetEtrnTimeout - Set timeout for ETRN reply on dial-up line.
 // Parameters
 //	seconds - number of seconds for ETRN timeout
-func (c *ServerConnection) DeliverySetEtrnTimeout(seconds int) error {
+func (s *ServerConnection) DeliverySetEtrnTimeout(seconds int) error {
 	params := struct {
 		Seconds int `json:"seconds"`
 	}{seconds}
-	_, err := c.CallRaw("Delivery.setEtrnTimeout", params)
+	_, err := s.CallRaw("Delivery.setEtrnTimeout", params)
 	return err
 }
 
 // DeliverySetInternetSettings - Set Internet connection settings.
 // Parameters
 //	settings - Internet connection settings
-func (c *ServerConnection) DeliverySetInternetSettings(settings InternetSettings) error {
+func (s *ServerConnection) DeliverySetInternetSettings(settings InternetSettings) error {
 	params := struct {
 		Settings InternetSettings `json:"settings"`
 	}{settings}
-	_, err := c.CallRaw("Delivery.setInternetSettings", params)
+	_, err := s.CallRaw("Delivery.setInternetSettings", params)
 	return err
 }
 
@@ -498,12 +498,12 @@ func (c *ServerConnection) DeliverySetInternetSettings(settings InternetSettings
 // Parameters
 //	accountId - updated POP3 account identifier
 //	account - new POP3 account record
-func (c *ServerConnection) DeliverySetPop3Account(accountId KId, account Pop3Account) error {
+func (s *ServerConnection) DeliverySetPop3Account(accountId KId, account Pop3Account) error {
 	params := struct {
 		AccountId KId         `json:"accountId"`
 		Account   Pop3Account `json:"account"`
 	}{accountId, account}
-	_, err := c.CallRaw("Delivery.setPop3Account", params)
+	_, err := s.CallRaw("Delivery.setPop3Account", params)
 	return err
 }
 
@@ -511,12 +511,12 @@ func (c *ServerConnection) DeliverySetPop3Account(accountId KId, account Pop3Acc
 // Parameters
 //	sortingId - updated POP3 sorting identifier
 //	sorting - new POP3 sorting record
-func (c *ServerConnection) DeliverySetPop3Sorting(sortingId KId, sorting Pop3Sorting) error {
+func (s *ServerConnection) DeliverySetPop3Sorting(sortingId KId, sorting Pop3Sorting) error {
 	params := struct {
 		SortingId KId         `json:"sortingId"`
 		Sorting   Pop3Sorting `json:"sorting"`
 	}{sortingId, sorting}
-	_, err := c.CallRaw("Delivery.setPop3Sorting", params)
+	_, err := s.CallRaw("Delivery.setPop3Sorting", params)
 	return err
 }
 
@@ -524,11 +524,11 @@ func (c *ServerConnection) DeliverySetPop3Sorting(sortingId KId, sorting Pop3Sor
 // Parameters
 //	actionId - updated action identifier
 //	action - new scheduler actions
-func (c *ServerConnection) DeliverySetScheduledAction(actionId KId, action ScheduledAction) error {
+func (s *ServerConnection) DeliverySetScheduledAction(actionId KId, action ScheduledAction) error {
 	params := struct {
 		ActionId KId             `json:"actionId"`
 		Action   ScheduledAction `json:"action"`
 	}{actionId, action}
-	_, err := c.CallRaw("Delivery.setScheduledAction", params)
+	_, err := s.CallRaw("Delivery.setScheduledAction", params)
 	return err
 }

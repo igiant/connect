@@ -12,7 +12,6 @@ const (
 
 // NewConfig returns a pointer to structure with the configuration for connecting to the API server
 // Parameters:
-//      dest   - control destination (Admin - for server control, Client - for mail client control)
 //      server - address without schema and port
 func NewConfig(server string) *Config {
 	if !strings.Contains(server, ":") {

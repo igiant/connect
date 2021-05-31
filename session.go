@@ -50,7 +50,7 @@ type RenameInfo struct {
 //                 e.g. "jdoe" or "jdoe@company.com"
 //      password - password of the user to be logged in
 //      app      - client application description
-func (c *ServerConnection) Login(user, password string, app *ApiApplication) error {
+func (s *ServerConnection) Login(user, password string, app *ApiApplication) error {
 	if app == nil {
 		app = NewApplication("", "", "")
 	}
@@ -60,7 +60,7 @@ func (c *ServerConnection) Login(user, password string, app *ApiApplication) err
 		*app,
 	}
 	var err error
-	data, err := c.CallRaw("Session.login", params)
+	data, err := s.CallRaw("Session.login", params)
 	token := struct {
 		Result struct {
 			Token string `json:"token"`
@@ -70,20 +70,20 @@ func (c *ServerConnection) Login(user, password string, app *ApiApplication) err
 	if err != nil {
 		return err
 	}
-	c.Token = &token.Result.Token
+	s.Token = &token.Result.Token
 	return nil
 }
 
 // Logout - Log out the callee
-func (c *ServerConnection) Logout() error {
-	_, err := c.CallRaw("Session.logout", nil)
+func (s *ServerConnection) Logout() error {
+	_, err := s.CallRaw("Session.logout", nil)
 	return err
 }
 
 // SessionWhoAmI determines the currently logged user (caller, e.g. administrator).
 // Fields id and domainId can be empty if built-in administrator is logged-in.
-func (c *ServerConnection) SessionWhoAmI() (*UserDetails, error) {
-	data, err := c.CallRaw("Session.whoAmI", nil)
+func (s *ServerConnection) SessionWhoAmI() (*UserDetails, error) {
+	data, err := s.CallRaw("Session.whoAmI", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -98,8 +98,8 @@ func (c *ServerConnection) SessionWhoAmI() (*UserDetails, error) {
 
 // SessionGetDomain gets domain information of the currently logged user.
 // Only name, displayName, ID, description and password policy related fields are filled.
-func (c *ServerConnection) SessionGetDomain() (*Domain, error) {
-	data, err := c.CallRaw("Session.getDomain", nil)
+func (s *ServerConnection) SessionGetDomain() (*Domain, error) {
+	data, err := s.CallRaw("Session.getDomain", nil)
 	if err != nil {
 		return nil, err
 	}

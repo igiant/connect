@@ -30,11 +30,11 @@ type GroupRemovalRequestList []GroupRemovalRequest
 // GroupsActivate - Activate groups from a directory service
 // Return
 //	errors - list of error messages for appropriate groups
-func (c *ServerConnection) GroupsActivate(groupIdList KIdList) (ErrorList, error) {
+func (s *ServerConnection) GroupsActivate(groupIdList KIdList) (ErrorList, error) {
 	params := struct {
 		GroupIdList KIdList `json:"groupIdList"`
 	}{groupIdList}
-	data, err := c.CallRaw("Groups.activate", params)
+	data, err := s.CallRaw("Groups.activate", params)
 	if err != nil {
 		return nil, err
 	}
@@ -53,12 +53,12 @@ func (c *ServerConnection) GroupsActivate(groupIdList KIdList) (ErrorList, error
 //	userList - list of global identifiers of users to be added to a group
 // Return
 //	errors - error message list
-func (c *ServerConnection) GroupsAddMemberList(groupId KId, userList KIdList) (ErrorList, error) {
+func (s *ServerConnection) GroupsAddMemberList(groupId KId, userList KIdList) (ErrorList, error) {
 	params := struct {
 		GroupId  KId     `json:"groupId"`
 		UserList KIdList `json:"userList"`
 	}{groupId, userList}
-	data, err := c.CallRaw("Groups.addMemberList", params)
+	data, err := s.CallRaw("Groups.addMemberList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -77,11 +77,11 @@ func (c *ServerConnection) GroupsAddMemberList(groupId KId, userList KIdList) (E
 // Return
 //	errors - error message list
 //	result - list of IDs of created groups
-func (c *ServerConnection) GroupsCreate(groups GroupList) (ErrorList, CreateResultList, error) {
+func (s *ServerConnection) GroupsCreate(groups GroupList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Groups GroupList `json:"groups"`
 	}{groups}
-	data, err := c.CallRaw("Groups.create", params)
+	data, err := s.CallRaw("Groups.create", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -101,11 +101,11 @@ func (c *ServerConnection) GroupsCreate(groups GroupList) (ErrorList, CreateResu
 // Return
 //	errors - error message list
 //	result - list of IDs of created groups
-func (c *ServerConnection) GroupsCreateLdap(groups GroupList) (ErrorList, CreateResultList, error) {
+func (s *ServerConnection) GroupsCreateLdap(groups GroupList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Groups GroupList `json:"groups"`
 	}{groups}
-	data, err := c.CallRaw("Groups.createLdap", params)
+	data, err := s.CallRaw("Groups.createLdap", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -124,12 +124,12 @@ func (c *ServerConnection) GroupsCreateLdap(groups GroupList) (ErrorList, Create
 //	query - query conditions and limits
 // Return
 //	list - groups
-func (c *ServerConnection) GroupsGet(query SearchQuery, domainId KId) (GroupList, error) {
+func (s *ServerConnection) GroupsGet(query SearchQuery, domainId KId) (GroupList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
-	data, err := c.CallRaw("Groups.get", params)
+	data, err := s.CallRaw("Groups.get", params)
 	if err != nil {
 		return nil, err
 	}
@@ -145,11 +145,11 @@ func (c *ServerConnection) GroupsGet(query SearchQuery, domainId KId) (GroupList
 // GroupsRemove - Note: it is not necessary to remove members before deleting a group
 // Return
 //	errors - error message list
-func (c *ServerConnection) GroupsRemove(requests GroupRemovalRequestList) (ErrorList, error) {
+func (s *ServerConnection) GroupsRemove(requests GroupRemovalRequestList) (ErrorList, error) {
 	params := struct {
 		Requests GroupRemovalRequestList `json:"requests"`
 	}{requests}
-	data, err := c.CallRaw("Groups.remove", params)
+	data, err := s.CallRaw("Groups.remove", params)
 	if err != nil {
 		return nil, err
 	}
@@ -168,12 +168,12 @@ func (c *ServerConnection) GroupsRemove(requests GroupRemovalRequestList) (Error
 //	userIds - list of global identifiers of users to be add to a group
 // Return
 //	errors - error message list
-func (c *ServerConnection) GroupsRemoveMemberList(groupId KId, userIds KIdList) (ErrorList, error) {
+func (s *ServerConnection) GroupsRemoveMemberList(groupId KId, userIds KIdList) (ErrorList, error) {
 	params := struct {
 		GroupId KId     `json:"groupId"`
 		UserIds KIdList `json:"userIds"`
 	}{groupId, userIds}
-	data, err := c.CallRaw("Groups.removeMemberList", params)
+	data, err := s.CallRaw("Groups.removeMemberList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -192,12 +192,12 @@ func (c *ServerConnection) GroupsRemoveMemberList(groupId KId, userIds KIdList) 
 //	pattern - pattern to use for new values
 // Return
 //	errors - error message list
-func (c *ServerConnection) GroupsSet(groupIds KIdList, pattern Group) (ErrorList, error) {
+func (s *ServerConnection) GroupsSet(groupIds KIdList, pattern Group) (ErrorList, error) {
 	params := struct {
 		GroupIds KIdList `json:"groupIds"`
 		Pattern  Group   `json:"pattern"`
 	}{groupIds, pattern}
-	data, err := c.CallRaw("Groups.set", params)
+	data, err := s.CallRaw("Groups.set", params)
 	if err != nil {
 		return nil, err
 	}

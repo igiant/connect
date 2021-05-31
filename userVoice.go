@@ -13,8 +13,8 @@ type UserVoiceSettings struct {
 // UserVoiceGet - Obtain settings of User Voice.
 // Return
 //	settings - structure with settings
-func (c *ServerConnection) UserVoiceGet() (*UserVoiceSettings, error) {
-	data, err := c.CallRaw("UserVoice.get", nil)
+func (s *ServerConnection) UserVoiceGet() (*UserVoiceSettings, error) {
+	data, err := s.CallRaw("UserVoice.get", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -30,8 +30,8 @@ func (c *ServerConnection) UserVoiceGet() (*UserVoiceSettings, error) {
 // UserVoiceGetStatus - Get status of registration of user voice.
 // Return
 //	isSet - true if user voice is set
-func (c *ServerConnection) UserVoiceGetStatus() (bool, error) {
-	data, err := c.CallRaw("UserVoice.getStatus", nil)
+func (s *ServerConnection) UserVoiceGetStatus() (bool, error) {
+	data, err := s.CallRaw("UserVoice.getStatus", nil)
 	if err != nil {
 		return false, err
 	}
@@ -50,12 +50,12 @@ func (c *ServerConnection) UserVoiceGetStatus() (bool, error) {
 //	email - user email address for userVoice
 // Return
 //	url - URL to userVoice with single sign on token
-func (c *ServerConnection) UserVoiceGetUrl(name string, email string) (string, error) {
+func (s *ServerConnection) UserVoiceGetUrl(name string, email string) (string, error) {
 	params := struct {
 		Name  string `json:"name"`
 		Email string `json:"email"`
 	}{name, email}
-	data, err := c.CallRaw("UserVoice.getUrl", params)
+	data, err := s.CallRaw("UserVoice.getUrl", params)
 	if err != nil {
 		return "", err
 	}
@@ -71,10 +71,10 @@ func (c *ServerConnection) UserVoiceGetUrl(name string, email string) (string, e
 // UserVoiceSet - Set settings of User Voice.
 // Parameters
 //	settings - structure with settings
-func (c *ServerConnection) UserVoiceSet(settings UserVoiceSettings) error {
+func (s *ServerConnection) UserVoiceSet(settings UserVoiceSettings) error {
 	params := struct {
 		Settings UserVoiceSettings `json:"settings"`
 	}{settings}
-	_, err := c.CallRaw("UserVoice.set", params)
+	_, err := s.CallRaw("UserVoice.set", params)
 	return err
 }

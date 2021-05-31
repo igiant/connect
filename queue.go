@@ -49,11 +49,11 @@ type MessageInProcessList []MessageInProcess
 // Return
 //	list - awaiting messages
 //	volume - space occupied by messages in the queue
-func (c *ServerConnection) QueueGet(query SearchQuery) (MessageInQueueList, *ByteValueWithUnits, error) {
+func (s *ServerConnection) QueueGet(query SearchQuery) (MessageInQueueList, *ByteValueWithUnits, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Queue.get", params)
+	data, err := s.CallRaw("Queue.get", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -72,11 +72,11 @@ func (c *ServerConnection) QueueGet(query SearchQuery) (MessageInQueueList, *Byt
 //	query - search conditions
 // Return
 //	list - processed messages
-func (c *ServerConnection) QueueGetProcessed(query SearchQuery) (MessageInProcessList, error) {
+func (s *ServerConnection) QueueGetProcessed(query SearchQuery) (MessageInProcessList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Queue.getProcessed", params)
+	data, err := s.CallRaw("Queue.getProcessed", params)
 	if err != nil {
 		return nil, err
 	}
@@ -92,11 +92,11 @@ func (c *ServerConnection) QueueGetProcessed(query SearchQuery) (MessageInProces
 // QueueRemove - Remove selected messages from the message queue.
 // Parameters
 //	messageIds - identifiers of messages to be deleted
-func (c *ServerConnection) QueueRemove(messageIds KIdList) (int, error) {
+func (s *ServerConnection) QueueRemove(messageIds KIdList) (int, error) {
 	params := struct {
 		MessageIds KIdList `json:"messageIds"`
 	}{messageIds}
-	data, err := c.CallRaw("Queue.remove", params)
+	data, err := s.CallRaw("Queue.remove", params)
 	if err != nil {
 		return 0, err
 	}
@@ -110,8 +110,8 @@ func (c *ServerConnection) QueueRemove(messageIds KIdList) (int, error) {
 }
 
 // QueueRemoveAll - Remove all message from the queue.
-func (c *ServerConnection) QueueRemoveAll() (int, error) {
-	data, err := c.CallRaw("Queue.removeAll", nil)
+func (s *ServerConnection) QueueRemoveAll() (int, error) {
+	data, err := s.CallRaw("Queue.removeAll", nil)
 	if err != nil {
 		return 0, err
 	}
@@ -128,12 +128,12 @@ func (c *ServerConnection) QueueRemoveAll() (int, error) {
 // Parameters
 //	senderPattern - sender pattern with wildcards
 //	recipientPattern - recipient pattern with wildcards
-func (c *ServerConnection) QueueRemoveMatching(senderPattern string, recipientPattern string) (int, error) {
+func (s *ServerConnection) QueueRemoveMatching(senderPattern string, recipientPattern string) (int, error) {
 	params := struct {
 		SenderPattern    string `json:"senderPattern"`
 		RecipientPattern string `json:"recipientPattern"`
 	}{senderPattern, recipientPattern}
-	data, err := c.CallRaw("Queue.removeMatching", params)
+	data, err := s.CallRaw("Queue.removeMatching", params)
 	if err != nil {
 		return 0, err
 	}
@@ -147,18 +147,18 @@ func (c *ServerConnection) QueueRemoveMatching(senderPattern string, recipientPa
 }
 
 // QueueRun - Try to process message queue immediately.
-func (c *ServerConnection) QueueRun() error {
-	_, err := c.CallRaw("Queue.run", nil)
+func (s *ServerConnection) QueueRun() error {
+	_, err := s.CallRaw("Queue.run", nil)
 	return err
 }
 
 // QueueTryToSend - Try to send selected messages.
 // Parameters
 //	messageIds - identifiers of messages to be sent immediately
-func (c *ServerConnection) QueueTryToSend(messageIds KIdList) error {
+func (s *ServerConnection) QueueTryToSend(messageIds KIdList) error {
 	params := struct {
 		MessageIds KIdList `json:"messageIds"`
 	}{messageIds}
-	_, err := c.CallRaw("Queue.tryToSend", params)
+	_, err := s.CallRaw("Queue.tryToSend", params)
 	return err
 }

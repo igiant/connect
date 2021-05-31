@@ -51,11 +51,11 @@ type IpAddressGroupList []IpAddressGroup
 // Return
 //	errors - possible errors: - "This address group already exists!" duplicate name-value
 //	result - list of IDs of created IpAddressGroups
-func (c *ServerConnection) IpAddressGroupsCreate(groups IpAddressEntryList) (ErrorList, CreateResultList, error) {
+func (s *ServerConnection) IpAddressGroupsCreate(groups IpAddressEntryList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Groups IpAddressEntryList `json:"groups"`
 	}{groups}
-	data, err := c.CallRaw("IpAddressGroups.create", params)
+	data, err := s.CallRaw("IpAddressGroups.create", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -76,11 +76,11 @@ func (c *ServerConnection) IpAddressGroupsCreate(groups IpAddressEntryList) (Err
 //	- sort and match are not case sensitive. - column alias (first operand):
 // Return
 //	ip address list
-func (c *ServerConnection) IpAddressGroupsGet(query SearchQuery) (IpAddressEntryList, error) {
+func (s *ServerConnection) IpAddressGroupsGet(query SearchQuery) (IpAddressEntryList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("IpAddressGroups.get", params)
+	data, err := s.CallRaw("IpAddressGroups.get", params)
 	if err != nil {
 		return nil, err
 	}
@@ -96,8 +96,8 @@ func (c *ServerConnection) IpAddressGroupsGet(query SearchQuery) (IpAddressEntry
 // IpAddressGroupsGetGroupList - Get the list of groups, sorted in ascending order.
 // Return
 //	groups - list of IP address groups
-func (c *ServerConnection) IpAddressGroupsGetGroupList() (IpAddressGroupList, error) {
-	data, err := c.CallRaw("IpAddressGroups.getGroupList", nil)
+func (s *ServerConnection) IpAddressGroupsGetGroupList() (IpAddressGroupList, error) {
+	data, err := s.CallRaw("IpAddressGroups.getGroupList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -115,11 +115,11 @@ func (c *ServerConnection) IpAddressGroupsGetGroupList() (IpAddressGroupList, er
 //	groupIds - IDs of groups that should be removed
 // Return
 //	errors - Errors by removing groups
-func (c *ServerConnection) IpAddressGroupsRemove(groupIds KIdList) (ErrorList, error) {
+func (s *ServerConnection) IpAddressGroupsRemove(groupIds KIdList) (ErrorList, error) {
 	params := struct {
 		GroupIds KIdList `json:"groupIds"`
 	}{groupIds}
-	data, err := c.CallRaw("IpAddressGroups.remove", params)
+	data, err := s.CallRaw("IpAddressGroups.remove", params)
 	if err != nil {
 		return nil, err
 	}
@@ -138,12 +138,12 @@ func (c *ServerConnection) IpAddressGroupsRemove(groupIds KIdList) (ErrorList, e
 //	details - details for update.
 // Return
 //	errors - possible errors: - "This address group already exists!" duplicate name-value
-func (c *ServerConnection) IpAddressGroupsSet(groupIds KIdList, details IpAddressEntry) (ErrorList, error) {
+func (s *ServerConnection) IpAddressGroupsSet(groupIds KIdList, details IpAddressEntry) (ErrorList, error) {
 	params := struct {
 		GroupIds KIdList        `json:"groupIds"`
 		Details  IpAddressEntry `json:"details"`
 	}{groupIds, details}
-	data, err := c.CallRaw("IpAddressGroups.set", params)
+	data, err := s.CallRaw("IpAddressGroups.set", params)
 	if err != nil {
 		return nil, err
 	}
@@ -162,11 +162,11 @@ func (c *ServerConnection) IpAddressGroupsSet(groupIds KIdList, details IpAddres
 // Return
 //	errors - if the result is false, error argument contains additional error info; possible errors:
 //	- "You will be cut off from remote administration!"
-func (c *ServerConnection) IpAddressGroupsValidateRemove(groupIds KIdList) (ErrorList, error) {
+func (s *ServerConnection) IpAddressGroupsValidateRemove(groupIds KIdList) (ErrorList, error) {
 	params := struct {
 		GroupIds KIdList `json:"groupIds"`
 	}{groupIds}
-	data, err := c.CallRaw("IpAddressGroups.validateRemove", params)
+	data, err := s.CallRaw("IpAddressGroups.validateRemove", params)
 	if err != nil {
 		return nil, err
 	}
@@ -185,12 +185,12 @@ func (c *ServerConnection) IpAddressGroupsValidateRemove(groupIds KIdList) (Erro
 //	details - details for update.
 // Return
 //	errors - if the result is false, error argument contains additional error info; possible errors: - "You will be cut off from remote administration!"
-func (c *ServerConnection) IpAddressGroupsValidateSet(groupIds KIdList, details IpAddressEntry) (ErrorList, error) {
+func (s *ServerConnection) IpAddressGroupsValidateSet(groupIds KIdList, details IpAddressEntry) (ErrorList, error) {
 	params := struct {
 		GroupIds KIdList        `json:"groupIds"`
 		Details  IpAddressEntry `json:"details"`
 	}{groupIds, details}
-	data, err := c.CallRaw("IpAddressGroups.validateSet", params)
+	data, err := s.CallRaw("IpAddressGroups.validateSet", params)
 	if err != nil {
 		return nil, err
 	}

@@ -26,11 +26,11 @@ type CompanyContactList []CompanyContact
 // Return
 //	errors - error message list
 //	result - particular results for all items
-func (c *ServerConnection) CompanyContactsCreate(companyContacts CompanyContactList) (ErrorList, CreateResultList, error) {
+func (s *ServerConnection) CompanyContactsCreate(companyContacts CompanyContactList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		CompanyContacts CompanyContactList `json:"companyContacts"`
 	}{companyContacts}
-	data, err := c.CallRaw("CompanyContacts.create", params)
+	data, err := s.CallRaw("CompanyContacts.create", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -49,11 +49,11 @@ func (c *ServerConnection) CompanyContactsCreate(companyContacts CompanyContactL
 //	query - query conditions and limits
 // Return
 //	list - list of company contacts
-func (c *ServerConnection) CompanyContactsGet(query SearchQuery) (CompanyContactList, error) {
+func (s *ServerConnection) CompanyContactsGet(query SearchQuery) (CompanyContactList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("CompanyContacts.get", params)
+	data, err := s.CallRaw("CompanyContacts.get", params)
 	if err != nil {
 		return nil, err
 	}
@@ -71,11 +71,11 @@ func (c *ServerConnection) CompanyContactsGet(query SearchQuery) (CompanyContact
 //	domainId - Only company contacts for given domain and global company contacts are listed.
 // Return
 //	companyContactList - list of user templates
-func (c *ServerConnection) CompanyContactsGetAvailable(domainId KId) (CompanyContactList, error) {
+func (s *ServerConnection) CompanyContactsGetAvailable(domainId KId) (CompanyContactList, error) {
 	params := struct {
 		DomainId KId `json:"domainId"`
 	}{domainId}
-	data, err := c.CallRaw("CompanyContacts.getAvailable", params)
+	data, err := s.CallRaw("CompanyContacts.getAvailable", params)
 	if err != nil {
 		return nil, err
 	}
@@ -91,11 +91,11 @@ func (c *ServerConnection) CompanyContactsGetAvailable(domainId KId) (CompanyCon
 // CompanyContactsRemove - Remove company contacts.
 // Return
 //	errors - error message list
-func (c *ServerConnection) CompanyContactsRemove(companyContactsIds KIdList) (ErrorList, error) {
+func (s *ServerConnection) CompanyContactsRemove(companyContactsIds KIdList) (ErrorList, error) {
 	params := struct {
 		CompanyContactsIds KIdList `json:"companyContactsIds"`
 	}{companyContactsIds}
-	data, err := c.CallRaw("CompanyContacts.remove", params)
+	data, err := s.CallRaw("CompanyContacts.remove", params)
 	if err != nil {
 		return nil, err
 	}
@@ -114,12 +114,12 @@ func (c *ServerConnection) CompanyContactsRemove(companyContactsIds KIdList) (Er
 //	pattern - pattern to use for new values
 // Return
 //	errors - error message list
-func (c *ServerConnection) CompanyContactsSet(companyContactsIds KIdList, pattern CompanyContact) (ErrorList, error) {
+func (s *ServerConnection) CompanyContactsSet(companyContactsIds KIdList, pattern CompanyContact) (ErrorList, error) {
 	params := struct {
 		CompanyContactsIds KIdList        `json:"companyContactsIds"`
 		Pattern            CompanyContact `json:"pattern"`
 	}{companyContactsIds, pattern}
-	data, err := c.CallRaw("CompanyContacts.set", params)
+	data, err := s.CallRaw("CompanyContacts.set", params)
 	if err != nil {
 		return nil, err
 	}

@@ -32,8 +32,8 @@ type SystemInfo struct {
 //	productInfo (out ProductInfo) Product information
 //	systemInfo (out SystemInfo) System information
 //	isUploadServerAvailable (out boolean) Is possible to upload attachment ?
-func (c *ServerConnection) TechnicalSupportGetInfo() (*UserInfo, *SupportProductInfo, *SystemInfo, bool, error) {
-	data, err := c.CallRaw("TechnicalSupport.getInfo", nil)
+func (s *ServerConnection) TechnicalSupportGetInfo() (*UserInfo, *SupportProductInfo, *SystemInfo, bool, error) {
+	data, err := s.CallRaw("TechnicalSupport.getInfo", nil)
 	if err != nil {
 		return nil, nil, nil, false, err
 	}
@@ -53,11 +53,11 @@ func (c *ServerConnection) TechnicalSupportGetInfo() (*UserInfo, *SupportProduct
 // Parameters
 //	ticketId (in string) tickedId of target ticket
 //	email (in string) email of the customer
-func (c *ServerConnection) TechnicalSupportAddSystemInfoToTicket(ticketId string, email string) error {
+func (s *ServerConnection) TechnicalSupportAddSystemInfoToTicket(ticketId string, email string) error {
 	params := struct {
 		TicketId string `json:"ticketId"`
 		Email    string `json:"email"`
 	}{ticketId, email}
-	_, err := c.CallRaw("TechnicalSupport.addSystemInfoToTicket", params)
+	_, err := s.CallRaw("TechnicalSupport.addSystemInfoToTicket", params)
 	return err
 }

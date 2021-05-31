@@ -32,8 +32,8 @@ type ApiVersion int
 // Informs about product version and API version.
 
 // VersionGetProductVersion - Get product version.
-func (c *ServerConnection) VersionGetProductVersion() (*ProductVersion, error) {
-	data, err := c.CallRaw("Version.getProductVersion", nil)
+func (s *ServerConnection) VersionGetProductVersion() (*ProductVersion, error) {
+	data, err := s.CallRaw("Version.getProductVersion", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -47,8 +47,8 @@ func (c *ServerConnection) VersionGetProductVersion() (*ProductVersion, error) {
 }
 
 // VersionGetApiVersion - Get version of Administration API.
-func (c *ServerConnection) VersionGetApiVersion() (*ApiVersion, error) {
-	data, err := c.CallRaw("Version.getApiVersion", nil)
+func (s *ServerConnection) VersionGetApiVersion() (*ApiVersion, error) {
+	data, err := s.CallRaw("Version.getApiVersion", nil)
 	if err != nil {
 		return nil, err
 	}

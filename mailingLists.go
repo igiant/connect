@@ -147,12 +147,12 @@ type MlList []Ml
 //	mlId - unique ML identifier
 // Return
 //	errors - appropriate error messages
-func (c *ServerConnection) MailingListsAddMlUserList(members UserOrEmailList, mlId KId) (ErrorList, error) {
+func (s *ServerConnection) MailingListsAddMlUserList(members UserOrEmailList, mlId KId) (ErrorList, error) {
 	params := struct {
 		Members UserOrEmailList `json:"members"`
 		MlId    KId             `json:"mlId"`
 	}{members, mlId}
-	data, err := c.CallRaw("MailingLists.addMlUserList", params)
+	data, err := s.CallRaw("MailingLists.addMlUserList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -171,11 +171,11 @@ func (c *ServerConnection) MailingListsAddMlUserList(members UserOrEmailList, ml
 // Return
 //	errors - error message list
 //	result - list of IDs of created mailing lists
-func (c *ServerConnection) MailingListsCreate(mailingLists MlList) (ErrorList, CreateResultList, error) {
+func (s *ServerConnection) MailingListsCreate(mailingLists MlList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		MailingLists MlList `json:"mailingLists"`
 	}{mailingLists}
-	data, err := c.CallRaw("MailingLists.create", params)
+	data, err := s.CallRaw("MailingLists.create", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -195,12 +195,12 @@ func (c *ServerConnection) MailingListsCreate(mailingLists MlList) (ErrorList, C
 //	mlId - unique ML identifier
 // Return
 //	fileDownload - description of output file
-func (c *ServerConnection) MailingListsExportMlUsersToCsv(kind MlMembership, mlId KId) (*Download, error) {
+func (s *ServerConnection) MailingListsExportMlUsersToCsv(kind MlMembership, mlId KId) (*Download, error) {
 	params := struct {
 		Kind MlMembership `json:"kind"`
 		MlId KId          `json:"mlId"`
 	}{kind, mlId}
-	data, err := c.CallRaw("MailingLists.exportMlUsersToCsv", params)
+	data, err := s.CallRaw("MailingLists.exportMlUsersToCsv", params)
 	if err != nil {
 		return nil, err
 	}
@@ -218,12 +218,12 @@ func (c *ServerConnection) MailingListsExportMlUsersToCsv(kind MlMembership, mlI
 //	query - query conditions and limits
 // Return
 //	list - mailing lists
-func (c *ServerConnection) MailingListsGet(query SearchQuery, domainId KId) (MlList, error) {
+func (s *ServerConnection) MailingListsGet(query SearchQuery, domainId KId) (MlList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
-	data, err := c.CallRaw("MailingLists.get", params)
+	data, err := s.CallRaw("MailingLists.get", params)
 	if err != nil {
 		return nil, err
 	}
@@ -242,12 +242,12 @@ func (c *ServerConnection) MailingListsGet(query SearchQuery, domainId KId) (MlL
 //	mlId - unique ML identifier
 // Return
 //	list - mailing list members and/or moderators
-func (c *ServerConnection) MailingListsGetMlUserList(query SearchQuery, mlId KId) (UserOrEmailList, error) {
+func (s *ServerConnection) MailingListsGetMlUserList(query SearchQuery, mlId KId) (UserOrEmailList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 		MlId  KId         `json:"mlId"`
 	}{query, mlId}
-	data, err := c.CallRaw("MailingLists.getMlUserList", params)
+	data, err := s.CallRaw("MailingLists.getMlUserList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -266,12 +266,12 @@ func (c *ServerConnection) MailingListsGetMlUserList(query SearchQuery, mlId KId
 //	mlToImport - unique ML identifier or empty string if XML does not exist yet
 // Return
 //	members - ML members and/or moderators
-func (c *ServerConnection) MailingListsGetMlUserListFromCsv(fileId string, mlToImport KId) (MLMemberImporteeList, error) {
+func (s *ServerConnection) MailingListsGetMlUserListFromCsv(fileId string, mlToImport KId) (MLMemberImporteeList, error) {
 	params := struct {
 		FileId     string `json:"fileId"`
 		MlToImport KId    `json:"mlToImport"`
 	}{fileId, mlToImport}
-	data, err := c.CallRaw("MailingLists.getMlUserListFromCsv", params)
+	data, err := s.CallRaw("MailingLists.getMlUserListFromCsv", params)
 	if err != nil {
 		return nil, err
 	}
@@ -287,8 +287,8 @@ func (c *ServerConnection) MailingListsGetMlUserListFromCsv(fileId string, mlToI
 // MailingListsGetSuffixes - processing of special commands of mailing list.
 // Return
 //	suffixes - list of suffixes
-func (c *ServerConnection) MailingListsGetSuffixes() (StringList, error) {
-	data, err := c.CallRaw("MailingLists.getSuffixes", nil)
+func (s *ServerConnection) MailingListsGetSuffixes() (StringList, error) {
+	data, err := s.CallRaw("MailingLists.getSuffixes", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -306,12 +306,12 @@ func (c *ServerConnection) MailingListsGetSuffixes() (StringList, error) {
 //	query - query attributes and limits
 // Return
 //	list - trustee targets
-func (c *ServerConnection) MailingListsGetTrusteeTargetList(query SearchQuery, domainId KId) (TrusteeTargetList, error) {
+func (s *ServerConnection) MailingListsGetTrusteeTargetList(query SearchQuery, domainId KId) (TrusteeTargetList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
-	data, err := c.CallRaw("MailingLists.getTrusteeTargetList", params)
+	data, err := s.CallRaw("MailingLists.getTrusteeTargetList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -329,11 +329,11 @@ func (c *ServerConnection) MailingListsGetTrusteeTargetList(query SearchQuery, d
 //	mlIds - list of global identifiers of MLs to be deleted
 // Return
 //	errors - error message list
-func (c *ServerConnection) MailingListsRemove(mlIds KIdList) (ErrorList, error) {
+func (s *ServerConnection) MailingListsRemove(mlIds KIdList) (ErrorList, error) {
 	params := struct {
 		MlIds KIdList `json:"mlIds"`
 	}{mlIds}
-	data, err := c.CallRaw("MailingLists.remove", params)
+	data, err := s.CallRaw("MailingLists.remove", params)
 	if err != nil {
 		return nil, err
 	}
@@ -352,12 +352,12 @@ func (c *ServerConnection) MailingListsRemove(mlIds KIdList) (ErrorList, error) 
 //	mlId - unique ML identifier
 // Return
 //	errors - appropriate error messages
-func (c *ServerConnection) MailingListsRemoveMlUserList(members UserOrEmailList, mlId KId) (ErrorList, error) {
+func (s *ServerConnection) MailingListsRemoveMlUserList(members UserOrEmailList, mlId KId) (ErrorList, error) {
 	params := struct {
 		Members UserOrEmailList `json:"members"`
 		MlId    KId             `json:"mlId"`
 	}{members, mlId}
-	data, err := c.CallRaw("MailingLists.removeMlUserList", params)
+	data, err := s.CallRaw("MailingLists.removeMlUserList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -376,12 +376,12 @@ func (c *ServerConnection) MailingListsRemoveMlUserList(members UserOrEmailList,
 //	pattern - pattern to use for new values
 // Return
 //	errors - error message list
-func (c *ServerConnection) MailingListsSet(mlIds KIdList, pattern Ml) (ErrorList, error) {
+func (s *ServerConnection) MailingListsSet(mlIds KIdList, pattern Ml) (ErrorList, error) {
 	params := struct {
 		MlIds   KIdList `json:"mlIds"`
 		Pattern Ml      `json:"pattern"`
 	}{mlIds, pattern}
-	data, err := c.CallRaw("MailingLists.set", params)
+	data, err := s.CallRaw("MailingLists.set", params)
 	if err != nil {
 		return nil, err
 	}

@@ -148,14 +148,14 @@ type RegistrationFullStatus struct {
 //	baseId - Base ID of registration
 //	registrationInfo - Registration data retrieved from server by getRegistrationInfo() and modified by user.
 //	finishType - how to finish the registration? Create a new one, modyfy an existing or just download an existing license?
-func (c *ServerConnection) ProductRegistrationFinish(token string, baseId string, registrationInfo Registration, finishType RegistrationFinishType) error {
+func (s *ServerConnection) ProductRegistrationFinish(token string, baseId string, registrationInfo Registration, finishType RegistrationFinishType) error {
 	params := struct {
 		Token            string                 `json:"token"`
 		BaseId           string                 `json:"baseId"`
 		RegistrationInfo Registration           `json:"registrationInfo"`
 		FinishType       RegistrationFinishType `json:"finishType"`
 	}{token, baseId, registrationInfo, finishType}
-	_, err := c.CallRaw("ProductRegistration.finish", params)
+	_, err := s.CallRaw("ProductRegistration.finish", params)
 	return err
 }
 
@@ -168,13 +168,13 @@ func (c *ServerConnection) ProductRegistrationFinish(token string, baseId string
 //	registrationInfo - the registration data related to the license ID
 //	newRegistration - flag indicates whether the registration has already existed.
 //	trial - trial ID registered on web, do not display registrationInfo and finish immediatelly
-func (c *ServerConnection) ProductRegistrationGet(token string, securityCode string, baseId string) (*Registration, bool, bool, error) {
+func (s *ServerConnection) ProductRegistrationGet(token string, securityCode string, baseId string) (*Registration, bool, bool, error) {
 	params := struct {
 		Token        string `json:"token"`
 		SecurityCode string `json:"securityCode"`
 		BaseId       string `json:"baseId"`
 	}{token, securityCode, baseId}
-	data, err := c.CallRaw("ProductRegistration.get", params)
+	data, err := s.CallRaw("ProductRegistration.get", params)
 	if err != nil {
 		return nil, false, false, err
 	}
@@ -192,8 +192,8 @@ func (c *ServerConnection) ProductRegistrationGet(token string, securityCode str
 // ProductRegistrationGetFullStatus - @see RegistrationFullStatus
 // Return
 //	status - A current registration status of the product.
-func (c *ServerConnection) ProductRegistrationGetFullStatus() (*RegistrationFullStatus, error) {
-	data, err := c.CallRaw("ProductRegistration.getFullStatus", nil)
+func (s *ServerConnection) ProductRegistrationGetFullStatus() (*RegistrationFullStatus, error) {
+	data, err := s.CallRaw("ProductRegistration.getFullStatus", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -209,8 +209,8 @@ func (c *ServerConnection) ProductRegistrationGetFullStatus() (*RegistrationFull
 // ProductRegistrationGetStatus - @see RegistrationStatus
 // Return
 //	status - Current registration status of the product.
-func (c *ServerConnection) ProductRegistrationGetStatus() (*RegistrationStatus, error) {
-	data, err := c.CallRaw("ProductRegistration.getStatus", nil)
+func (s *ServerConnection) ProductRegistrationGetStatus() (*RegistrationStatus, error) {
+	data, err := s.CallRaw("ProductRegistration.getStatus", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -230,11 +230,11 @@ func (c *ServerConnection) ProductRegistrationGetStatus() (*RegistrationStatus, 
 //	token - ID of wizard's session
 //	image - URL of the image with the security code
 //	showImage - show captcha image in wizard if true
-func (c *ServerConnection) ProductRegistrationStart(langId string) (string, string, bool, error) {
+func (s *ServerConnection) ProductRegistrationStart(langId string) (string, string, bool, error) {
 	params := struct {
 		LangId string `json:"langId"`
 	}{langId}
-	data, err := c.CallRaw("ProductRegistration.start", params)
+	data, err := s.CallRaw("ProductRegistration.start", params)
 	if err != nil {
 		return "", "", false, err
 	}
@@ -260,13 +260,13 @@ func (c *ServerConnection) ProductRegistrationStart(langId string) (string, stri
 //	allowFinish - if false, the number is OK, but the registration cannot be finished without adding some other numbers.
 //	users - the count of users connected to the license
 //	expirationDate - licence expiration date
-func (c *ServerConnection) ProductRegistrationVerifyNumber(token string, baseId string, regNumbersToVerify RegStringList) (ErrorList, RegistrationNumberList, bool, int, *RegDate, error) {
+func (s *ServerConnection) ProductRegistrationVerifyNumber(token string, baseId string, regNumbersToVerify RegStringList) (ErrorList, RegistrationNumberList, bool, int, *RegDate, error) {
 	params := struct {
 		Token              string        `json:"token"`
 		BaseId             string        `json:"baseId"`
 		RegNumbersToVerify RegStringList `json:"regNumbersToVerify"`
 	}{token, baseId, regNumbersToVerify}
-	data, err := c.CallRaw("ProductRegistration.verifyNumber", params)
+	data, err := s.CallRaw("ProductRegistration.verifyNumber", params)
 	if err != nil {
 		return nil, nil, false, 0, nil, err
 	}

@@ -312,11 +312,11 @@ const (
 //	items - array of new items
 // Return
 //	errors - error message list
-func (c *ServerConnection) ContentAddBlackLists(items BlackListList) (ErrorList, error) {
+func (s *ServerConnection) ContentAddBlackLists(items BlackListList) (ErrorList, error) {
 	params := struct {
 		Items BlackListList `json:"items"`
 	}{items}
-	data, err := c.CallRaw("Content.addBlackLists", params)
+	data, err := s.CallRaw("Content.addBlackLists", params)
 	if err != nil {
 		return nil, err
 	}
@@ -332,8 +332,8 @@ func (c *ServerConnection) ContentAddBlackLists(items BlackListList) (ErrorList,
 // ContentGetAntiSpamSetting - Get antiSPAM settings.
 // Return
 //	setting - new antivirus filter settings
-func (c *ServerConnection) ContentGetAntiSpamSetting() (*AntiSpamSetting, error) {
-	data, err := c.CallRaw("Content.getAntiSpamSetting", nil)
+func (s *ServerConnection) ContentGetAntiSpamSetting() (*AntiSpamSetting, error) {
+	data, err := s.CallRaw("Content.getAntiSpamSetting", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -349,8 +349,8 @@ func (c *ServerConnection) ContentGetAntiSpamSetting() (*AntiSpamSetting, error)
 // ContentGetAntivirusSetting - Get antivirus filter settings.
 // Return
 //	setting - new antivirus filter settings
-func (c *ServerConnection) ContentGetAntivirusSetting() (*AntivirusSetting, error) {
-	data, err := c.CallRaw("Content.getAntivirusSetting", nil)
+func (s *ServerConnection) ContentGetAntivirusSetting() (*AntivirusSetting, error) {
+	data, err := s.CallRaw("Content.getAntivirusSetting", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -366,8 +366,8 @@ func (c *ServerConnection) ContentGetAntivirusSetting() (*AntivirusSetting, erro
 // ContentGetAttachmentRules - Get a list of attachment filter rules.
 // Return
 //	filterRules - attachment filter rules
-func (c *ServerConnection) ContentGetAttachmentRules() (AttachmentItemList, error) {
-	data, err := c.CallRaw("Content.getAttachmentRules", nil)
+func (s *ServerConnection) ContentGetAttachmentRules() (AttachmentItemList, error) {
+	data, err := s.CallRaw("Content.getAttachmentRules", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -383,8 +383,8 @@ func (c *ServerConnection) ContentGetAttachmentRules() (AttachmentItemList, erro
 // ContentGetAttachmentSetting - Obtain attachment filter settings.
 // Return
 //	setting - current attachment filter settings
-func (c *ServerConnection) ContentGetAttachmentSetting() (*AttachmentSetting, error) {
-	data, err := c.CallRaw("Content.getAttachmentSetting", nil)
+func (s *ServerConnection) ContentGetAttachmentSetting() (*AttachmentSetting, error) {
+	data, err := s.CallRaw("Content.getAttachmentSetting", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -401,8 +401,8 @@ func (c *ServerConnection) ContentGetAttachmentSetting() (*AttachmentSetting, er
 // Return
 //	fileNames - list of available file names
 //	mimeTypes - list of available MIME types
-func (c *ServerConnection) ContentGetAvailableAttachments() (StringList, StringList, error) {
-	data, err := c.CallRaw("Content.getAvailableAttachments", nil)
+func (s *ServerConnection) ContentGetAvailableAttachments() (StringList, StringList, error) {
+	data, err := s.CallRaw("Content.getAvailableAttachments", nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -419,8 +419,8 @@ func (c *ServerConnection) ContentGetAvailableAttachments() (StringList, StringL
 // ContentGetBlackListList - Obtain all blacklist items.
 // Return
 //	list - blacklist items
-func (c *ServerConnection) ContentGetBlackListList() (BlackListList, error) {
-	data, err := c.CallRaw("Content.getBlackListList", nil)
+func (s *ServerConnection) ContentGetBlackListList() (BlackListList, error) {
+	data, err := s.CallRaw("Content.getBlackListList", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -438,11 +438,11 @@ func (c *ServerConnection) ContentGetBlackListList() (BlackListList, error) {
 //	query - condition and limit definition (orderBy is ignored)
 // Return
 //	list - custom rules
-func (c *ServerConnection) ContentGetCustomRuleList(query SearchQuery) (CustomRuleList, error) {
+func (s *ServerConnection) ContentGetCustomRuleList(query SearchQuery) (CustomRuleList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
-	data, err := c.CallRaw("Content.getCustomRuleList", params)
+	data, err := s.CallRaw("Content.getCustomRuleList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -460,11 +460,11 @@ func (c *ServerConnection) ContentGetCustomRuleList(query SearchQuery) (CustomRu
 //	ids - identifier list of blacklists to be deleted
 // Return
 //	errors - error message list
-func (c *ServerConnection) ContentRemoveBlackLists(ids KIdList) (ErrorList, error) {
+func (s *ServerConnection) ContentRemoveBlackLists(ids KIdList) (ErrorList, error) {
 	params := struct {
 		Ids KIdList `json:"ids"`
 	}{ids}
-	data, err := c.CallRaw("Content.removeBlackLists", params)
+	data, err := s.CallRaw("Content.removeBlackLists", params)
 	if err != nil {
 		return nil, err
 	}
@@ -481,23 +481,23 @@ func (c *ServerConnection) ContentRemoveBlackLists(ids KIdList) (ErrorList, erro
 // Parameters
 //	number - how many hours/days is the rule unused
 //	unit - which unit is used to measure
-func (c *ServerConnection) ContentRemoveUnusedCustomRules(number int, unit HourOrDay) error {
+func (s *ServerConnection) ContentRemoveUnusedCustomRules(number int, unit HourOrDay) error {
 	params := struct {
 		Number int       `json:"number"`
 		Unit   HourOrDay `json:"unit"`
 	}{number, unit}
-	_, err := c.CallRaw("Content.removeUnusedCustomRules", params)
+	_, err := s.CallRaw("Content.removeUnusedCustomRules", params)
 	return err
 }
 
 // ContentSetAntiSpamSetting - Set antiSPAM filter settings.
 // Parameters
 //	setting - new antivirus filter settings
-func (c *ServerConnection) ContentSetAntiSpamSetting(setting AntiSpamSetting) error {
+func (s *ServerConnection) ContentSetAntiSpamSetting(setting AntiSpamSetting) error {
 	params := struct {
 		Setting AntiSpamSetting `json:"setting"`
 	}{setting}
-	_, err := c.CallRaw("Content.setAntiSpamSetting", params)
+	_, err := s.CallRaw("Content.setAntiSpamSetting", params)
 	return err
 }
 
@@ -506,11 +506,11 @@ func (c *ServerConnection) ContentSetAntiSpamSetting(setting AntiSpamSetting) er
 //	setting - new antivirus filter settingss
 // Return
 //	errors - error message; Value of inputIndex means type of antivirus (integrated = 0 and external = 1).
-func (c *ServerConnection) ContentSetAntivirusSetting(setting AntivirusSetting) (ErrorList, error) {
+func (s *ServerConnection) ContentSetAntivirusSetting(setting AntivirusSetting) (ErrorList, error) {
 	params := struct {
 		Setting AntivirusSetting `json:"setting"`
 	}{setting}
-	data, err := c.CallRaw("Content.setAntivirusSetting", params)
+	data, err := s.CallRaw("Content.setAntivirusSetting", params)
 	if err != nil {
 		return nil, err
 	}
@@ -526,22 +526,22 @@ func (c *ServerConnection) ContentSetAntivirusSetting(setting AntivirusSetting) 
 // ContentSetAttachmentRules - Set list of attachment filter rules.
 // Parameters
 //	filterRules - attachment filter rules
-func (c *ServerConnection) ContentSetAttachmentRules(filterRules AttachmentItemList) error {
+func (s *ServerConnection) ContentSetAttachmentRules(filterRules AttachmentItemList) error {
 	params := struct {
 		FilterRules AttachmentItemList `json:"filterRules"`
 	}{filterRules}
-	_, err := c.CallRaw("Content.setAttachmentRules", params)
+	_, err := s.CallRaw("Content.setAttachmentRules", params)
 	return err
 }
 
 // ContentSetAttachmentSetting - Set attachment filter settings.
 // Parameters
 //	setting - new attachment filter settings
-func (c *ServerConnection) ContentSetAttachmentSetting(setting AttachmentSetting) error {
+func (s *ServerConnection) ContentSetAttachmentSetting(setting AttachmentSetting) error {
 	params := struct {
 		Setting AttachmentSetting `json:"setting"`
 	}{setting}
-	_, err := c.CallRaw("Content.setAttachmentSetting", params)
+	_, err := s.CallRaw("Content.setAttachmentSetting", params)
 	return err
 }
 
@@ -551,12 +551,12 @@ func (c *ServerConnection) ContentSetAttachmentSetting(setting AttachmentSetting
 //	pattern - pattern to use for new values
 // Return
 //	errors - error message list
-func (c *ServerConnection) ContentSetBlackLists(ids KIdList, pattern BlackList) (ErrorList, error) {
+func (s *ServerConnection) ContentSetBlackLists(ids KIdList, pattern BlackList) (ErrorList, error) {
 	params := struct {
 		Ids     KIdList   `json:"ids"`
 		Pattern BlackList `json:"pattern"`
 	}{ids, pattern}
-	data, err := c.CallRaw("Content.setBlackLists", params)
+	data, err := s.CallRaw("Content.setBlackLists", params)
 	if err != nil {
 		return nil, err
 	}
@@ -572,23 +572,23 @@ func (c *ServerConnection) ContentSetBlackLists(ids KIdList, pattern BlackList) 
 // ContentSetCustomRuleList - Set custom rules.
 // Parameters
 //	list - custom rule records
-func (c *ServerConnection) ContentSetCustomRuleList(list CustomRuleList) error {
+func (s *ServerConnection) ContentSetCustomRuleList(list CustomRuleList) error {
 	params := struct {
 		List CustomRuleList `json:"list"`
 	}{list}
-	_, err := c.CallRaw("Content.setCustomRuleList", params)
+	_, err := s.CallRaw("Content.setCustomRuleList", params)
 	return err
 }
 
 // ContentTestGreylistConnection - Test connection to the greylisting service. Returns nothing if successful.
-func (c *ServerConnection) ContentTestGreylistConnection() error {
-	_, err := c.CallRaw("Content.testGreylistConnection", nil)
+func (s *ServerConnection) ContentTestGreylistConnection() error {
+	_, err := s.CallRaw("Content.testGreylistConnection", nil)
 	return err
 }
 
 // ContentTestIntegratedAntiSpamEngine - Test connection to the anti-spam service. Returns nothing if successful.
-func (c *ServerConnection) ContentTestIntegratedAntiSpamEngine() (*IntegratedAntiSpamStatus, error) {
-	data, err := c.CallRaw("Content.testIntegratedAntiSpamEngine", nil)
+func (s *ServerConnection) ContentTestIntegratedAntiSpamEngine() (*IntegratedAntiSpamStatus, error) {
+	data, err := s.CallRaw("Content.testIntegratedAntiSpamEngine", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -604,8 +604,8 @@ func (c *ServerConnection) ContentTestIntegratedAntiSpamEngine() (*IntegratedAnt
 // ContentUpdateAntivirusStatus - Get progress of antivirus updating.
 // Return
 //	status - status of the update process
-func (c *ServerConnection) ContentUpdateAntivirusStatus() (*IntegratedAvirUpdateStatus, error) {
-	data, err := c.CallRaw("Content.updateAntivirusStatus", nil)
+func (s *ServerConnection) ContentUpdateAntivirusStatus() (*IntegratedAvirUpdateStatus, error) {
+	data, err := s.CallRaw("Content.updateAntivirusStatus", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -619,7 +619,7 @@ func (c *ServerConnection) ContentUpdateAntivirusStatus() (*IntegratedAvirUpdate
 }
 
 // ContentUpdateIntegratedAntivirus - Force update of the integrated antivirus.
-func (c *ServerConnection) ContentUpdateIntegratedAntivirus() error {
-	_, err := c.CallRaw("Content.updateIntegratedAntivirus", nil)
+func (s *ServerConnection) ContentUpdateIntegratedAntivirus() error {
+	_, err := s.CallRaw("Content.updateIntegratedAntivirus", nil)
 	return err
 }

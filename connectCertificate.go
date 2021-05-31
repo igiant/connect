@@ -7,11 +7,11 @@ import "encoding/json"
 //	id - ID of the certificate or certificate request
 // Return
 //	fileDownload - description of the output file
-func (c *ServerConnection) ConnectCertificateExportCertificate(id KId) (*Download, error) {
+func (s *ServerConnection) ConnectCertificateExportCertificate(id KId) (*Download, error) {
 	params := struct {
 		Id KId `json:"id"`
 	}{id}
-	data, err := c.CallRaw("ConnectCertificate.exportCertificate", params)
+	data, err := s.CallRaw("ConnectCertificate.exportCertificate", params)
 	if err != nil {
 		return nil, err
 	}
@@ -29,11 +29,11 @@ func (c *ServerConnection) ConnectCertificateExportCertificate(id KId) (*Downloa
 //	id - ID of the certificate or certificate request
 // Return
 //	fileDownload - description of the output file
-func (c *ServerConnection) ConnectCertificateExportPrivateKey(id KId) (*Download, error) {
+func (s *ServerConnection) ConnectCertificateExportPrivateKey(id KId) (*Download, error) {
 	params := struct {
 		Id KId `json:"id"`
 	}{id}
-	data, err := c.CallRaw("ConnectCertificate.exportPrivateKey", params)
+	data, err := s.CallRaw("ConnectCertificate.exportPrivateKey", params)
 	if err != nil {
 		return nil, err
 	}
@@ -49,8 +49,8 @@ func (c *ServerConnection) ConnectCertificateExportPrivateKey(id KId) (*Download
 // ConnectCertificateGet - Obtain a list of certificates
 // Return
 //	certificates - current list of certificates
-func (c *ServerConnection) ConnectCertificateGet() (CertificateList, error) {
-	data, err := c.CallRaw("ConnectCertificate.get", nil)
+func (s *ServerConnection) ConnectCertificateGet() (CertificateList, error) {
+	data, err := s.CallRaw("ConnectCertificate.get", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -69,12 +69,12 @@ func (c *ServerConnection) ConnectCertificateGet() (CertificateList, error) {
 //	valid - length of the certificate's validity (in years, max value is 10)
 // Return
 //	id - ID of the new generated certificate
-func (c *ServerConnection) ConnectCertificateGenerate(subject NamedValueList, valid int) (*KId, error) {
+func (s *ServerConnection) ConnectCertificateGenerate(subject NamedValueList, valid int) (*KId, error) {
 	params := struct {
 		Subject NamedValueList `json:"subject"`
 		Valid   int            `json:"valid"`
 	}{subject, valid}
-	data, err := c.CallRaw("ConnectCertificate.generate", params)
+	data, err := s.CallRaw("ConnectCertificate.generate", params)
 	if err != nil {
 		return nil, err
 	}
@@ -92,11 +92,11 @@ func (c *ServerConnection) ConnectCertificateGenerate(subject NamedValueList, va
 //	subject - information about subject
 // Return
 //	id - ID of the new generated certificate request
-func (c *ServerConnection) ConnectCertificateGenerateRequest(subject NamedValueList) (*KId, error) {
+func (s *ServerConnection) ConnectCertificateGenerateRequest(subject NamedValueList) (*KId, error) {
 	params := struct {
 		Subject NamedValueList `json:"subject"`
 	}{subject}
-	data, err := c.CallRaw("ConnectCertificate.generateRequest", params)
+	data, err := s.CallRaw("ConnectCertificate.generateRequest", params)
 	if err != nil {
 		return nil, err
 	}
@@ -114,13 +114,13 @@ func (c *ServerConnection) ConnectCertificateGenerateRequest(subject NamedValueL
 //	id - ID of private key or certificate request which belongs to the certificate
 //	fileId - ID of the uploaded file
 //	password - certificate password, if it is set (use empty string if password is not set)
-func (c *ServerConnection) ConnectCertificateImportCertificate(id KId, fileId string, password string) error {
+func (s *ServerConnection) ConnectCertificateImportCertificate(id KId, fileId string, password string) error {
 	params := struct {
 		Id       KId    `json:"id"`
 		FileId   string `json:"fileId"`
 		Password string `json:"password"`
 	}{id, fileId, password}
-	_, err := c.CallRaw("ConnectCertificate.importCertificate", params)
+	_, err := s.CallRaw("ConnectCertificate.importCertificate", params)
 	return err
 }
 
@@ -130,11 +130,11 @@ func (c *ServerConnection) ConnectCertificateImportCertificate(id KId, fileId st
 // Return
 //	needPassword - true if private key is encrypted with password
 //	id - temporary ID to assign certificate to private key
-func (c *ServerConnection) ConnectCertificateImportPrivateKey(fileId string) (bool, *KId, error) {
+func (s *ServerConnection) ConnectCertificateImportPrivateKey(fileId string) (bool, *KId, error) {
 	params := struct {
 		FileId string `json:"fileId"`
 	}{fileId}
-	data, err := c.CallRaw("ConnectCertificate.importPrivateKey", params)
+	data, err := s.CallRaw("ConnectCertificate.importPrivateKey", params)
 	if err != nil {
 		return false, nil, err
 	}
@@ -151,11 +151,11 @@ func (c *ServerConnection) ConnectCertificateImportPrivateKey(fileId string) (bo
 // ConnectCertificateRemove - Remove list of certificate records
 // Return
 //	errors - error message list
-func (c *ServerConnection) ConnectCertificateRemove(certificateIds KIdList) (ErrorList, error) {
+func (s *ServerConnection) ConnectCertificateRemove(certificateIds KIdList) (ErrorList, error) {
 	params := struct {
 		CertificateIds KIdList `json:"certificateIds"`
 	}{certificateIds}
-	data, err := c.CallRaw("ConnectCertificate.remove", params)
+	data, err := s.CallRaw("ConnectCertificate.remove", params)
 	if err != nil {
 		return nil, err
 	}
@@ -171,11 +171,11 @@ func (c *ServerConnection) ConnectCertificateRemove(certificateIds KIdList) (Err
 // ConnectCertificateSetActive - Set active certificate
 // Parameters
 //	id - ID of the new active certificate
-func (c *ServerConnection) ConnectCertificateSetActive(id KId) error {
+func (s *ServerConnection) ConnectCertificateSetActive(id KId) error {
 	params := struct {
 		Id KId `json:"id"`
 	}{id}
-	_, err := c.CallRaw("ConnectCertificate.setActive", params)
+	_, err := s.CallRaw("ConnectCertificate.setActive", params)
 	return err
 }
 
@@ -184,11 +184,11 @@ func (c *ServerConnection) ConnectCertificateSetActive(id KId) error {
 //	id - global identifier
 // Return
 //	source - certificate in plain text
-func (c *ServerConnection) ConnectCertificateToSource(id KId) (string, error) {
+func (s *ServerConnection) ConnectCertificateToSource(id KId) (string, error) {
 	params := struct {
 		Id KId `json:"id"`
 	}{id}
-	data, err := c.CallRaw("ConnectCertificate.toSource", params)
+	data, err := s.CallRaw("ConnectCertificate.toSource", params)
 	if err != nil {
 		return "", err
 	}

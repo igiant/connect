@@ -56,8 +56,8 @@ type ServiceList []Service
 // ServicesGet - Show a list of services with current status.
 // Return
 //	services - list of KMS services
-func (c *ServerConnection) ServicesGet() (ServiceList, error) {
-	data, err := c.CallRaw("Services.get", nil)
+func (s *ServerConnection) ServicesGet() (ServiceList, error) {
+	data, err := s.CallRaw("Services.get", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -73,11 +73,11 @@ func (c *ServerConnection) ServicesGet() (ServiceList, error) {
 // ServicesRestart - Restart a given service.
 // Parameters
 //	service - unique service identifier
-func (c *ServerConnection) ServicesRestart(service KId) error {
+func (s *ServerConnection) ServicesRestart(service KId) error {
 	params := struct {
 		Service KId `json:"service"`
 	}{service}
-	_, err := c.CallRaw("Services.restart", params)
+	_, err := s.CallRaw("Services.restart", params)
 	return err
 }
 
@@ -86,11 +86,11 @@ func (c *ServerConnection) ServicesRestart(service KId) error {
 //	services - list of KMS services
 // Return
 //	errors - errors of requested changes
-func (c *ServerConnection) ServicesSet(services ServiceList) (ErrorList, error) {
+func (s *ServerConnection) ServicesSet(services ServiceList) (ErrorList, error) {
 	params := struct {
 		Services ServiceList `json:"services"`
 	}{services}
-	data, err := c.CallRaw("Services.set", params)
+	data, err := s.CallRaw("Services.set", params)
 	if err != nil {
 		return nil, err
 	}
@@ -106,34 +106,34 @@ func (c *ServerConnection) ServicesSet(services ServiceList) (ErrorList, error) 
 // ServicesStart - Start a given service.
 // Parameters
 //	service - unique service identifier
-func (c *ServerConnection) ServicesStart(service KId) error {
+func (s *ServerConnection) ServicesStart(service KId) error {
 	params := struct {
 		Service KId `json:"service"`
 	}{service}
-	_, err := c.CallRaw("Services.start", params)
+	_, err := s.CallRaw("Services.start", params)
 	return err
 }
 
 // ServicesStop - Stop a given service.
 // Parameters
 //	service - unique service identifier
-func (c *ServerConnection) ServicesStop(service KId) error {
+func (s *ServerConnection) ServicesStop(service KId) error {
 	params := struct {
 		Service KId `json:"service"`
 	}{service}
-	_, err := c.CallRaw("Services.stop", params)
+	_, err := s.CallRaw("Services.stop", params)
 	return err
 }
 
 // ServicesStopMacOSServices - Stop the Mac OS services.
-func (c *ServerConnection) ServicesStopMacOSServices() error {
-	_, err := c.CallRaw("Services.stopMacOSServices", nil)
+func (s *ServerConnection) ServicesStopMacOSServices() error {
+	_, err := s.CallRaw("Services.stopMacOSServices", nil)
 	return err
 }
 
 // ServicesGetIPv6 - Obtain IPv6 settings.
-func (c *ServerConnection) ServicesGetIPv6() (bool, error) {
-	data, err := c.CallRaw("Services.getIPv6", nil)
+func (s *ServerConnection) ServicesGetIPv6() (bool, error) {
+	data, err := s.CallRaw("Services.getIPv6", nil)
 	if err != nil {
 		return false, err
 	}
@@ -147,10 +147,10 @@ func (c *ServerConnection) ServicesGetIPv6() (bool, error) {
 }
 
 // ServicesSetIPv6 - Set IPv6 settings.
-func (c *ServerConnection) ServicesSetIPv6(isEnabled bool) error {
+func (s *ServerConnection) ServicesSetIPv6(isEnabled bool) error {
 	params := struct {
 		IsEnabled bool `json:"isEnabled"`
 	}{isEnabled}
-	_, err := c.CallRaw("Services.setIPv6", params)
+	_, err := s.CallRaw("Services.setIPv6", params)
 	return err
 }

@@ -190,12 +190,12 @@ type ChartData struct {
 //	lang - export language
 // Return
 //	fileDownload - description of output file
-func (c *ServerConnection) StatisticsExportToHtml(typeExpStatistics TypeExpStatistics, lang string) (*Download, error) {
+func (s *ServerConnection) StatisticsExportToHtml(typeExpStatistics TypeExpStatistics, lang string) (*Download, error) {
 	params := struct {
 		Type TypeExpStatistics `json:"type"`
 		Lang string            `json:"lang"`
 	}{typeExpStatistics, lang}
-	data, err := c.CallRaw("Statistics.exportToHtml", params)
+	data, err := s.CallRaw("Statistics.exportToHtml", params)
 	if err != nil {
 		return nil, err
 	}
@@ -209,8 +209,8 @@ func (c *ServerConnection) StatisticsExportToHtml(typeExpStatistics TypeExpStati
 }
 
 // StatisticsGet - Obtain overall server statistics.
-func (c *ServerConnection) StatisticsGet() (*ServerStatistics, error) {
-	data, err := c.CallRaw("Statistics.get", nil)
+func (s *ServerConnection) StatisticsGet() (*ServerStatistics, error) {
+	data, err := s.CallRaw("Statistics.get", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -226,8 +226,8 @@ func (c *ServerConnection) StatisticsGet() (*ServerStatistics, error) {
 // StatisticsGetCharts - Obtain descriptions of charts graphs.
 // Return
 //	chartList - list of descriptions of charts graphs
-func (c *ServerConnection) StatisticsGetCharts() (ChartList, error) {
-	data, err := c.CallRaw("Statistics.getCharts", nil)
+func (s *ServerConnection) StatisticsGetCharts() (ChartList, error) {
+	data, err := s.CallRaw("Statistics.getCharts", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -247,13 +247,13 @@ func (c *ServerConnection) StatisticsGetCharts() (ChartList, error) {
 //	scaleId - ID of scale
 // Return
 //	chartData - values of charts graph
-func (c *ServerConnection) StatisticsGetChartData(classname string, name string, scaleId int) (*ChartData, error) {
+func (s *ServerConnection) StatisticsGetChartData(classname string, name string, scaleId int) (*ChartData, error) {
 	params := struct {
 		Classname string `json:"classname"`
 		Name      string `json:"name"`
 		ScaleId   int    `json:"scaleId"`
 	}{classname, name, scaleId}
-	data, err := c.CallRaw("Statistics.getChartData", params)
+	data, err := s.CallRaw("Statistics.getChartData", params)
 	if err != nil {
 		return nil, err
 	}
@@ -267,7 +267,7 @@ func (c *ServerConnection) StatisticsGetChartData(classname string, name string,
 }
 
 // StatisticsReset - Reset statistics data.
-func (c *ServerConnection) StatisticsReset() error {
-	_, err := c.CallRaw("Statistics.reset", nil)
+func (s *ServerConnection) StatisticsReset() error {
+	_, err := s.CallRaw("Statistics.reset", nil)
 	return err
 }

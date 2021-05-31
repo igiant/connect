@@ -17,8 +17,8 @@ type XMPPConfiguration struct {
 // InstantMessagingGet - Get settings of XMPP server
 // Return
 //	settings - Sign On settings
-func (c *ServerConnection) InstantMessagingGet() (*XmppSettings, error) {
-	data, err := c.CallRaw("InstantMessaging.get", nil)
+func (s *ServerConnection) InstantMessagingGet() (*XmppSettings, error) {
+	data, err := s.CallRaw("InstantMessaging.get", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -34,20 +34,20 @@ func (c *ServerConnection) InstantMessagingGet() (*XmppSettings, error) {
 // InstantMessagingSet - Set settings of XMPP server
 // Parameters
 //	settings - Sign On settings
-func (c *ServerConnection) InstantMessagingSet(settings XmppSettings) error {
+func (s *ServerConnection) InstantMessagingSet(settings XmppSettings) error {
 	params := struct {
 		Settings XmppSettings `json:"settings"`
 	}{settings}
-	_, err := c.CallRaw("InstantMessaging.set", params)
+	_, err := s.CallRaw("InstantMessaging.set", params)
 	return err
 }
 
 // InstantMessagingCheckXMPPConfiguration - Check XMPP configuration for all domains
-func (c *ServerConnection) InstantMessagingCheckXMPPConfiguration(domainId KId) (*XMPPConfiguration, error) {
+func (s *ServerConnection) InstantMessagingCheckXMPPConfiguration(domainId KId) (*XMPPConfiguration, error) {
 	params := struct {
 		DomainId KId `json:"domainId"`
 	}{domainId}
-	data, err := c.CallRaw("InstantMessaging.checkXMPPConfiguration", params)
+	data, err := s.CallRaw("InstantMessaging.checkXMPPConfiguration", params)
 	if err != nil {
 		return nil, err
 	}

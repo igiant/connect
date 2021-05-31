@@ -56,11 +56,11 @@ type AliasTargetList []AliasTarget
 //	checkString - string to be checked
 // Return
 //	result - list of expansions
-func (c *ServerConnection) AliasesCheck(checkString string) (StringList, error) {
+func (s *ServerConnection) AliasesCheck(checkString string) (StringList, error) {
 	params := struct {
 		CheckString string `json:"checkString"`
 	}{checkString}
-	data, err := c.CallRaw("Aliases.check", params)
+	data, err := s.CallRaw("Aliases.check", params)
 	if err != nil {
 		return nil, err
 	}
@@ -79,11 +79,11 @@ func (c *ServerConnection) AliasesCheck(checkString string) (StringList, error) 
 // Return
 //	errors - list of error messages for appropriate new aliases
 //	result - list of IDs of created aliases
-func (c *ServerConnection) AliasesCreate(aliases AliasList) (ErrorList, CreateResultList, error) {
+func (s *ServerConnection) AliasesCreate(aliases AliasList) (ErrorList, CreateResultList, error) {
 	params := struct {
 		Aliases AliasList `json:"aliases"`
 	}{aliases}
-	data, err := c.CallRaw("Aliases.create", params)
+	data, err := s.CallRaw("Aliases.create", params)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -102,12 +102,12 @@ func (c *ServerConnection) AliasesCreate(aliases AliasList) (ErrorList, CreateRe
 //	query - query conditions and limits
 // Return
 //	list - aliases
-func (c *ServerConnection) AliasesGet(query SearchQuery, domainId KId) (AliasList, error) {
+func (s *ServerConnection) AliasesGet(query SearchQuery, domainId KId) (AliasList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
-	data, err := c.CallRaw("Aliases.get", params)
+	data, err := s.CallRaw("Aliases.get", params)
 	if err != nil {
 		return nil, err
 	}
@@ -125,11 +125,11 @@ func (c *ServerConnection) AliasesGet(query SearchQuery, domainId KId) (AliasLis
 //	domainId - global identification of the domain
 // Return
 //	publicFolderList - list of public folders
-func (c *ServerConnection) AliasesGetMailPublicFolderList(domainId KId) (PublicFolderList, error) {
+func (s *ServerConnection) AliasesGetMailPublicFolderList(domainId KId) (PublicFolderList, error) {
 	params := struct {
 		DomainId KId `json:"domainId"`
 	}{domainId}
-	data, err := c.CallRaw("Aliases.getMailPublicFolderList", params)
+	data, err := s.CallRaw("Aliases.getMailPublicFolderList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -148,12 +148,12 @@ func (c *ServerConnection) AliasesGetMailPublicFolderList(domainId KId) (PublicF
 //	domainId - global identification of the domain
 // Return
 //	list - alias targets
-func (c *ServerConnection) AliasesGetTargetList(query SearchQuery, domainId KId) (AliasTargetList, error) {
+func (s *ServerConnection) AliasesGetTargetList(query SearchQuery, domainId KId) (AliasTargetList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
-	data, err := c.CallRaw("Aliases.getTargetList", params)
+	data, err := s.CallRaw("Aliases.getTargetList", params)
 	if err != nil {
 		return nil, err
 	}
@@ -169,11 +169,11 @@ func (c *ServerConnection) AliasesGetTargetList(query SearchQuery, domainId KId)
 // AliasesRemove - Delete aliases.
 // Return
 //	errors - error message list
-func (c *ServerConnection) AliasesRemove(aliasIds KIdList) (ErrorList, error) {
+func (s *ServerConnection) AliasesRemove(aliasIds KIdList) (ErrorList, error) {
 	params := struct {
 		AliasIds KIdList `json:"aliasIds"`
 	}{aliasIds}
-	data, err := c.CallRaw("Aliases.remove", params)
+	data, err := s.CallRaw("Aliases.remove", params)
 	if err != nil {
 		return nil, err
 	}
@@ -192,12 +192,12 @@ func (c *ServerConnection) AliasesRemove(aliasIds KIdList) (ErrorList, error) {
 //	pattern - pattern to use for new values
 // Return
 //	errors - error message list
-func (c *ServerConnection) AliasesSet(aliasIds KIdList, pattern Alias) (ErrorList, error) {
+func (s *ServerConnection) AliasesSet(aliasIds KIdList, pattern Alias) (ErrorList, error) {
 	params := struct {
 		AliasIds KIdList `json:"aliasIds"`
 		Pattern  Alias   `json:"pattern"`
 	}{aliasIds, pattern}
-	data, err := c.CallRaw("Aliases.set", params)
+	data, err := s.CallRaw("Aliases.set", params)
 	if err != nil {
 		return nil, err
 	}
