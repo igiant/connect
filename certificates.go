@@ -130,7 +130,7 @@ func (c *ServerConnection) CertificatesRemove(ids KIdList) (ErrorList, error) {
 //	period - time properties specified by user, not relevant for CertificateRequest
 // Return
 //	id - ID of generated certificate
-func (c *ServerConnection) CertificatesGenerate(subject NamedValueList, name string, certificateType CertificateType, period ValidPeriod) (*KId, error) {
+func (c *ServerConnection) CertificatesGenerate(subject NamedValueList, name string, certificateType CertificateType, period ValidPeriod) (KId, error) {
 	params := struct {
 		Subject NamedValueList  `json:"subject"`
 		Name    string          `json:"name"`
@@ -139,7 +139,7 @@ func (c *ServerConnection) CertificatesGenerate(subject NamedValueList, name str
 	}{subject, name, certificateType, period}
 	data, err := c.CallRaw("Certificates.generate", params)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	id := struct {
 		Result struct {
@@ -147,7 +147,7 @@ func (c *ServerConnection) CertificatesGenerate(subject NamedValueList, name str
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &id)
-	return &id.Result.Id, err
+	return id.Result.Id, err
 }
 
 // CertificatesGetCountryList - 1004 Access denied.  - "Insufficient rights to perform the requested operation."
@@ -175,7 +175,7 @@ func (c *ServerConnection) CertificatesGetCountryList() (NamedValueList, error) 
 //	certificateType - type of certificate to be imported, valid input is one of: InactiveCertificate/Authority/LocalAuthority
 // Return
 //	id - ID of generated certificate
-func (c *ServerConnection) CertificatesImportCertificate(keyId KId, fileId string, name string, certificateType CertificateType) (*KId, error) {
+func (c *ServerConnection) CertificatesImportCertificate(keyId KId, fileId string, name string, certificateType CertificateType) (KId, error) {
 	params := struct {
 		KeyId  KId             `json:"keyId"`
 		FileId string          `json:"fileId"`
@@ -184,7 +184,7 @@ func (c *ServerConnection) CertificatesImportCertificate(keyId KId, fileId strin
 	}{keyId, fileId, name, certificateType}
 	data, err := c.CallRaw("Certificates.importCertificate", params)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	id := struct {
 		Result struct {
@@ -192,7 +192,7 @@ func (c *ServerConnection) CertificatesImportCertificate(keyId KId, fileId strin
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &id)
-	return &id.Result.Id, err
+	return id.Result.Id, err
 }
 
 // CertificatesImportPrivateKey - Invalid params. - "Unable to import private key, content is invalid."
@@ -201,13 +201,13 @@ func (c *ServerConnection) CertificatesImportCertificate(keyId KId, fileId strin
 // Return
 //	keyId - generated ID for new key
 //	needPassword - true if private key is encrypted with password
-func (c *ServerConnection) CertificatesImportPrivateKey(fileId string) (*KId, *bool, error) {
+func (c *ServerConnection) CertificatesImportPrivateKey(fileId string) (KId, bool, error) {
 	params := struct {
 		FileId string `json:"fileId"`
 	}{fileId}
 	data, err := c.CallRaw("Certificates.importPrivateKey", params)
 	if err != nil {
-		return nil, nil, err
+		return "", false, err
 	}
 	keyId := struct {
 		Result struct {
@@ -216,7 +216,7 @@ func (c *ServerConnection) CertificatesImportPrivateKey(fileId string) (*KId, *b
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &keyId)
-	return &keyId.Result.KeyId, &keyId.Result.NeedPassword, err
+	return keyId.Result.KeyId, keyId.Result.NeedPassword, err
 }
 
 // CertificatesUnlockPrivateKey - Invalid params. - "Unable to parse private key with given password!"
