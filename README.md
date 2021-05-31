@@ -3,9 +3,7 @@
 ## Overview
 Client for [Kerio API Connect (JSON-RPC 2.0)](https://manuals.gfi.com/en/kerio/api/connect/admin/reference/index.html)
 
-Implemented several Administration API for Kerio Connect methods
-
-Created the basis for easily adding your own methods
+Implemented all Administration API for Kerio Connect methods
 
 ## Installation
 ```go
@@ -60,4 +58,4 @@ func main() {
 * [GoDoc](http://godoc.org/github.com/igiant/connect)
 
 ## RoadMap
-* Add remaining methods for Kerio Connect
+* Add tests and search errors
