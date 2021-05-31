@@ -69,23 +69,21 @@ func (c *ServerConnection) MigrationCancel(taskIdList KIdList) (ErrorList, error
 //	query - query attributes and limits
 // Return
 //	list - migration tasks
-//	totalItems - total number of tasks
-func (c *ServerConnection) MigrationGet(query SearchQuery) (MigrationTaskList, int, error) {
+func (c *ServerConnection) MigrationGet(query SearchQuery) (MigrationTaskList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := c.CallRaw("Migration.get", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       MigrationTaskList `json:"list"`
-			TotalItems int               `json:"totalItems"`
+			List MigrationTaskList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // MigrationGetCurrentHomeServer - Note: This method should be moved to DistributedDomain

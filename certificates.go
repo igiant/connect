@@ -70,23 +70,21 @@ type CertificateList []Certificate
 //	query - conditions and limits. Included from weblib.
 // Return
 //	certificates - current list of certificates
-//	totalItems - count of all services on server (before the start/limit applied)
-func (c *ServerConnection) CertificatesGet(query SearchQuery) (CertificateList, int, error) {
+func (c *ServerConnection) CertificatesGet(query SearchQuery) (CertificateList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := c.CallRaw("Certificates.get", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	certificates := struct {
 		Result struct {
 			Certificates CertificateList `json:"certificates"`
-			TotalItems   int             `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &certificates)
-	return certificates.Result.Certificates, certificates.Result.TotalItems, err
+	return certificates.Result.Certificates, err
 }
 
 // CertificatesSetName - 1004 Access denied.  - "Insufficient rights to perform the requested operation."

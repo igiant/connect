@@ -87,24 +87,22 @@ func (c *ServerConnection) ResourcesCreate(resources ResourceList) (ErrorList, C
 //	domainId - domain identification
 // Return
 //	list - resources
-//	totalItems - amount of resources for given search condition, useful when limit is defined in search query
-func (c *ServerConnection) ResourcesGet(query SearchQuery, domainId KId) (ResourceList, int, error) {
+func (c *ServerConnection) ResourcesGet(query SearchQuery, domainId KId) (ResourceList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
 	data, err := c.CallRaw("Resources.get", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       ResourceList `json:"list"`
-			TotalItems int          `json:"totalItems"`
+			List ResourceList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // ResourcesGetPrincipalList - Obtain a list of potential resource targets (principals).
@@ -112,23 +110,22 @@ func (c *ServerConnection) ResourcesGet(query SearchQuery, domainId KId) (Resour
 //	query - query attributes and limits
 // Return
 //	list - principals
-func (c *ServerConnection) ResourcesGetPrincipalList(query SearchQuery, domainId KId) (PrincipalList, int, error) {
+func (c *ServerConnection) ResourcesGetPrincipalList(query SearchQuery, domainId KId) (PrincipalList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
 	data, err := c.CallRaw("Resources.getPrincipalList", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       PrincipalList `json:"list"`
-			TotalItems int           `json:"totalItems"`
+			List PrincipalList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // ResourcesRemove - Remove resources.

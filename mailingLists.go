@@ -218,24 +218,22 @@ func (c *ServerConnection) MailingListsExportMlUsersToCsv(kind MlMembership, mlI
 //	query - query conditions and limits
 // Return
 //	list - mailing lists
-//	totalItems - amount of MLs for given search condition, useful when a limit is defined in search query
-func (c *ServerConnection) MailingListsGet(query SearchQuery, domainId KId) (MlList, int, error) {
+func (c *ServerConnection) MailingListsGet(query SearchQuery, domainId KId) (MlList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
 	data, err := c.CallRaw("MailingLists.get", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       MlList `json:"list"`
-			TotalItems int    `json:"totalItems"`
+			List MlList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // MailingListsGetMlUserList - Obtain list of mailing list users including membership type.
@@ -244,24 +242,22 @@ func (c *ServerConnection) MailingListsGet(query SearchQuery, domainId KId) (MlL
 //	mlId - unique ML identifier
 // Return
 //	list - mailing list members and/or moderators
-//	totalItems - amount of MLs members for given search condition, useful when a limit is defined in search query
-func (c *ServerConnection) MailingListsGetMlUserList(query SearchQuery, mlId KId) (UserOrEmailList, int, error) {
+func (c *ServerConnection) MailingListsGetMlUserList(query SearchQuery, mlId KId) (UserOrEmailList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 		MlId  KId         `json:"mlId"`
 	}{query, mlId}
 	data, err := c.CallRaw("MailingLists.getMlUserList", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       UserOrEmailList `json:"list"`
-			TotalItems int             `json:"totalItems"`
+			List UserOrEmailList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // MailingListsGetMlUserListFromCsv - Parse CSV file in format 'Email, FullName' and return list of members.
@@ -310,23 +306,22 @@ func (c *ServerConnection) MailingListsGetSuffixes() (StringList, error) {
 //	query - query attributes and limits
 // Return
 //	list - trustee targets
-func (c *ServerConnection) MailingListsGetTrusteeTargetList(query SearchQuery, domainId KId) (TrusteeTargetList, int, error) {
+func (c *ServerConnection) MailingListsGetTrusteeTargetList(query SearchQuery, domainId KId) (TrusteeTargetList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
 	data, err := c.CallRaw("MailingLists.getTrusteeTargetList", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       TrusteeTargetList `json:"list"`
-			TotalItems int               `json:"totalItems"`
+			List TrusteeTargetList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // MailingListsRemove - Remove mailing lists.

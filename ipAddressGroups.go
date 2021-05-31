@@ -74,25 +74,23 @@ func (c *ServerConnection) IpAddressGroupsCreate(groups IpAddressEntryList) (Err
 //	query - conditions and limits. Included from weblib. KWF engine implementation notes:
 //	- LIKE matches substring (second argument) in a string (first argument). There are no wildcards.
 //	- sort and match are not case sensitive. - column alias (first operand):
-//	- TODO: "QUICKSEARCH" - requested operator applied as following: (name operator secondOperand ) || (description operator secondOperand)
 // Return
-//	totalItems - count of all groups on the server (before the start/limit applied)
-func (c *ServerConnection) IpAddressGroupsGet(query SearchQuery) (IpAddressEntryList, int, error) {
+//	ip address list
+func (c *ServerConnection) IpAddressGroupsGet(query SearchQuery) (IpAddressEntryList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := c.CallRaw("IpAddressGroups.get", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       IpAddressEntryList `json:"list"`
-			TotalItems int                `json:"totalItems"`
+			List IpAddressEntryList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // IpAddressGroupsGetGroupList - Get the list of groups, sorted in ascending order.

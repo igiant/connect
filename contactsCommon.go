@@ -121,29 +121,29 @@ type PhotoAttachment struct {
 
 // PersonalContact - Personal Contact detail.
 type PersonalContact struct {
-	CommonName           string        `json:"commonName"`
-	FirstName            string        `json:"firstName"`
-	MiddleName           string        `json:"middleName"`
-	SurName              string        `json:"surName"`
-	TitleBefore          string        `json:"titleBefore"`
-	TitleAfter           string        `json:"titleAfter"`
-	NickName             string        `json:"nickName"`
-	PhoneNumberWorkVoice string        `json:"phoneNumberWorkVoice"`
-	PhoneNumberMobile    string        `json:"phoneNumberMobile"`
-	PostalAddressWork    PostalAddress `json:"postalAddressWork"`
-	UrlWork              string        `json:"urlWork"`
-	// BirthDay UtcDateTime `json:"birthDay"` TODO
-	// Anniversary UtcDateTime `json:"anniversary"`
-	CompanyName    string           `json:"companyName"`
-	DepartmentName string           `json:"departmentName"`
-	Profession     string           `json:"profession"`
-	ManagerName    string           `json:"managerName"`
-	AssistantName  string           `json:"assistantName"`
-	Comment        string           `json:"comment"`
-	IMAddress      string           `json:"IMAddress"`
-	Photo          PhotoAttachment  `json:"photo"`
-	IsReadOnly     bool             `json:"isReadOnly"`
-	EmailAddresses EmailAddressList `json:"emailAddresses"`
+	CommonName           string           `json:"commonName"`
+	FirstName            string           `json:"firstName"`
+	MiddleName           string           `json:"middleName"`
+	SurName              string           `json:"surName"`
+	TitleBefore          string           `json:"titleBefore"`
+	TitleAfter           string           `json:"titleAfter"`
+	NickName             string           `json:"nickName"`
+	PhoneNumberWorkVoice string           `json:"phoneNumberWorkVoice"`
+	PhoneNumberMobile    string           `json:"phoneNumberMobile"`
+	PostalAddressWork    PostalAddress    `json:"postalAddressWork"`
+	UrlWork              string           `json:"urlWork"`
+	BirthDay             UtcDateTime      `json:"birthDay"`
+	Anniversary          UtcDateTime      `json:"anniversary"`
+	CompanyName          string           `json:"companyName"`
+	DepartmentName       string           `json:"departmentName"`
+	Profession           string           `json:"profession"`
+	ManagerName          string           `json:"managerName"`
+	AssistantName        string           `json:"assistantName"`
+	Comment              string           `json:"comment"`
+	IMAddress            string           `json:"IMAddress"`
+	Photo                PhotoAttachment  `json:"photo"`
+	IsReadOnly           bool             `json:"isReadOnly"`
+	EmailAddresses       EmailAddressList `json:"emailAddresses"`
 }
 
 type PersonalContactList []PersonalContact

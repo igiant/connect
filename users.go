@@ -494,24 +494,22 @@ func (c *ServerConnection) UsersExportToCsv(filename string, query SearchQuery, 
 //	domainId - domain identification
 // Return
 //	list - users
-//	totalItems - number of users found in given domain
-func (c *ServerConnection) UsersGet(query SearchQuery, domainId KId) (UserList, int, error) {
+func (c *ServerConnection) UsersGet(query SearchQuery, domainId KId) (UserList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
 	data, err := c.CallRaw("Users.get", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       UserList `json:"list"`
-			TotalItems int      `json:"totalItems"`
+			List UserList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // UsersGetContactPublicFolderList - Obtain a list of contact public folders in given domain.
@@ -592,8 +590,7 @@ func (c *ServerConnection) UsersGetMobileDeviceList(userId KId, query SearchQuer
 	}
 	list := struct {
 		Result struct {
-			List       MobileDeviceList `json:"list"`
-			TotalItems int              `json:"totalItems"`
+			List MobileDeviceList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)

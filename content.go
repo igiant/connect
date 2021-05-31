@@ -438,23 +438,21 @@ func (c *ServerConnection) ContentGetBlackListList() (BlackListList, error) {
 //	query - condition and limit definition (orderBy is ignored)
 // Return
 //	list - custom rules
-//	totalItems - amount of rules for given search condition, useful when a limit is defined in search query
-func (c *ServerConnection) ContentGetCustomRuleList(query SearchQuery) (CustomRuleList, int, error) {
+func (c *ServerConnection) ContentGetCustomRuleList(query SearchQuery) (CustomRuleList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := c.CallRaw("Content.getCustomRuleList", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       CustomRuleList `json:"list"`
-			TotalItems int            `json:"totalItems"`
+			List CustomRuleList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // ContentRemoveBlackLists - Remove blacklist items.

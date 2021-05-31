@@ -124,24 +124,22 @@ func (c *ServerConnection) GroupsCreateLdap(groups GroupList) (ErrorList, Create
 //	query - query conditions and limits
 // Return
 //	list - groups
-//	totalItems - amount of groups for given search condition, useful when limit is defined in searchquery
-func (c *ServerConnection) GroupsGet(query SearchQuery, domainId KId) (GroupList, int, error) {
+func (c *ServerConnection) GroupsGet(query SearchQuery, domainId KId) (GroupList, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
 	data, err := c.CallRaw("Groups.get", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       GroupList `json:"list"`
-			TotalItems int       `json:"totalItems"`
+			List GroupList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // GroupsRemove - Note: it is not necessary to remove members before deleting a group

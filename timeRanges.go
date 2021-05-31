@@ -14,6 +14,8 @@ const (
 	TimeRangeChildGroup TimeRangeType = "TimeRangeChildGroup" // not supported in QT
 )
 
+type UtcDateTime string
+
 type DayType string
 
 const (
@@ -89,23 +91,21 @@ func (c *ServerConnection) TimeRangesCreate(ranges TimeRangeEntryList) (ErrorLis
 // Parameters
 //	query - conditions and limits. Included from weblib. KWF engine implementation notes: - LIKE matches substring (second argument) in a string (first argument). There are no wildcards. - sort and match are case insensitive. - column alias (first operand):
 // Return
-//	totalItems - count of all ranges on the server (before the start/limit applied)
-func (c *ServerConnection) TimeRangesGet(query SearchQuery) (TimeRangeEntryList, int, error) {
+func (c *ServerConnection) TimeRangesGet(query SearchQuery) (TimeRangeEntryList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := c.CallRaw("TimeRanges.get", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       TimeRangeEntryList `json:"list"`
-			TotalItems int                `json:"totalItems"`
+			List TimeRangeEntryList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // TimeRangesGetGroupList - Get the list of groups, sorted in ascending order.

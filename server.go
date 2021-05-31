@@ -376,23 +376,21 @@ func (c *ServerConnection) ServerGetColumnList(objectName string, methodName str
 //	query - condition and fields have no effect for this method
 // Return
 //	list - active connections
-//	totalItems - total number of active connections
-func (c *ServerConnection) ServerGetConnections(query SearchQuery) (ConnectionList, int, error) {
+func (c *ServerConnection) ServerGetConnections(query SearchQuery) (ConnectionList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := c.CallRaw("Server.getConnections", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       ConnectionList `json:"list"`
-			TotalItems int            `json:"totalItems"`
+			List ConnectionList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // ServerGetDirs - Obtain a list of directories in a particular path.
@@ -456,23 +454,21 @@ func (c *ServerConnection) ServerGetNamedConstantList() (NamedConstantList, erro
 //	query - condition and fields have no effect for this method
 // Return
 //	list - opened folders with info
-//	totalItems - total number of opened folders
-func (c *ServerConnection) ServerGetOpenedFoldersInfo(query SearchQuery) (FolderInfoList, int, error) {
+func (c *ServerConnection) ServerGetOpenedFoldersInfo(query SearchQuery) (FolderInfoList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := c.CallRaw("Server.getOpenedFoldersInfo", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       FolderInfoList `json:"list"`
-			TotalItems int            `json:"totalItems"`
+			List FolderInfoList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // ServerGetProductInfo - Get basic information about product and its version.
@@ -597,8 +593,7 @@ func (c *ServerConnection) ServerGetWebSessions(query SearchQuery) (WebSessionLi
 	}
 	list := struct {
 		Result struct {
-			List       WebSessionList `json:"list"`
-			TotalItems int            `json:"totalItems"`
+			List WebSessionList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)

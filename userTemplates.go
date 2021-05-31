@@ -67,23 +67,21 @@ func (c *ServerConnection) UserTemplatesCreate(userTemplates UserTemplateList) (
 //	query - query attributes and limits
 // Return
 //	userTemplateList - list of user templates
-//	totalItems - number of all returned templates
-func (c *ServerConnection) UserTemplatesGet(query SearchQuery) (UserTemplateList, int, error) {
+func (c *ServerConnection) UserTemplatesGet(query SearchQuery) (UserTemplateList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := c.CallRaw("UserTemplates.get", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	userTemplateList := struct {
 		Result struct {
 			UserTemplateList UserTemplateList `json:"userTemplateList"`
-			TotalItems       int              `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &userTemplateList)
-	return userTemplateList.Result.UserTemplateList, userTemplateList.Result.TotalItems, err
+	return userTemplateList.Result.UserTemplateList, err
 }
 
 // UserTemplatesGetAvailable - - Only templates without administrative rights are listed.

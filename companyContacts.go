@@ -49,23 +49,21 @@ func (c *ServerConnection) CompanyContactsCreate(companyContacts CompanyContactL
 //	query - query conditions and limits
 // Return
 //	list - list of company contacts
-//	totalItems - amount of company contacts for given search condition, useful when limit is defined in kerio::web::SearchQuery
-func (c *ServerConnection) CompanyContactsGet(query SearchQuery) (CompanyContactList, int, error) {
+func (c *ServerConnection) CompanyContactsGet(query SearchQuery) (CompanyContactList, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := c.CallRaw("CompanyContacts.get", params)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	list := struct {
 		Result struct {
-			List       CompanyContactList `json:"list"`
-			TotalItems int                `json:"totalItems"`
+			List CompanyContactList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, list.Result.TotalItems, err
+	return list.Result.List, err
 }
 
 // CompanyContactsGetAvailable - - Only company contacts for given domain and global company contacts are listed.

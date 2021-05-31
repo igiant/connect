@@ -231,8 +231,7 @@ func (c *ServerConnection) DomainsGet(query SearchQuery) (DomainList, error) {
 	}
 	list := struct {
 		Result struct {
-			List       DomainList `json:"list"`
-			TotalItems int        `json:"totalItems"`
+			List DomainList `json:"list"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
