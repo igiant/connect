@@ -91,21 +91,24 @@ func (s *ServerConnection) TimeRangesCreate(ranges TimeRangeEntryList) (ErrorLis
 // Parameters
 //	query - conditions and limits. Included from weblib. KWF engine implementation notes: - LIKE matches substring (second argument) in a string (first argument). There are no wildcards. - sort and match are case insensitive. - column alias (first operand):
 // Return
-func (s *ServerConnection) TimeRangesGet(query SearchQuery) (TimeRangeEntryList, error) {
+//  list - list of ranges and its details
+//  totalItems - count of all ranges on the server (before the start/limit applied)
+func (s *ServerConnection) TimeRangesGet(query SearchQuery) (TimeRangeEntryList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("TimeRanges.get", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List TimeRangeEntryList `json:"list"`
+			List       TimeRangeEntryList `json:"list"`
+			TotalItems int                `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // TimeRangesGetGroupList - Get the list of groups, sorted in ascending order.

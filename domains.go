@@ -221,21 +221,23 @@ func (s *ServerConnection) DomainsGeneratePassword(domainId KId) (string, error)
 //	query - query conditions and limits
 // Return
 //	list - domains
-func (s *ServerConnection) DomainsGet(query SearchQuery) (DomainList, error) {
+//  totalItems - amount of domains for given search condition, useful when limit is defined in SearchQuery
+func (s *ServerConnection) DomainsGet(query SearchQuery) (DomainList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("Domains.get", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List DomainList `json:"list"`
+			List       DomainList `json:"list"`
+			TotalItems int        `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // DomainsGetDkimDnsRecord - Returns DNS TXT record to be added into DNS.

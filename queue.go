@@ -48,23 +48,25 @@ type MessageInProcessList []MessageInProcess
 //	query - search conditions
 // Return
 //	list - awaiting messages
+//  totalItems - number of listed messages
 //	volume - space occupied by messages in the queue
-func (s *ServerConnection) QueueGet(query SearchQuery) (MessageInQueueList, *ByteValueWithUnits, error) {
+func (s *ServerConnection) QueueGet(query SearchQuery) (MessageInQueueList, int, *ByteValueWithUnits, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("Queue.get", params)
 	if err != nil {
-		return nil, nil, err
+		return nil, 0, nil, err
 	}
 	list := struct {
 		Result struct {
-			List   MessageInQueueList `json:"list"`
-			Volume ByteValueWithUnits `json:"volume"`
+			List       MessageInQueueList `json:"list"`
+			Volume     ByteValueWithUnits `json:"volume"`
+			TotalItems int                `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, &list.Result.Volume, err
+	return list.Result.List, list.Result.TotalItems, &list.Result.Volume, err
 }
 
 // QueueGetProcessed - List messages that are being processed by the server.
@@ -72,21 +74,23 @@ func (s *ServerConnection) QueueGet(query SearchQuery) (MessageInQueueList, *Byt
 //	query - search conditions
 // Return
 //	list - processed messages
-func (s *ServerConnection) QueueGetProcessed(query SearchQuery) (MessageInProcessList, error) {
+//  totalItems - number of processed messages
+func (s *ServerConnection) QueueGetProcessed(query SearchQuery) (MessageInProcessList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("Queue.getProcessed", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List MessageInProcessList `json:"list"`
+			List       MessageInProcessList `json:"list"`
+			TotalItems int                  `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // QueueRemove - Remove selected messages from the message queue.

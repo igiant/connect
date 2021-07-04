@@ -231,21 +231,23 @@ func (s *ServerConnection) DeliveryDownloadEtrn() error {
 //	query - query conditions and limits
 // Return
 //	list - ETRN download records
-func (s *ServerConnection) DeliveryGetEtrnDownloadList(query SearchQuery) (EtrnDownloadList, error) {
+//  totalItems - amount of records for given search condition, useful when a limit is defined in the query
+func (s *ServerConnection) DeliveryGetEtrnDownloadList(query SearchQuery) (EtrnDownloadList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("Delivery.getEtrnDownloadList", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List EtrnDownloadList `json:"list"`
+			List       EtrnDownloadList `json:"list"`
+			TotalItems int              `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // DeliveryGetEtrnTimeout - Get timeout for ETRN reply on dial-up line
@@ -287,21 +289,23 @@ func (s *ServerConnection) DeliveryGetInternetSettings() (*InternetSettings, err
 //	query - query conditions and limits
 // Return
 //	list - POP3 accounts
-func (s *ServerConnection) DeliveryGetPop3AccountList(query SearchQuery) (Pop3AccountList, error) {
+//  totalItems - amount of accounts for given search condition, useful when a limit is defined in the query
+func (s *ServerConnection) DeliveryGetPop3AccountList(query SearchQuery) (Pop3AccountList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("Delivery.getPop3AccountList", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List Pop3AccountList `json:"list"`
+			List       Pop3AccountList `json:"list"`
+			TotalItems int             `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // DeliveryGetPop3SortingList - Obtain list of POP3 sorting rules
@@ -309,21 +313,23 @@ func (s *ServerConnection) DeliveryGetPop3AccountList(query SearchQuery) (Pop3Ac
 //	query - query conditions and limits
 // Return
 //	list - POP3 sorting records
-func (s *ServerConnection) DeliveryGetPop3SortingList(query SearchQuery) (Pop3SortingList, error) {
+//  totalItems - amount of records for given search condition, useful when a limit is defined in the query
+func (s *ServerConnection) DeliveryGetPop3SortingList(query SearchQuery) (Pop3SortingList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("Delivery.getPop3SortingList", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List Pop3SortingList `json:"list"`
+			List       Pop3SortingList `json:"list"`
+			TotalItems int             `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // DeliveryGetRasNames - Obtain Remote Access Service. Valid information available on Windows only.
@@ -348,21 +354,23 @@ func (s *ServerConnection) DeliveryGetRasNames() (StringList, error) {
 //	query - query conditions and limits
 // Return
 //	list - scheduler actions
-func (s *ServerConnection) DeliveryGetScheduledActionList(query SearchQuery) (ScheduledActionList, error) {
+//  totalItems - amount of actions for given search condition, useful when limit is defined in query
+func (s *ServerConnection) DeliveryGetScheduledActionList(query SearchQuery) (ScheduledActionList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("Delivery.getScheduledActionList", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List ScheduledActionList `json:"list"`
+			List       ScheduledActionList `json:"list"`
+			TotalItems int                 `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // DeliveryRemoveEtrnDownloadList - Remove ETRN download items.

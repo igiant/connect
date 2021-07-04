@@ -102,22 +102,24 @@ func (s *ServerConnection) AliasesCreate(aliases AliasList) (ErrorList, CreateRe
 //	query - query conditions and limits
 // Return
 //	list - aliases
-func (s *ServerConnection) AliasesGet(query SearchQuery, domainId KId) (AliasList, error) {
+//  totalItems - amount of aliases for given search condition, useful when limit is defined in query
+func (s *ServerConnection) AliasesGet(query SearchQuery, domainId KId) (AliasList, int, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
 	data, err := s.CallRaw("Aliases.get", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List AliasList `json:"list"`
+			List       AliasList `json:"list"`
+			TotalItems int       `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // AliasesGetMailPublicFolderList - Obtain a list of mail public folders in the given domain.
@@ -148,22 +150,24 @@ func (s *ServerConnection) AliasesGetMailPublicFolderList(domainId KId) (PublicF
 //	domainId - global identification of the domain
 // Return
 //	list - alias targets
-func (s *ServerConnection) AliasesGetTargetList(query SearchQuery, domainId KId) (AliasTargetList, error) {
+//  totalItems - amount of aliases for given search condition, useful when a limit is defined in the query
+func (s *ServerConnection) AliasesGetTargetList(query SearchQuery, domainId KId) (AliasTargetList, int, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
 	data, err := s.CallRaw("Aliases.getTargetList", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List AliasTargetList `json:"list"`
+			List       AliasTargetList `json:"list"`
+			TotalItems int             `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // AliasesRemove - Delete aliases.

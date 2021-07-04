@@ -87,22 +87,24 @@ func (s *ServerConnection) ResourcesCreate(resources ResourceList) (ErrorList, C
 //	domainId - domain identification
 // Return
 //	list - resources
-func (s *ServerConnection) ResourcesGet(query SearchQuery, domainId KId) (ResourceList, error) {
+//  totalItems - amount of resources for given search condition, useful when limit is defined in SearchQuery
+func (s *ServerConnection) ResourcesGet(query SearchQuery, domainId KId) (ResourceList, int, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
 	data, err := s.CallRaw("Resources.get", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List ResourceList `json:"list"`
+			List       ResourceList `json:"list"`
+			TotalItems int          `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // ResourcesGetPrincipalList - Obtain a list of potential resource targets (principals).
@@ -110,22 +112,24 @@ func (s *ServerConnection) ResourcesGet(query SearchQuery, domainId KId) (Resour
 //	query - query attributes and limits
 // Return
 //	list - principals
-func (s *ServerConnection) ResourcesGetPrincipalList(query SearchQuery, domainId KId) (PrincipalList, error) {
+//  totalItems - amount of resources for given search condition, useful when limit is defined in SearchQuery
+func (s *ServerConnection) ResourcesGetPrincipalList(query SearchQuery, domainId KId) (PrincipalList, int, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
 	data, err := s.CallRaw("Resources.getPrincipalList", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List PrincipalList `json:"list"`
+			List       PrincipalList `json:"list"`
+			TotalItems int           `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // ResourcesRemove - Remove resources.

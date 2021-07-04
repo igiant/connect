@@ -49,21 +49,23 @@ func (s *ServerConnection) CompanyContactsCreate(companyContacts CompanyContactL
 //	query - query conditions and limits
 // Return
 //	list - list of company contacts
-func (s *ServerConnection) CompanyContactsGet(query SearchQuery) (CompanyContactList, error) {
+//  totalItems - amount of company contacts for given search condition, useful when limit is defined in SearchQuery
+func (s *ServerConnection) CompanyContactsGet(query SearchQuery) (CompanyContactList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("CompanyContacts.get", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List CompanyContactList `json:"list"`
+			List       CompanyContactList `json:"list"`
+			TotalItems int                `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // CompanyContactsGetAvailable - - Only company contacts for given domain and global company contacts are listed.

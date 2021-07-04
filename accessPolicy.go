@@ -112,21 +112,23 @@ func (s *ServerConnection) AccessPolicyCreateGroupList(groups AccessPolicyGroupL
 //	query - query attributes and limits
 // Return
 //	list - policies
-func (s *ServerConnection) AccessPolicyGet(query SearchQuery) (AccessPolicyRuleList, error) {
+//  totalItems - number of policies found
+func (s *ServerConnection) AccessPolicyGet(query SearchQuery) (AccessPolicyRuleList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("AccessPolicy.get", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List AccessPolicyRuleList `json:"list"`
+			List       AccessPolicyRuleList `json:"list"`
+			TotalItems int                  `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // AccessPolicyGetGroupList - Get the list of groups, sorted in ascending order.

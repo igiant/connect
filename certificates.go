@@ -65,29 +65,31 @@ type CertificateList []Certificate
 
 // Manager of Certificates
 
-// CertificatesGet - 1004 Access denied.  - "Insufficient rights to perform the requested operation."
+// CertificatesGet - Obtain a list of certificates
 // Parameters
 //	query - conditions and limits. Included from weblib.
 // Return
 //	certificates - current list of certificates
-func (s *ServerConnection) CertificatesGet(query SearchQuery) (CertificateList, error) {
+//  totalItems - count of all services on server (before the start/limit applied)
+func (s *ServerConnection) CertificatesGet(query SearchQuery) (CertificateList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("Certificates.get", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	certificates := struct {
 		Result struct {
 			Certificates CertificateList `json:"certificates"`
+			TotalItems   int             `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &certificates)
-	return certificates.Result.Certificates, err
+	return certificates.Result.Certificates, certificates.Result.TotalItems, err
 }
 
-// CertificatesSetName - 1004 Access denied.  - "Insufficient rights to perform the requested operation."
+// CertificatesSetName - Renames certificate
 // Parameters
 //	id - ID of certificate to rename
 //	name - new name of the certificate
@@ -100,7 +102,7 @@ func (s *ServerConnection) CertificatesSetName(id KId, name string) error {
 	return err
 }
 
-// CertificatesRemove - 1004 Access denied.  - "Insufficient rights to perform the requested operation."
+// CertificatesRemove - Remove list of certificate records
 // Parameters
 //	ids - list of identifiers of deleted user templates
 // Return
@@ -122,7 +124,7 @@ func (s *ServerConnection) CertificatesRemove(ids KIdList) (ErrorList, error) {
 	return errors.Result.Errors, err
 }
 
-// CertificatesGenerate - Invalid params. - "Unable to generate certificate, properties are invalid."
+// CertificatesGenerate - Generate certificate.
 // Parameters
 //	subject - properties specified by user
 //	name - name of the new certificate
@@ -150,7 +152,7 @@ func (s *ServerConnection) CertificatesGenerate(subject NamedValueList, name str
 	return id.Result.Id, err
 }
 
-// CertificatesGetCountryList - 1004 Access denied.  - "Insufficient rights to perform the requested operation."
+// CertificatesGetCountryList - Get a list of countries.
 // Return
 //	countries - list of countries (name and ISO 3166 code)
 func (s *ServerConnection) CertificatesGetCountryList() (NamedValueList, error) {
@@ -167,7 +169,7 @@ func (s *ServerConnection) CertificatesGetCountryList() (NamedValueList, error) 
 	return countries.Result.Countries, err
 }
 
-// CertificatesImportCertificate - Invalid params. - "Unable to import certificate, the content is invalid."
+// CertificatesImportCertificate - Import certificate in PEM format
 // Parameters
 //	keyId - ID assigned to imported private key, @see importPrivateKey
 //	fileId - id of uploaded file
@@ -195,7 +197,7 @@ func (s *ServerConnection) CertificatesImportCertificate(keyId KId, fileId strin
 	return id.Result.Id, err
 }
 
-// CertificatesImportPrivateKey - Invalid params. - "Unable to import private key, content is invalid."
+// CertificatesImportPrivateKey - Import private key. It generates ID, so it can be linked to Certificate content imported later, @see importCertificate
 // Parameters
 //	fileId - id of uploaded file
 // Return
@@ -219,7 +221,7 @@ func (s *ServerConnection) CertificatesImportPrivateKey(fileId string) (KId, boo
 	return keyId.Result.KeyId, keyId.Result.NeedPassword, err
 }
 
-// CertificatesUnlockPrivateKey - Invalid params. - "Unable to parse private key with given password!"
+// CertificatesUnlockPrivateKey - Try to parse imported private key. Need to be called, when @importPrivateKey returns needPassword == true.
 // Parameters
 //	keyId - ID assigned to imported private key, @see importPrivateKey
 //	password - certificate password
@@ -232,7 +234,7 @@ func (s *ServerConnection) CertificatesUnlockPrivateKey(keyId KId, password stri
 	return err
 }
 
-// CertificatesExportCertificate - 1004 Access denied.  - "Insufficient rights to perform the requested operation."
+// CertificatesExportCertificate - Export of certificate or certificate request
 // Parameters
 //	id - ID of the certificate or certificate request
 // Return
@@ -254,7 +256,7 @@ func (s *ServerConnection) CertificatesExportCertificate(id KId) (*Download, err
 	return &fileDownload.Result.FileDownload, err
 }
 
-// CertificatesExportPrivateKey - 1004 Access denied.  - "Insufficient rights to perform the requested operation."
+// CertificatesExportPrivateKey - Export of certificate or request privatekey
 // Parameters
 //	id - ID of the certificate or certificate request
 // Return
@@ -276,7 +278,7 @@ func (s *ServerConnection) CertificatesExportPrivateKey(id KId) (*Download, erro
 	return &fileDownload.Result.FileDownload, err
 }
 
-// CertificatesToSource - 1004 Access denied.  - "Insufficient rights to perform the requested operation."
+// CertificatesToSource - Obtain source (plain-text representation) of the certificate
 // Parameters
 //	id - global identifier
 // Return

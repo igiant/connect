@@ -126,7 +126,7 @@ type DirectoryList []Directory
 type DeployedType string
 
 const (
-	DeployedStandalone DeployedType = "DeployedStandalone" // Normal instalation
+	DeployedStandalone DeployedType = "DeployedStandalone" // Normal installation
 	DeployedCloud      DeployedType = "DeployedCloud"      // Kerio Connect is running in a cloud
 	DeployedKerioVA    DeployedType = "DeployedKerioVA"    // Kerio Connect VMWare Virtual Appliance
 )

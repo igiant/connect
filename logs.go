@@ -245,7 +245,8 @@ func (s *ServerConnection) LogsExportLogRelative(logName LogType, fromLine int, 
 //	countLines - number of lines to transfer
 // Return
 //	viewport - list of log lines; count of lines = min(count, NUMBER_OF_CURRENT LINES - from)
-func (s *ServerConnection) LogsGet(logName LogType, fromLine int, countLines int) (LogRowList, error) {
+//  totalItems - current count of all log lines
+func (s *ServerConnection) LogsGet(logName LogType, fromLine int, countLines int) (LogRowList, int, error) {
 	params := struct {
 		LogName    LogType `json:"logName"`
 		FromLine   int     `json:"fromLine"`
@@ -253,15 +254,16 @@ func (s *ServerConnection) LogsGet(logName LogType, fromLine int, countLines int
 	}{logName, fromLine, countLines}
 	data, err := s.CallRaw("Logs.get", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	viewport := struct {
 		Result struct {
-			Viewport LogRowList `json:"viewport"`
+			Viewport   LogRowList `json:"viewport"`
+			TotalItems int        `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &viewport)
-	return viewport.Result.Viewport, err
+	return viewport.Result.Viewport, viewport.Result.TotalItems, err
 }
 
 // LogsGetHighlightRules - Obtain a list of sorted highlighting rules.
@@ -322,27 +324,34 @@ func (s *ServerConnection) LogsGetMessages() (TreeLeafList, error) {
 // Return
 //	viewport - list of log lines
 //	firstLine - first matching line
+//  totalItems - current count of all log lines
 //	status - current status of the search
 //	percentage - already finished search <0;100>
-func (s *ServerConnection) LogsGetSearchProgress(countLines int, searchId string) (LogRowList, int, *SearchStatus, int, error) {
+func (s *ServerConnection) LogsGetSearchProgress(countLines int, searchId string) (LogRowList, int, int, *SearchStatus, int, error) {
 	params := struct {
 		CountLines int    `json:"countLines"`
 		SearchId   string `json:"searchId"`
 	}{countLines, searchId}
 	data, err := s.CallRaw("Logs.getSearchProgress", params)
 	if err != nil {
-		return nil, 0, nil, 0, err
+		return nil, 0, 0, nil, 0, err
 	}
 	viewport := struct {
 		Result struct {
 			Viewport   LogRowList   `json:"viewport"`
 			FirstLine  int          `json:"firstLine"`
+			TotalItems int          `json:"totalItems"`
 			Status     SearchStatus `json:"status"`
 			Percentage int          `json:"percentage"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &viewport)
-	return viewport.Result.Viewport, viewport.Result.FirstLine, &viewport.Result.Status, viewport.Result.Percentage, err
+	return viewport.Result.Viewport,
+		viewport.Result.FirstLine,
+		viewport.Result.TotalItems,
+		&viewport.Result.Status,
+		viewport.Result.Percentage,
+		err
 }
 
 // LogsGetSettings - Obtain log settings.

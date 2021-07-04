@@ -76,21 +76,23 @@ func (s *ServerConnection) IpAddressGroupsCreate(groups IpAddressEntryList) (Err
 //	- sort and match are not case sensitive. - column alias (first operand):
 // Return
 //	ip address list
-func (s *ServerConnection) IpAddressGroupsGet(query SearchQuery) (IpAddressEntryList, error) {
+//  totalItems - count of all groups on the server (before the start/limit applied)
+func (s *ServerConnection) IpAddressGroupsGet(query SearchQuery) (IpAddressEntryList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("IpAddressGroups.get", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List IpAddressEntryList `json:"list"`
+			List       IpAddressEntryList `json:"list"`
+			TotalItems int                `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // IpAddressGroupsGetGroupList - Get the list of groups, sorted in ascending order.

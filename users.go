@@ -494,22 +494,24 @@ func (s *ServerConnection) UsersExportToCsv(filename string, query SearchQuery, 
 //	domainId - domain identification
 // Return
 //	list - users
-func (s *ServerConnection) UsersGet(query SearchQuery, domainId KId) (UserList, error) {
+//  totalItems - number of users found in given domain
+func (s *ServerConnection) UsersGet(query SearchQuery, domainId KId) (UserList, int, error) {
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
 	}{query, domainId}
 	data, err := s.CallRaw("Users.get", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List UserList `json:"list"`
+			List       UserList `json:"list"`
+			TotalItems int      `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // UsersGetContactPublicFolderList - Obtain a list of contact public folders in given domain.
@@ -579,22 +581,24 @@ func (s *ServerConnection) UsersGetMailboxCount() (*MailboxCount, error) {
 //	query - query attributes and limits
 // Return
 //	list - mobile devices of given user
-func (s *ServerConnection) UsersGetMobileDeviceList(userId KId, query SearchQuery) (MobileDeviceList, error) {
+//  totalItems - number of mobile devices found for given user
+func (s *ServerConnection) UsersGetMobileDeviceList(userId KId, query SearchQuery) (MobileDeviceList, int, error) {
 	params := struct {
 		UserId KId         `json:"userId"`
 		Query  SearchQuery `json:"query"`
 	}{userId, query}
 	data, err := s.CallRaw("Users.getMobileDeviceList", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List MobileDeviceList `json:"list"`
+			List       MobileDeviceList `json:"list"`
+			TotalItems int              `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // UsersGetNotActivated - Only user's ID, loginName, fullName, description are set in structures.

@@ -376,21 +376,23 @@ func (s *ServerConnection) ServerGetColumnList(objectName string, methodName str
 //	query - condition and fields have no effect for this method
 // Return
 //	list - active connections
-func (s *ServerConnection) ServerGetConnections(query SearchQuery) (ConnectionList, error) {
+//  totalItems - total number of active connections
+func (s *ServerConnection) ServerGetConnections(query SearchQuery) (ConnectionList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("Server.getConnections", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List ConnectionList `json:"list"`
+			List       ConnectionList `json:"list"`
+			TotalItems int            `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // ServerGetDirs - Obtain a list of directories in a particular path.
@@ -454,21 +456,23 @@ func (s *ServerConnection) ServerGetNamedConstantList() (NamedConstantList, erro
 //	query - condition and fields have no effect for this method
 // Return
 //	list - opened folders with info
-func (s *ServerConnection) ServerGetOpenedFoldersInfo(query SearchQuery) (FolderInfoList, error) {
+//  totalItems - total number of opened folders
+func (s *ServerConnection) ServerGetOpenedFoldersInfo(query SearchQuery) (FolderInfoList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("Server.getOpenedFoldersInfo", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List FolderInfoList `json:"list"`
+			List       FolderInfoList `json:"list"`
+			TotalItems int            `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // ServerGetProductInfo - Get basic information about product and its version.
@@ -583,21 +587,23 @@ func (s *ServerConnection) ServerGetVersion() (*ServerVersion, error) {
 //	query - condition and fields have no effect for this method
 // Return
 //	list - web component sessions
-func (s *ServerConnection) ServerGetWebSessions(query SearchQuery) (WebSessionList, error) {
+//  totalItems - total number of web component sessions
+func (s *ServerConnection) ServerGetWebSessions(query SearchQuery) (WebSessionList, int, error) {
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
 	data, err := s.CallRaw("Server.getWebSessions", params)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	list := struct {
 		Result struct {
-			List WebSessionList `json:"list"`
+			List       WebSessionList `json:"list"`
+			TotalItems int            `json:"totalItems"`
 		} `json:"result"`
 	}{}
 	err = json.Unmarshal(data, &list)
-	return list.Result.List, err
+	return list.Result.List, list.Result.TotalItems, err
 }
 
 // ServerKillWebSessions - Terminate actual web sessions.
