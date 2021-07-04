@@ -114,6 +114,7 @@ func (s *ServerConnection) AccessPolicyCreateGroupList(groups AccessPolicyGroupL
 //	list - policies
 //  totalItems - number of policies found
 func (s *ServerConnection) AccessPolicyGet(query SearchQuery) (AccessPolicyRuleList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}

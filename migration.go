@@ -71,6 +71,7 @@ func (s *ServerConnection) MigrationCancel(taskIdList KIdList) (ErrorList, error
 //	list - migration tasks
 //  totalItems - total number of tasks
 func (s *ServerConnection) MigrationGet(query SearchQuery) (MigrationTaskList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}

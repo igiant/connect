@@ -89,6 +89,7 @@ func (s *ServerConnection) ResourcesCreate(resources ResourceList) (ErrorList, C
 //	list - resources
 //  totalItems - amount of resources for given search condition, useful when limit is defined in SearchQuery
 func (s *ServerConnection) ResourcesGet(query SearchQuery, domainId KId) (ResourceList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
@@ -114,6 +115,7 @@ func (s *ServerConnection) ResourcesGet(query SearchQuery, domainId KId) (Resour
 //	list - principals
 //  totalItems - amount of resources for given search condition, useful when limit is defined in SearchQuery
 func (s *ServerConnection) ResourcesGetPrincipalList(query SearchQuery, domainId KId) (PrincipalList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`

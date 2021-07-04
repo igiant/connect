@@ -220,6 +220,7 @@ func (s *ServerConnection) MailingListsExportMlUsersToCsv(kind MlMembership, mlI
 //	list - mailing lists
 //  totalItems - amount of MLs for given search condition, useful when a limit is defined in SearchQuery
 func (s *ServerConnection) MailingListsGet(query SearchQuery, domainId KId) (MlList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
@@ -246,6 +247,7 @@ func (s *ServerConnection) MailingListsGet(query SearchQuery, domainId KId) (MlL
 //	list - mailing list members and/or moderators
 //  totalItems - amount of MLs members for given search condition, useful when a limit is defined in search query
 func (s *ServerConnection) MailingListsGetMlUserList(query SearchQuery, mlId KId) (UserOrEmailList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 		MlId  KId         `json:"mlId"`
@@ -312,6 +314,7 @@ func (s *ServerConnection) MailingListsGetSuffixes() (StringList, error) {
 //	list - trustee targets
 //  totalItems - amount of trustee targets, useful when a limit is defined in SearchQuery
 func (s *ServerConnection) MailingListsGetTrusteeTargetList(query SearchQuery, domainId KId) (TrusteeTargetList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`

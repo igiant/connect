@@ -233,6 +233,7 @@ func (s *ServerConnection) DeliveryDownloadEtrn() error {
 //	list - ETRN download records
 //  totalItems - amount of records for given search condition, useful when a limit is defined in the query
 func (s *ServerConnection) DeliveryGetEtrnDownloadList(query SearchQuery) (EtrnDownloadList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
@@ -291,6 +292,7 @@ func (s *ServerConnection) DeliveryGetInternetSettings() (*InternetSettings, err
 //	list - POP3 accounts
 //  totalItems - amount of accounts for given search condition, useful when a limit is defined in the query
 func (s *ServerConnection) DeliveryGetPop3AccountList(query SearchQuery) (Pop3AccountList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
@@ -315,6 +317,7 @@ func (s *ServerConnection) DeliveryGetPop3AccountList(query SearchQuery) (Pop3Ac
 //	list - POP3 sorting records
 //  totalItems - amount of records for given search condition, useful when a limit is defined in the query
 func (s *ServerConnection) DeliveryGetPop3SortingList(query SearchQuery) (Pop3SortingList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
@@ -356,6 +359,7 @@ func (s *ServerConnection) DeliveryGetRasNames() (StringList, error) {
 //	list - scheduler actions
 //  totalItems - amount of actions for given search condition, useful when limit is defined in query
 func (s *ServerConnection) DeliveryGetScheduledActionList(query SearchQuery) (ScheduledActionList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}

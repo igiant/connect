@@ -378,6 +378,7 @@ func (s *ServerConnection) ServerGetColumnList(objectName string, methodName str
 //	list - active connections
 //  totalItems - total number of active connections
 func (s *ServerConnection) ServerGetConnections(query SearchQuery) (ConnectionList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
@@ -458,6 +459,7 @@ func (s *ServerConnection) ServerGetNamedConstantList() (NamedConstantList, erro
 //	list - opened folders with info
 //  totalItems - total number of opened folders
 func (s *ServerConnection) ServerGetOpenedFoldersInfo(query SearchQuery) (FolderInfoList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
@@ -589,6 +591,7 @@ func (s *ServerConnection) ServerGetVersion() (*ServerVersion, error) {
 //	list - web component sessions
 //  totalItems - total number of web component sessions
 func (s *ServerConnection) ServerGetWebSessions(query SearchQuery) (WebSessionList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}

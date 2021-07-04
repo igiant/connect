@@ -69,6 +69,7 @@ func (s *ServerConnection) UserTemplatesCreate(userTemplates UserTemplateList) (
 //	userTemplateList - list of user templates
 //  totalItems - number of all returned templates
 func (s *ServerConnection) UserTemplatesGet(query SearchQuery) (UserTemplateList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}

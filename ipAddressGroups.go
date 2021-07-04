@@ -78,6 +78,7 @@ func (s *ServerConnection) IpAddressGroupsCreate(groups IpAddressEntryList) (Err
 //	ip address list
 //  totalItems - count of all groups on the server (before the start/limit applied)
 func (s *ServerConnection) IpAddressGroupsGet(query SearchQuery) (IpAddressEntryList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}

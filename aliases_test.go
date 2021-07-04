@@ -1,6 +1,7 @@
 package connect
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -39,16 +40,17 @@ func TestAliasesRequests(t *testing.T) {
 		t.Error(err)
 		return
 	}
-	domains, err := conn.DomainsGet(NewSearchQuery(nil, nil, Or, 0, -1, nil))
+	domains, num, err := conn.DomainsGet(SearchQuery{})
 	if err != nil {
 		t.Error(err)
 	}
+	fmt.Println(num)
 	if len(domains) > 0 {
-		_, err := conn.AliasesGet(NewSearchQuery(nil, nil, Or, 0, -1, nil), domains[0].Id)
+		_, num, err := conn.AliasesGet(SearchQuery{}, domains[0].Id)
 		if err != nil {
 			t.Error(err)
 		}
-
+		fmt.Println(num)
 	}
 	err = conn.Logout()
 	if err != nil {

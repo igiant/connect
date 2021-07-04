@@ -104,6 +104,7 @@ func (s *ServerConnection) AliasesCreate(aliases AliasList) (ErrorList, CreateRe
 //	list - aliases
 //  totalItems - amount of aliases for given search condition, useful when limit is defined in query
 func (s *ServerConnection) AliasesGet(query SearchQuery, domainId KId) (AliasList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
@@ -152,6 +153,7 @@ func (s *ServerConnection) AliasesGetMailPublicFolderList(domainId KId) (PublicF
 //	list - alias targets
 //  totalItems - amount of aliases for given search condition, useful when a limit is defined in the query
 func (s *ServerConnection) AliasesGetTargetList(query SearchQuery, domainId KId) (AliasTargetList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`

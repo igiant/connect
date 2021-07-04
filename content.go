@@ -440,6 +440,7 @@ func (s *ServerConnection) ContentGetBlackListList() (BlackListList, error) {
 //	list - custom rules
 //  totalItems - amount of rules for given search condition, useful when a limit is defined in search query
 func (s *ServerConnection) ContentGetCustomRuleList(query SearchQuery) (CustomRuleList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}

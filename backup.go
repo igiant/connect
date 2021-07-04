@@ -84,6 +84,7 @@ func (s *ServerConnection) BackupGet() (*BackupOptions, error) {
 // Return
 //	scheduleList
 func (s *ServerConnection) BackupGetScheduleList(query SearchQuery) (BackupScheduleList, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}

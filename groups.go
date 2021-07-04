@@ -126,6 +126,7 @@ func (s *ServerConnection) GroupsCreateLdap(groups GroupList) (ErrorList, Create
 //	list - groups
 //  totalItems - amount of groups for given search condition, useful when limit is defined in SearchQuery
 func (s *ServerConnection) GroupsGet(query SearchQuery, domainId KId) (GroupList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`

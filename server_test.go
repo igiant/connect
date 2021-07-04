@@ -1,6 +1,7 @@
 package connect
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"testing"
@@ -54,10 +55,11 @@ func TestServerRequests(t *testing.T) {
 	if info.ProductName != "Kerio Connect" {
 		t.Error("product info not received")
 	}
-	sessionList, err := conn.ServerGetWebSessions(NewSearchQuery(nil, nil, Or, 0, 0, nil))
+	sessionList, num, err := conn.ServerGetWebSessions(SearchQuery{})
 	if err != nil {
 		t.Error(err)
 	}
+	fmt.Println(num)
 	if len(sessionList) == 0 || sessionList[0].Id == "" {
 		t.Error("domains information not received")
 	}

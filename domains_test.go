@@ -1,6 +1,7 @@
 package connect
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -39,10 +40,11 @@ func TestDomainRequests(t *testing.T) {
 		t.Error(err)
 		return
 	}
-	domains, err := conn.DomainsGet(NewSearchQuery(nil, nil, Or, 0, 0, nil))
+	domains, num, err := conn.DomainsGet(SearchQuery{})
 	if err != nil {
 		t.Error(err)
 	}
+	fmt.Println(num)
 	if len(domains) == 0 || domains[0].Id == "" {
 		t.Error("Domains information not received")
 	}

@@ -72,6 +72,7 @@ type CertificateList []Certificate
 //	certificates - current list of certificates
 //  totalItems - count of all services on server (before the start/limit applied)
 func (s *ServerConnection) CertificatesGet(query SearchQuery) (CertificateList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}

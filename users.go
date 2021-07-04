@@ -124,7 +124,7 @@ type User struct {
 	Role                 UserRight            `json:"role"`                 // user role
 	GroupRole            UserRight            `json:"groupRole"`            // the mightiest user role obtained via group membership
 	EffectiveRole        UserRight            `json:"effectiveRole"`        // the mightiest user role from role and groupRole
-	IsWritableByMe       bool                 `json:"isWritableByMe"`       // Does caller have right to change the user? E.g. if Account Admin gets User structure for Full Admin, isWritableByMe will be false. This field is read-only and cannot be used in kerio::web::SearchQuery conditions.
+	IsWritableByMe       bool                 `json:"isWritableByMe"`       // Does caller have right to change the user? E.g. if Account Admin gets User structure for Full Admin, isWritableByMe will be false. This field is read-only and cannot be used in SearchQuery conditions.
 	EmailAddresses       UserEmailAddressList `json:"emailAddresses"`       // List of user email addresses. His default one (loginName@domain) is not listed here
 	EmailForwarding      EmailForwarding      `json:"emailForwarding"`      // email forwarding setting
 	UserGroups           UserGroupList        `json:"userGroups"`           // groups membership
@@ -470,6 +470,7 @@ func (s *ServerConnection) UsersExportStatistics(userIds KIdList, format FileFor
 // Return
 //	fileDownload - description of output file
 func (s *ServerConnection) UsersExportToCsv(filename string, query SearchQuery, domainId KId) (*Download, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Filename string      `json:"filename"`
 		Query    SearchQuery `json:"query"`
@@ -496,6 +497,7 @@ func (s *ServerConnection) UsersExportToCsv(filename string, query SearchQuery, 
 //	list - users
 //  totalItems - number of users found in given domain
 func (s *ServerConnection) UsersGet(query SearchQuery, domainId KId) (UserList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query    SearchQuery `json:"query"`
 		DomainId KId         `json:"domainId"`
@@ -583,6 +585,7 @@ func (s *ServerConnection) UsersGetMailboxCount() (*MailboxCount, error) {
 //	list - mobile devices of given user
 //  totalItems - number of mobile devices found for given user
 func (s *ServerConnection) UsersGetMobileDeviceList(userId KId, query SearchQuery) (MobileDeviceList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		UserId KId         `json:"userId"`
 		Query  SearchQuery `json:"query"`
@@ -653,6 +656,7 @@ func (s *ServerConnection) UsersGetRecoveryDeletedItemsSize(userIds KIdList) (Er
 // Return
 //	list - users' statistics
 func (s *ServerConnection) UsersGetStatistics(userIds KIdList, query SearchQuery) (UserStatList, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		UserIds KIdList     `json:"userIds"`
 		Query   SearchQuery `json:"query"`

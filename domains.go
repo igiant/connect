@@ -223,6 +223,7 @@ func (s *ServerConnection) DomainsGeneratePassword(domainId KId) (string, error)
 //	list - domains
 //  totalItems - amount of domains for given search condition, useful when limit is defined in SearchQuery
 func (s *ServerConnection) DomainsGet(query SearchQuery) (DomainList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}

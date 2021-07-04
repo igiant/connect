@@ -51,6 +51,7 @@ func (s *ServerConnection) CompanyContactsCreate(companyContacts CompanyContactL
 //	list - list of company contacts
 //  totalItems - amount of company contacts for given search condition, useful when limit is defined in SearchQuery
 func (s *ServerConnection) CompanyContactsGet(query SearchQuery) (CompanyContactList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}

@@ -51,6 +51,7 @@ type MessageInProcessList []MessageInProcess
 //  totalItems - number of listed messages
 //	volume - space occupied by messages in the queue
 func (s *ServerConnection) QueueGet(query SearchQuery) (MessageInQueueList, int, *ByteValueWithUnits, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
@@ -76,6 +77,7 @@ func (s *ServerConnection) QueueGet(query SearchQuery) (MessageInQueueList, int,
 //	list - processed messages
 //  totalItems - number of processed messages
 func (s *ServerConnection) QueueGetProcessed(query SearchQuery) (MessageInProcessList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}

@@ -94,6 +94,7 @@ func (s *ServerConnection) TimeRangesCreate(ranges TimeRangeEntryList) (ErrorLis
 //  list - list of ranges and its details
 //  totalItems - count of all ranges on the server (before the start/limit applied)
 func (s *ServerConnection) TimeRangesGet(query SearchQuery) (TimeRangeEntryList, int, error) {
+	query = addMissedParametersToSearchQuery(query)
 	params := struct {
 		Query SearchQuery `json:"query"`
 	}{query}
