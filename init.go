@@ -20,7 +20,6 @@ func (s *ServerConnection) InitGetHostname() (string, error) {
 }
 
 // InitCheckHostname - Check existence of domain name in the DNS. Existence of DN record with type "A" in appropriate DNS zone.
-// Parameters
 //	hostname - fully qualified domain name of the server
 func (s *ServerConnection) InitCheckHostname(hostname string) error {
 	params := struct {
@@ -31,7 +30,6 @@ func (s *ServerConnection) InitCheckHostname(hostname string) error {
 }
 
 // InitCheckMxRecord - Check existence of MX record in the DNS for specified domain.
-// Parameters
 //	domainName - fully qualified domain name
 func (s *ServerConnection) InitCheckMxRecord(domainName string) error {
 	params := struct {
@@ -42,7 +40,6 @@ func (s *ServerConnection) InitCheckMxRecord(domainName string) error {
 }
 
 // InitSetHostname - Set Internet hostname of the server. This name is used for server identification in SMTP, POP3 and similar protocols.
-// Parameters
 //	hostname - new fully qualified domain name of the server
 func (s *ServerConnection) InitSetHostname(hostname string) error {
 	params := struct {
@@ -53,7 +50,6 @@ func (s *ServerConnection) InitSetHostname(hostname string) error {
 }
 
 // InitGetDistributableDomains - Retrieve domains, which can be distributed, from the master server as a standalone server.
-// Parameters
 //	authentication - Structure with a credential. Credential will be used when connected is false.
 // Return
 //	domainNames - List of domains which can be distributed (they have a directory service set).
@@ -75,7 +71,6 @@ func (s *ServerConnection) InitGetDistributableDomains(authentication ClusterAut
 }
 
 // InitCreateDistributableDomain - Connect server to cluster as slave and create distributable domain.
-// Parameters
 //	domainName - domain which can be distributed (they have a directory service set) and exist on master server.
 //	authentication - Structure with a credential. Credential will be used when connected is false.
 // Return
@@ -99,7 +94,6 @@ func (s *ServerConnection) InitCreateDistributableDomain(domainName string, auth
 }
 
 // InitCreatePrimaryDomain - Creates the primary email domain.
-// Parameters
 //	domainName - fully qualified name of the domain
 func (s *ServerConnection) InitCreatePrimaryDomain(domainName string) error {
 	params := struct {
@@ -110,7 +104,6 @@ func (s *ServerConnection) InitCreatePrimaryDomain(domainName string) error {
 }
 
 // InitCreateAdministratorAccount - Creates the administrator account. This account will be created in primary domain.
-// Parameters
 //	loginName - login name for administrator (without domain name)
 //	password - administrator password
 func (s *ServerConnection) InitCreateAdministratorAccount(loginName string, password string) error {
@@ -142,7 +135,6 @@ func (s *ServerConnection) InitGetMessageStorePath() (string, int, error) {
 }
 
 // InitSetMessageStorePath - Set path to message store directory.
-// Parameters
 //	path - full path to message store directory
 func (s *ServerConnection) InitSetMessageStorePath(path string) error {
 	params := struct {
@@ -153,7 +145,6 @@ func (s *ServerConnection) InitSetMessageStorePath(path string) error {
 }
 
 // InitGetDirs - Obtain a list of directories in a particular path.
-// Parameters
 //	fullPath - directory for listing, if full path is empty logical drives will be listed
 // Return
 //	dirList - List of directories
@@ -175,7 +166,6 @@ func (s *ServerConnection) InitGetDirs(fullPath string) (DirectoryList, error) {
 }
 
 // InitCheckMessageStorePath - Check if message store path is correct and can be created in the file system.
-// Parameters
 //	path - full path to message store directory
 // Return
 //	result - result of the check
@@ -199,7 +189,6 @@ func (s *ServerConnection) InitCheckMessageStorePath(path string) (*DirectoryAcc
 }
 
 // InitSetClientStatistics - Set client statistics settings.
-// Parameters
 //	isEnabled - flag if statistics are enabled
 func (s *ServerConnection) InitSetClientStatistics(isEnabled bool) error {
 	params := struct {

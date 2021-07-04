@@ -45,7 +45,6 @@ func (s *ServerConnection) CompanyContactsCreate(companyContacts CompanyContactL
 }
 
 // CompanyContactsGet - Obtain a list of company contacts.
-// Parameters
 //	query - query conditions and limits
 // Return
 //	list - list of company contacts
@@ -70,7 +69,6 @@ func (s *ServerConnection) CompanyContactsGet(query SearchQuery) (CompanyContact
 }
 
 // CompanyContactsGetAvailable - - Only company contacts for given domain and global company contacts are listed.
-// Parameters
 //	domainId - Only company contacts for given domain and global company contacts are listed.
 // Return
 //	companyContactList - list of user templates
@@ -112,7 +110,6 @@ func (s *ServerConnection) CompanyContactsRemove(companyContactsIds KIdList) (Er
 }
 
 // CompanyContactsSet - Set existing company contacts to given pattern.
-// Parameters
 //	companyContactsIds - list of the company contacts's global identifier(s)
 //	pattern - pattern to use for new values
 // Return

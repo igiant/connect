@@ -46,7 +46,6 @@ type IpAddressEntryList []IpAddressEntry
 type IpAddressGroupList []IpAddressGroup
 
 // IpAddressGroupsCreate - Create new groups.
-// Parameters
 //	groups - details for new groups.
 // Return
 //	errors - possible errors: - "This address group already exists!" duplicate name-value
@@ -70,7 +69,6 @@ func (s *ServerConnection) IpAddressGroupsCreate(groups IpAddressEntryList) (Err
 }
 
 // IpAddressGroupsGet - Get the list of IP groups.
-// Parameters
 //	query - conditions and limits. Included from weblib. KWF engine implementation notes:
 //	- LIKE matches substring (second argument) in a string (first argument). There are no wildcards.
 //	- sort and match are not case sensitive. - column alias (first operand):
@@ -114,7 +112,6 @@ func (s *ServerConnection) IpAddressGroupsGetGroupList() (IpAddressGroupList, er
 }
 
 // IpAddressGroupsRemove - Remove groups.
-// Parameters
 //	groupIds - IDs of groups that should be removed
 // Return
 //	errors - Errors by removing groups
@@ -136,7 +133,6 @@ func (s *ServerConnection) IpAddressGroupsRemove(groupIds KIdList) (ErrorList, e
 }
 
 // IpAddressGroupsSet - Create groups.
-// Parameters
 //	groupIds - IDs of groups to be updated.
 //	details - details for update.
 // Return
@@ -160,7 +156,6 @@ func (s *ServerConnection) IpAddressGroupsSet(groupIds KIdList, details IpAddres
 }
 
 // IpAddressGroupsValidateRemove - Check if groups removal can cut off the administrator from remote administration
-// Parameters
 //	groupIds - IDs of groups that should be removed
 // Return
 //	errors - if the result is false, error argument contains additional error info; possible errors:
@@ -183,7 +178,6 @@ func (s *ServerConnection) IpAddressGroupsValidateRemove(groupIds KIdList) (Erro
 }
 
 // IpAddressGroupsValidateSet - Check update of existing groups to see whether this change cut off the administrator from remote administration.
-// Parameters
 //	groupIds - IDs of groups to be updated.
 //	details - details for update.
 // Return

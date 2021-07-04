@@ -202,7 +202,6 @@ func (s *ServerConnection) AdvancedOptionsGetFulltextStatus() (*FulltextRebuildS
 }
 
 // AdvancedOptionsSet - Set advanced options.
-// Parameters
 //	options - options to be updated
 func (s *ServerConnection) AdvancedOptionsSet(options AdvancedOptionsSetting) error {
 	params := struct {
@@ -213,7 +212,6 @@ func (s *ServerConnection) AdvancedOptionsSet(options AdvancedOptionsSetting) er
 }
 
 // AdvancedOptionsStartRebuildFulltext - Launch re-index according parameters.
-// Parameters
 //	parameters - parameters for launching re-index
 func (s *ServerConnection) AdvancedOptionsStartRebuildFulltext(parameters FulltextRebuildingCommand) error {
 	params := struct {

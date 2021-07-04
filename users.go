@@ -252,7 +252,6 @@ const (
 // User accounts management.
 
 // UsersActivate - Activate user(s) from a directory service.
-// Parameters
 //	userIds - list of global user identifiers
 // Return
 //	errors - list of error messages for appropriate users
@@ -274,7 +273,6 @@ func (s *ServerConnection) UsersActivate(userIds KIdList) (ErrorList, error) {
 }
 
 // UsersActivateOnServer - Activate user(s) from a directory service in distributed domain environment.
-// Parameters
 //	userIds - list of global user identifiers
 //	homeServerId - Id of server in distributed domain on which users will be activated
 // Return
@@ -298,7 +296,6 @@ func (s *ServerConnection) UsersActivateOnServer(userIds KIdList, homeServerId K
 }
 
 // UsersConnectFromExternalService - Register connection.
-// Parameters
 //	service - service name (should be some real service ID, returned by Services.get)
 //	connectionId - unique connection identifier
 //	port - host port
@@ -325,7 +322,6 @@ func (s *ServerConnection) UsersConnectFromExternalService(service string, conne
 }
 
 // UsersAuthenticateConnectionFromExternalService - Authenticate given user and create session. connectionId must be registered by function connectFromExternalService otherwise authenticate fails.
-// Parameters
 //	userName - login name + domain name (can be omitted if primary) of the user to be logged in, e.g. "jdoe" or "jdoe@company.com"
 //	password - password of the user to be authenticate (base64-encoded)
 //	connectionId - connection identifier, must be the same as in connectFromExternalService
@@ -354,7 +350,6 @@ func (s *ServerConnection) UsersAuthenticateConnectionFromExternalService(userNa
 }
 
 // UsersDisconnectFromExternalService - Unregister connection registered by connectFromExternalService and destroy session created if authenticateFromExternalService was called.
-// Parameters
 //	service - service name
 //	connectionId - unique connection identifier
 func (s *ServerConnection) UsersDisconnectFromExternalService(service string, connectionId string) error {
@@ -367,7 +362,6 @@ func (s *ServerConnection) UsersDisconnectFromExternalService(service string, co
 }
 
 // UsersCancelWipeMobileDevice - Cancel wiping of user's mobile device.
-// Parameters
 //	userId - global user identifier
 //	deviceId - ID of user's mobile device to cancel wipe
 func (s *ServerConnection) UsersCancelWipeMobileDevice(userId KId, deviceId string) error {
@@ -380,7 +374,6 @@ func (s *ServerConnection) UsersCancelWipeMobileDevice(userId KId, deviceId stri
 }
 
 // UsersCheckMailboxIntegrity - If corrupted folder is found, try to fix it.
-// Parameters
 //	userIds - list of user identifiers
 func (s *ServerConnection) UsersCheckMailboxIntegrity(userIds KIdList) error {
 	params := struct {
@@ -391,7 +384,6 @@ func (s *ServerConnection) UsersCheckMailboxIntegrity(userIds KIdList) error {
 }
 
 // UsersCreate - Create new users.
-// Parameters
 //	users - new user entities
 // Return
 //	errors - error message list
@@ -415,7 +407,6 @@ func (s *ServerConnection) UsersCreate(users UserList) (ErrorList, CreateResultL
 }
 
 // UsersCreateLdap - Create new users in directory service
-// Parameters
 //	users - new user entities
 // Return
 //	errors - error message list
@@ -439,7 +430,6 @@ func (s *ServerConnection) UsersCreateLdap(users UserList) (ErrorList, CreateRes
 }
 
 // UsersExportStatistics - Export statistics of given users in given format.
-// Parameters
 //	userIds - list of IDs of given users
 //	format - output data format
 // Return
@@ -463,7 +453,6 @@ func (s *ServerConnection) UsersExportStatistics(userIds KIdList, format FileFor
 }
 
 // UsersExportToCsv - Export given domain users to comma-separated values file format.
-// Parameters
 //	filename - part of filename; full filename is compound as user_<domainname>_<filename>_<date>.csv
 //	query - query attributes and limits
 //	domainId - domain identification
@@ -490,7 +479,6 @@ func (s *ServerConnection) UsersExportToCsv(filename string, query SearchQuery, 
 }
 
 // UsersGet - Obtain a list of users in given domain.
-// Parameters
 //	query - query attributes and limits
 //	domainId - domain identification
 // Return
@@ -517,7 +505,6 @@ func (s *ServerConnection) UsersGet(query SearchQuery, domainId KId) (UserList, 
 }
 
 // UsersGetContactPublicFolderList - Obtain a list of contact public folders in given domain.
-// Parameters
 //	domainId - global identification of domain
 func (s *ServerConnection) UsersGetContactPublicFolderList(domainId KId) (PublicFolderList, error) {
 	params := struct {
@@ -537,7 +524,6 @@ func (s *ServerConnection) UsersGetContactPublicFolderList(domainId KId) (Public
 }
 
 // UsersGetFromServer - Obtain list of users from given LDAP server potentially importable to the Connect server.
-// Parameters
 //	importServer - properties of the server to import from
 //	domainToImport - the mailserver domain where users are imported
 // Return
@@ -578,7 +564,6 @@ func (s *ServerConnection) UsersGetMailboxCount() (*MailboxCount, error) {
 }
 
 // UsersGetMobileDeviceList - Obtain a list of mobile devices of given user.
-// Parameters
 //	userId - name of user
 //	query - query attributes and limits
 // Return
@@ -605,7 +590,6 @@ func (s *ServerConnection) UsersGetMobileDeviceList(userId KId, query SearchQuer
 }
 
 // UsersGetNotActivated - Only user's ID, loginName, fullName, description are set in structures.
-// Parameters
 //	domainId - global identification of domain
 // Return
 //	newUsers - list of users
@@ -627,7 +611,6 @@ func (s *ServerConnection) UsersGetNotActivated(domainId KId) (ImporteeList, err
 }
 
 // UsersGetRecoveryDeletedItemsSize - Obtain a size of items stored for recovering.
-// Parameters
 //	userIds - global identification of user
 // Return
 //	errors - error message list
@@ -650,7 +633,6 @@ func (s *ServerConnection) UsersGetRecoveryDeletedItemsSize(userIds KIdList) (Er
 }
 
 // UsersGetStatistics - Obtain statistics of given users.
-// Parameters
 //	userIds - list of IDs of given users
 //	query - query parameters and limits
 // Return
@@ -675,7 +657,6 @@ func (s *ServerConnection) UsersGetStatistics(userIds KIdList, query SearchQuery
 }
 
 // UsersParseFromCsv - 'PRESERVE_FROM_CSV': preserve domain from CSV file (use primary if not defined)
-// Parameters
 //	fileId - ID of the uploaded file
 //	domainToImport - import to given domain, magic constants
 // Return
@@ -699,7 +680,6 @@ func (s *ServerConnection) UsersParseFromCsv(fileId string, domainToImport KId) 
 }
 
 // UsersRecoverDeletedItems - If the user quota is exceeded an error with code 4000 will be returned.
-// Parameters
 //	userIds - list of user IDs
 // Return
 //	recoveryMessages - list of recovery messages
@@ -722,7 +702,6 @@ func (s *ServerConnection) UsersRecoverDeletedItems(userIds KIdList) (ErrorList,
 }
 
 // UsersRemove - Remove user(s).
-// Parameters
 //	requests - list of user IDs to be removed, method, and owner of deleted messages
 // Return
 //	errors - list of users failed to remove only (successfully removed are NOT listed)
@@ -744,7 +723,6 @@ func (s *ServerConnection) UsersRemove(requests RemovalRequestList) (ErrorList, 
 }
 
 // UsersRemoveMobileDevice - Remove mobile device from the list of user's mobile devices.
-// Parameters
 //	userId - name of user
 //	deviceId - ID of user's mobile device to be removed
 func (s *ServerConnection) UsersRemoveMobileDevice(userId KId, deviceId string) error {
@@ -757,7 +735,6 @@ func (s *ServerConnection) UsersRemoveMobileDevice(userId KId, deviceId string) 
 }
 
 // UsersResetBuddyList - IM: Reset buddy list of selected users
-// Parameters
 //	userIds - list of user identifiers
 func (s *ServerConnection) UsersResetBuddyList(userIds KIdList) error {
 	params := struct {
@@ -768,7 +745,6 @@ func (s *ServerConnection) UsersResetBuddyList(userIds KIdList) error {
 }
 
 // UsersGetEffectiveUserRights - Obtains user effective rights (inherited from groups)
-// Parameters
 //	userIds - list of IDs of users
 // Return
 //	errors - list of users failed to get effective rights
@@ -792,7 +768,6 @@ func (s *ServerConnection) UsersGetEffectiveUserRights(userIds KIdList) (ErrorLi
 }
 
 // UsersSet - Set users' details according given pattern.
-// Parameters
 //	userIds - list of IDs of users to be changed
 //	pattern - pattern to use for new values
 // Return
@@ -816,7 +791,6 @@ func (s *ServerConnection) UsersSet(userIds KIdList, pattern User) (ErrorList, e
 }
 
 // UsersWipeMobileDevice - Wipe user's mobile device.
-// Parameters
 //	userId - global user identifier
 //	deviceId - ID of user's mobile device to be wiped
 func (s *ServerConnection) UsersWipeMobileDevice(userId KId, deviceId string) error {

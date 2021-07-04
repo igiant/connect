@@ -26,7 +26,6 @@ func (s *ServerConnection) SenderPolicyGet() (*SenderPolicyOptions, error) {
 }
 
 // SenderPolicySet - Set Sender Policy options.
-// Parameters
 //	options - options to be updated
 func (s *ServerConnection) SenderPolicySet(options SenderPolicyOptions) error {
 	params := struct {

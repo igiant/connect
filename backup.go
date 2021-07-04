@@ -79,7 +79,6 @@ func (s *ServerConnection) BackupGet() (*BackupOptions, error) {
 }
 
 // BackupGetScheduleList - Obtain list of backup scheduling.
-// Parameters
 //	query - order by, limits
 // Return
 //	scheduleList
@@ -119,7 +118,6 @@ func (s *ServerConnection) BackupGetStatus() (*BackupStatus, error) {
 }
 
 // BackupSet - Set backup options.
-// Parameters
 //	options - backup options
 func (s *ServerConnection) BackupSet(options BackupOptions) error {
 	params := struct {
@@ -130,7 +128,6 @@ func (s *ServerConnection) BackupSet(options BackupOptions) error {
 }
 
 // BackupSetScheduleList - Set all backup schedules.
-// Parameters
 //	scheduleList
 func (s *ServerConnection) BackupSetScheduleList(scheduleList BackupScheduleList) error {
 	params := struct {
@@ -141,7 +138,6 @@ func (s *ServerConnection) BackupSetScheduleList(scheduleList BackupScheduleList
 }
 
 // BackupStart - Start backup according to current settings.
-// Parameters
 //	backupType - backup type
 func (s *ServerConnection) BackupStart(backupType BackupType) error {
 	params := struct {

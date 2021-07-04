@@ -48,7 +48,6 @@ func (s *ServerConnection) GroupsActivate(groupIdList KIdList) (ErrorList, error
 }
 
 // GroupsAddMemberList - Add new member(s) to a group.
-// Parameters
 //	groupId - global group identifier
 //	userList - list of global identifiers of users to be added to a group
 // Return
@@ -72,7 +71,6 @@ func (s *ServerConnection) GroupsAddMemberList(groupId KId, userList KIdList) (E
 }
 
 // GroupsCreate - Create new groups.
-// Parameters
 //	groups - new group entities
 // Return
 //	errors - error message list
@@ -96,7 +94,6 @@ func (s *ServerConnection) GroupsCreate(groups GroupList) (ErrorList, CreateResu
 }
 
 // GroupsCreateLdap - Create new groups in directory service.
-// Parameters
 //	groups - new group entities
 // Return
 //	errors - error message list
@@ -120,7 +117,6 @@ func (s *ServerConnection) GroupsCreateLdap(groups GroupList) (ErrorList, Create
 }
 
 // GroupsGet - Obtain a list of groups.
-// Parameters
 //	query - query conditions and limits
 // Return
 //	list - groups
@@ -166,7 +162,6 @@ func (s *ServerConnection) GroupsRemove(requests GroupRemovalRequestList) (Error
 }
 
 // GroupsRemoveMemberList - Remove member(s) from a group.
-// Parameters
 //	groupId - global group identifier
 //	userIds - list of global identifiers of users to be add to a group
 // Return
@@ -190,7 +185,6 @@ func (s *ServerConnection) GroupsRemoveMemberList(groupId KId, userIds KIdList) 
 }
 
 // GroupsSet - Create a new group.
-// Parameters
 //	groupIds - a list group global identifier(s)
 //	pattern - pattern to use for new values
 // Return

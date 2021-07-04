@@ -43,7 +43,6 @@ type MigrationTask struct {
 type MigrationTaskList []MigrationTask
 
 // MigrationCancel - Cancel planned or running migration tasks.
-// Parameters
 //	taskIdList - Identifiers of migration tasks which should be canceled
 // Return
 //	errors - error message list
@@ -65,7 +64,6 @@ func (s *ServerConnection) MigrationCancel(taskIdList KIdList) (ErrorList, error
 }
 
 // MigrationGet - Obtain list of migration tasks.
-// Parameters
 //	query - query attributes and limits
 // Return
 //	list - migration tasks
@@ -126,7 +124,6 @@ func (s *ServerConnection) MigrationGetCurrentStatus() (*KId, *MigrationStatus, 
 }
 
 // MigrationGetStatus - Obtain status of migration task specified by the task ID.
-// Parameters
 //	taskId - migration task identifier
 // Return
 //	status - migration task status
@@ -165,7 +162,6 @@ func (s *ServerConnection) MigrationIsInProgress() (bool, error) {
 }
 
 // MigrationStart - Start a new migration task.
-// Parameters
 //	userIds - users to be migrated
 // Return
 //	errors - error message list

@@ -215,7 +215,6 @@ type ServerTimeInfo struct {
 }
 
 // ServerCreatePath - Server creates an archive/backup path. If credentials aren't specified, values from current configuration of backup are used.
-// Parameters
 //	path - new directory to create
 //	credentials - (optional) user name and password required to access network disk
 // Return
@@ -239,7 +238,6 @@ func (s *ServerConnection) ServerCreatePath(path string, credentials Credentials
 }
 
 // ServerFindEntityByEmail - caller must be authenticated; Note: creating duplicates is often allowed but may cause unwanted effects.
-// Parameters
 //	addresses - list of email addresses (without domain) to be checked
 //	updatedEntity - identification of the current entity (to avoid self duplicity)
 //	domainId - domain identification
@@ -348,7 +346,6 @@ func (s *ServerConnection) ServerGetClientStatistics() (bool, error) {
 }
 
 // ServerGetColumnList - Obtain a list of columns dependent on callee role.
-// Parameters
 //	objectName - name of the API object
 //	methodName - name of the method of appropriate object
 // Return
@@ -372,7 +369,6 @@ func (s *ServerConnection) ServerGetColumnList(objectName string, methodName str
 }
 
 // ServerGetConnections - Obtain information about active connections.
-// Parameters
 //	query - condition and fields have no effect for this method
 // Return
 //	list - active connections
@@ -397,7 +393,6 @@ func (s *ServerConnection) ServerGetConnections(query SearchQuery) (ConnectionLi
 }
 
 // ServerGetDirs - Obtain a list of directories in a particular path.
-// Parameters
 //	fullPath - directory for listing, if full path is empty logical drives will be listed
 // Return
 //	dirList - List of directories
@@ -453,7 +448,6 @@ func (s *ServerConnection) ServerGetNamedConstantList() (NamedConstantList, erro
 }
 
 // ServerGetOpenedFoldersInfo - Obtain information about folders opened on server.
-// Parameters
 //	query - condition and fields have no effect for this method
 // Return
 //	list - opened folders with info
@@ -585,7 +579,6 @@ func (s *ServerConnection) ServerGetVersion() (*ServerVersion, error) {
 }
 
 // ServerGetWebSessions - Obtain information about web component sessions.
-// Parameters
 //	query - condition and fields have no effect for this method
 // Return
 //	list - web component sessions
@@ -610,7 +603,6 @@ func (s *ServerConnection) ServerGetWebSessions(query SearchQuery) (WebSessionLi
 }
 
 // ServerKillWebSessions - Terminate actual web sessions.
-// Parameters
 //	ids - list of web sessions IDs to terminate
 func (s *ServerConnection) ServerKillWebSessions(ids KIdList) error {
 	params := struct {
@@ -621,7 +613,6 @@ func (s *ServerConnection) ServerKillWebSessions(ids KIdList) error {
 }
 
 // ServerPathExists - Check if the selected path exists and is accessible from the server.
-// Parameters
 //	path - directory name
 //	credentials - (optional) user name and password required to access network disk
 // Return
@@ -680,7 +671,6 @@ func (s *ServerConnection) ServerGetDownloadProgress() (int, error) {
 }
 
 // ServerSendBugReport - Send a bug report to Kerio.
-// Parameters
 //	name - name of sender
 //	email - email of sender
 //	language - language of report
@@ -708,7 +698,6 @@ func (s *ServerConnection) ServerSetClientStatistics(isEnabled bool) error {
 }
 
 // ServerSetRemoteAdministration - Set new remote administration parameters.
-// Parameters
 //	setting - new settings
 func (s *ServerConnection) ServerSetRemoteAdministration(setting Administration) error {
 	params := struct {
@@ -719,7 +708,6 @@ func (s *ServerConnection) ServerSetRemoteAdministration(setting Administration)
 }
 
 // ServerUploadLicense - Upload license manually from a file.
-// Parameters
 //	fileId - ID of the uploaded file
 func (s *ServerConnection) ServerUploadLicense(fileId string) error {
 	params := struct {
@@ -730,7 +718,6 @@ func (s *ServerConnection) ServerUploadLicense(fileId string) error {
 }
 
 // ServerValidateRemoteAdministration - Validate whether the administrator can cut off him/herself from the administration.
-// Parameters
 //	setting - new setting
 func (s *ServerConnection) ServerValidateRemoteAdministration(setting Administration) error {
 	params := struct {

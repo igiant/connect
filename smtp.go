@@ -119,7 +119,6 @@ func (s *ServerConnection) SmtpGet() (*SmtpServerSettings, error) {
 }
 
 // SmtpSet - Change SMTP server settings.
-// Parameters
 //	server - SMTP settings
 func (s *ServerConnection) SmtpSet(server SmtpServerSettings) error {
 	params := struct {

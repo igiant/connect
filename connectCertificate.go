@@ -3,7 +3,6 @@ package connect
 import "encoding/json"
 
 // ConnectCertificateExportCertificate - Note: "export" is a keyword in C++, so name of the method must be changed: exportCertificate
-// Parameters
 //	id - ID of the certificate or certificate request
 // Return
 //	fileDownload - description of the output file
@@ -25,7 +24,6 @@ func (s *ServerConnection) ConnectCertificateExportCertificate(id KId) (*Downloa
 }
 
 // ConnectCertificateExportPrivateKey - Note: "export" is a keyword in C++, so the name of the method must be changed: exportPrivateKey
-// Parameters
 //	id - ID of the certificate or certificate request
 // Return
 //	fileDownload - description of the output file
@@ -64,7 +62,6 @@ func (s *ServerConnection) ConnectCertificateGet() (CertificateList, error) {
 }
 
 // ConnectCertificateGenerate - Generate a self-signed certificate
-// Parameters
 //	subject - information about subject
 //	valid - length of the certificate's validity (in years, max value is 10)
 // Return
@@ -88,7 +85,6 @@ func (s *ServerConnection) ConnectCertificateGenerate(subject NamedValueList, va
 }
 
 // ConnectCertificateGenerateRequest - Generate certificate request
-// Parameters
 //	subject - information about subject
 // Return
 //	id - ID of the new generated certificate request
@@ -110,7 +106,6 @@ func (s *ServerConnection) ConnectCertificateGenerateRequest(subject NamedValueL
 }
 
 // ConnectCertificateImportCertificate - Import private key for the new certificate.
-// Parameters
 //	id - ID of private key or certificate request which belongs to the certificate
 //	fileId - ID of the uploaded file
 //	password - certificate password, if it is set (use empty string if password is not set)
@@ -125,7 +120,6 @@ func (s *ServerConnection) ConnectCertificateImportCertificate(id KId, fileId st
 }
 
 // ConnectCertificateImportPrivateKey - Import private key for the new certificate.
-// Parameters
 //	fileId - ID of the uploaded file
 // Return
 //	needPassword - true if private key is encrypted with password
@@ -169,7 +163,6 @@ func (s *ServerConnection) ConnectCertificateRemove(certificateIds KIdList) (Err
 }
 
 // ConnectCertificateSetActive - Set active certificate
-// Parameters
 //	id - ID of the new active certificate
 func (s *ServerConnection) ConnectCertificateSetActive(id KId) error {
 	params := struct {
@@ -180,7 +173,6 @@ func (s *ServerConnection) ConnectCertificateSetActive(id KId) error {
 }
 
 // ConnectCertificateToSource - Obtain source (plain-text representation) of the certificate
-// Parameters
 //	id - global identifier
 // Return
 //	source - certificate in plain text

@@ -60,7 +60,6 @@ type AccessPolicyGroupList []AccessPolicyGroup
 // Access policies management.
 
 // AccessPolicyCreate - Add new policies.
-// Parameters
 //	rules - new policies rules
 // Return
 //	errors - error message list
@@ -84,7 +83,6 @@ func (s *ServerConnection) AccessPolicyCreate(rules AccessPolicyRuleList) (Error
 }
 
 // AccessPolicyCreateGroupList - Create the list of groups.
-// Parameters
 //	groups - list of groups to create
 // Return
 //	errors - error message list
@@ -108,7 +106,6 @@ func (s *ServerConnection) AccessPolicyCreateGroupList(groups AccessPolicyGroupL
 }
 
 // AccessPolicyGet - Obtain a list of policies.
-// Parameters
 //	query - query attributes and limits
 // Return
 //	list - policies
@@ -167,7 +164,6 @@ func (s *ServerConnection) AccessPolicyGetServiceList() (ServiceTypeInfoList, er
 }
 
 // AccessPolicyRemove - Remove policies.
-// Parameters
 //	ruleIds - list of IDs of policy to be removed
 // Return
 //	errors - error message list
@@ -189,7 +185,6 @@ func (s *ServerConnection) AccessPolicyRemove(ruleIds KIdList) (ErrorList, error
 }
 
 // AccessPolicyRemoveGroupList - Remove the list of groups.
-// Parameters
 //	groupIds - list of IDs of group policy to be removed
 // Return
 //	errors - error message list
@@ -211,7 +206,6 @@ func (s *ServerConnection) AccessPolicyRemoveGroupList(groupIds KIdList) (ErrorL
 }
 
 // AccessPolicySet - Set policy details.
-// Parameters
 //	rules - rules to save
 // Return
 //	errors - error message list
@@ -233,7 +227,6 @@ func (s *ServerConnection) AccessPolicySet(rules AccessPolicyRuleList) (ErrorLis
 }
 
 // AccessPolicySetGroupList - Set the list of groups.
-// Parameters
 //	groups - list of group to set
 // Return
 //	errors - error message list

@@ -308,7 +308,6 @@ const (
 )
 
 // ContentAddBlackLists - Add a blacklist item.
-// Parameters
 //	items - array of new items
 // Return
 //	errors - error message list
@@ -434,7 +433,6 @@ func (s *ServerConnection) ContentGetBlackListList() (BlackListList, error) {
 }
 
 // ContentGetCustomRuleList - Obtain all custom rules.
-// Parameters
 //	query - condition and limit definition (orderBy is ignored)
 // Return
 //	list - custom rules
@@ -459,7 +457,6 @@ func (s *ServerConnection) ContentGetCustomRuleList(query SearchQuery) (CustomRu
 }
 
 // ContentRemoveBlackLists - Remove blacklist items.
-// Parameters
 //	ids - identifier list of blacklists to be deleted
 // Return
 //	errors - error message list
@@ -481,7 +478,6 @@ func (s *ServerConnection) ContentRemoveBlackLists(ids KIdList) (ErrorList, erro
 }
 
 // ContentRemoveUnusedCustomRules - Remove custom rules which are not used for a specified time.
-// Parameters
 //	number - how many hours/days is the rule unused
 //	unit - which unit is used to measure
 func (s *ServerConnection) ContentRemoveUnusedCustomRules(number int, unit HourOrDay) error {
@@ -494,7 +490,6 @@ func (s *ServerConnection) ContentRemoveUnusedCustomRules(number int, unit HourO
 }
 
 // ContentSetAntiSpamSetting - Set antiSPAM filter settings.
-// Parameters
 //	setting - new antivirus filter settings
 func (s *ServerConnection) ContentSetAntiSpamSetting(setting AntiSpamSetting) error {
 	params := struct {
@@ -505,7 +500,6 @@ func (s *ServerConnection) ContentSetAntiSpamSetting(setting AntiSpamSetting) er
 }
 
 // ContentSetAntivirusSetting - Set antivirus filter settings.
-// Parameters
 //	setting - new antivirus filter settingss
 // Return
 //	errors - error message; Value of inputIndex means type of antivirus (integrated = 0 and external = 1).
@@ -527,7 +521,6 @@ func (s *ServerConnection) ContentSetAntivirusSetting(setting AntivirusSetting) 
 }
 
 // ContentSetAttachmentRules - Set list of attachment filter rules.
-// Parameters
 //	filterRules - attachment filter rules
 func (s *ServerConnection) ContentSetAttachmentRules(filterRules AttachmentItemList) error {
 	params := struct {
@@ -538,7 +531,6 @@ func (s *ServerConnection) ContentSetAttachmentRules(filterRules AttachmentItemL
 }
 
 // ContentSetAttachmentSetting - Set attachment filter settings.
-// Parameters
 //	setting - new attachment filter settings
 func (s *ServerConnection) ContentSetAttachmentSetting(setting AttachmentSetting) error {
 	params := struct {
@@ -549,7 +541,6 @@ func (s *ServerConnection) ContentSetAttachmentSetting(setting AttachmentSetting
 }
 
 // ContentSetBlackLists - Set blacklist item.
-// Parameters
 //	ids - list of blacklist global identifier(s)
 //	pattern - pattern to use for new values
 // Return
@@ -573,7 +564,6 @@ func (s *ServerConnection) ContentSetBlackLists(ids KIdList, pattern BlackList) 
 }
 
 // ContentSetCustomRuleList - Set custom rules.
-// Parameters
 //	list - custom rule records
 func (s *ServerConnection) ContentSetCustomRuleList(list CustomRuleList) error {
 	params := struct {

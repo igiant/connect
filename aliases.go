@@ -52,7 +52,6 @@ type AliasTargetList []AliasTarget
 // Alias management
 
 // AliasesCheck - Obtain a list of mail addresses and/or public folders on which given string will be expanded.
-// Parameters
 //	checkString - string to be checked
 // Return
 //	result - list of expansions
@@ -74,7 +73,6 @@ func (s *ServerConnection) AliasesCheck(checkString string) (StringList, error) 
 }
 
 // AliasesCreate - Create new aliases
-// Parameters
 //	aliases - new alias entities
 // Return
 //	errors - list of error messages for appropriate new aliases
@@ -98,7 +96,6 @@ func (s *ServerConnection) AliasesCreate(aliases AliasList) (ErrorList, CreateRe
 }
 
 // AliasesGet - Obtain list of aliases.
-// Parameters
 //	query - query conditions and limits
 // Return
 //	list - aliases
@@ -124,7 +121,6 @@ func (s *ServerConnection) AliasesGet(query SearchQuery, domainId KId) (AliasLis
 }
 
 // AliasesGetMailPublicFolderList - Obtain a list of mail public folders in the given domain.
-// Parameters
 //	domainId - global identification of the domain
 // Return
 //	publicFolderList - list of public folders
@@ -146,7 +142,6 @@ func (s *ServerConnection) AliasesGetMailPublicFolderList(domainId KId) (PublicF
 }
 
 // AliasesGetTargetList - Obtain a list of alias targets.
-// Parameters
 //	query - query conditions and limits
 //	domainId - global identification of the domain
 // Return
@@ -193,7 +188,6 @@ func (s *ServerConnection) AliasesRemove(aliasIds KIdList) (ErrorList, error) {
 }
 
 // AliasesSet - Set an existing alias.
-// Parameters
 //	aliasIds - list of alias global identifier(s)
 //	pattern - pattern to use for new values
 // Return

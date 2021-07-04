@@ -5,7 +5,6 @@ import "encoding/json"
 // Upload management
 
 // UploadsRemove - Remove uploaded file.
-// Parameters
 //	id - identifier of uploaded file
 func (s *ServerConnection) UploadsRemove(id string) error {
 	params := struct {
@@ -16,7 +15,6 @@ func (s *ServerConnection) UploadsRemove(id string) error {
 }
 
 // UploadsRemoveList - Remove uploaded files.
-// Parameters
 //	ids - identifiers of uploaded files
 // Return
 //	errors - list of errors

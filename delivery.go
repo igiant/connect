@@ -133,7 +133,6 @@ type InternetSettings struct {
 }
 
 // DeliveryAddEtrnDownloadList - Add new ETRN downloads.
-// Parameters
 //	downloads - new ETRN download records
 // Return
 //	errors - list of error messages
@@ -155,7 +154,6 @@ func (s *ServerConnection) DeliveryAddEtrnDownloadList(downloads EtrnDownloadLis
 }
 
 // DeliveryAddPop3AccountList - Add new POP3 accounts.
-// Parameters
 //	accounts - new POP3 account records
 // Return
 //	errors - list of error messages
@@ -177,7 +175,6 @@ func (s *ServerConnection) DeliveryAddPop3AccountList(accounts Pop3AccountList) 
 }
 
 // DeliveryAddPop3SortingList - Add new POP3 sorting rules.
-// Parameters
 //	sortings - new POP3 sorting records
 // Return
 //	errors - list of error messages
@@ -199,7 +196,6 @@ func (s *ServerConnection) DeliveryAddPop3SortingList(sortings Pop3SortingList) 
 }
 
 // DeliveryAddScheduledActionList - Add scheduled actions.
-// Parameters
 //	actions - new scheduler actions
 // Return
 //	errors - list of error messages
@@ -227,7 +223,6 @@ func (s *ServerConnection) DeliveryDownloadEtrn() error {
 }
 
 // DeliveryGetEtrnDownloadList - Obtain list of ETRN download items.
-// Parameters
 //	query - query conditions and limits
 // Return
 //	list - ETRN download records
@@ -286,7 +281,6 @@ func (s *ServerConnection) DeliveryGetInternetSettings() (*InternetSettings, err
 }
 
 // DeliveryGetPop3AccountList - Obtain list of POP3 accounts.
-// Parameters
 //	query - query conditions and limits
 // Return
 //	list - POP3 accounts
@@ -311,7 +305,6 @@ func (s *ServerConnection) DeliveryGetPop3AccountList(query SearchQuery) (Pop3Ac
 }
 
 // DeliveryGetPop3SortingList - Obtain list of POP3 sorting rules
-// Parameters
 //	query - query conditions and limits
 // Return
 //	list - POP3 sorting records
@@ -353,7 +346,6 @@ func (s *ServerConnection) DeliveryGetRasNames() (StringList, error) {
 }
 
 // DeliveryGetScheduledActionList - Obtain a list of scheduler actions.
-// Parameters
 //	query - query conditions and limits
 // Return
 //	list - scheduler actions
@@ -378,7 +370,6 @@ func (s *ServerConnection) DeliveryGetScheduledActionList(query SearchQuery) (Sc
 }
 
 // DeliveryRemoveEtrnDownloadList - Remove ETRN download items.
-// Parameters
 //	ids - identifier list of ETRN download records to be deleted
 // Return
 //	errors - error message list
@@ -400,7 +391,6 @@ func (s *ServerConnection) DeliveryRemoveEtrnDownloadList(ids KIdList) (ErrorLis
 }
 
 // DeliveryRemovePop3AccountList - Remove POP3 accounts.
-// Parameters
 //	ids - identifier list of POP3 account records to be deleted
 // Return
 //	errors - list of error messages
@@ -422,7 +412,6 @@ func (s *ServerConnection) DeliveryRemovePop3AccountList(ids KIdList) (ErrorList
 }
 
 // DeliveryRemovePop3SortingList - Remove POP3 sorting rules.
-// Parameters
 //	ids - identifier list of POP3 sorting records to be deleted
 // Return
 //	errors - list of error messages
@@ -444,7 +433,6 @@ func (s *ServerConnection) DeliveryRemovePop3SortingList(ids KIdList) (ErrorList
 }
 
 // DeliveryRemoveScheduledActionList - Remove scheduled actions.
-// Parameters
 //	ids - identifier list of scheduler actions to be deleted
 // Return
 //	errors - error message list
@@ -472,7 +460,6 @@ func (s *ServerConnection) DeliveryRunPop3Downloads() error {
 }
 
 // DeliverySetEtrnDownload - Set 1 ETRN download item.
-// Parameters
 //	downloadId - updated ETRN download identifier
 //	download - new ETRN download record
 func (s *ServerConnection) DeliverySetEtrnDownload(downloadId KId, download EtrnDownload) error {
@@ -485,7 +472,6 @@ func (s *ServerConnection) DeliverySetEtrnDownload(downloadId KId, download Etrn
 }
 
 // DeliverySetEtrnTimeout - Set timeout for ETRN reply on dial-up line.
-// Parameters
 //	seconds - number of seconds for ETRN timeout
 func (s *ServerConnection) DeliverySetEtrnTimeout(seconds int) error {
 	params := struct {
@@ -496,7 +482,6 @@ func (s *ServerConnection) DeliverySetEtrnTimeout(seconds int) error {
 }
 
 // DeliverySetInternetSettings - Set Internet connection settings.
-// Parameters
 //	settings - Internet connection settings
 func (s *ServerConnection) DeliverySetInternetSettings(settings InternetSettings) error {
 	params := struct {
@@ -507,7 +492,6 @@ func (s *ServerConnection) DeliverySetInternetSettings(settings InternetSettings
 }
 
 // DeliverySetPop3Account - Set POP3 account.
-// Parameters
 //	accountId - updated POP3 account identifier
 //	account - new POP3 account record
 func (s *ServerConnection) DeliverySetPop3Account(accountId KId, account Pop3Account) error {
@@ -520,7 +504,6 @@ func (s *ServerConnection) DeliverySetPop3Account(accountId KId, account Pop3Acc
 }
 
 // DeliverySetPop3Sorting - Set POP3 sorting rule.
-// Parameters
 //	sortingId - updated POP3 sorting identifier
 //	sorting - new POP3 sorting record
 func (s *ServerConnection) DeliverySetPop3Sorting(sortingId KId, sorting Pop3Sorting) error {
@@ -533,7 +516,6 @@ func (s *ServerConnection) DeliverySetPop3Sorting(sortingId KId, sorting Pop3Sor
 }
 
 // DeliverySetScheduledAction - Set a scheduled action.
-// Parameters
 //	actionId - updated action identifier
 //	action - new scheduler actions
 func (s *ServerConnection) DeliverySetScheduledAction(actionId KId, action ScheduledAction) error {

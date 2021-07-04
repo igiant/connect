@@ -66,7 +66,6 @@ type CertificateList []Certificate
 // Manager of Certificates
 
 // CertificatesGet - Obtain a list of certificates
-// Parameters
 //	query - conditions and limits. Included from weblib.
 // Return
 //	certificates - current list of certificates
@@ -91,7 +90,6 @@ func (s *ServerConnection) CertificatesGet(query SearchQuery) (CertificateList, 
 }
 
 // CertificatesSetName - Renames certificate
-// Parameters
 //	id - ID of certificate to rename
 //	name - new name of the certificate
 func (s *ServerConnection) CertificatesSetName(id KId, name string) error {
@@ -104,7 +102,6 @@ func (s *ServerConnection) CertificatesSetName(id KId, name string) error {
 }
 
 // CertificatesRemove - Remove list of certificate records
-// Parameters
 //	ids - list of identifiers of deleted user templates
 // Return
 //	errors - error message list
@@ -126,7 +123,6 @@ func (s *ServerConnection) CertificatesRemove(ids KIdList) (ErrorList, error) {
 }
 
 // CertificatesGenerate - Generate certificate.
-// Parameters
 //	subject - properties specified by user
 //	name - name of the new certificate
 //	certificateType - type of certificate to be generated, valid input is one of: InactiveCertificate/CertificateRequest/LocalAuthority
@@ -171,7 +167,6 @@ func (s *ServerConnection) CertificatesGetCountryList() (NamedValueList, error) 
 }
 
 // CertificatesImportCertificate - Import certificate in PEM format
-// Parameters
 //	keyId - ID assigned to imported private key, @see importPrivateKey
 //	fileId - id of uploaded file
 //	name - name of the new certificate
@@ -199,7 +194,6 @@ func (s *ServerConnection) CertificatesImportCertificate(keyId KId, fileId strin
 }
 
 // CertificatesImportPrivateKey - Import private key. It generates ID, so it can be linked to Certificate content imported later, @see importCertificate
-// Parameters
 //	fileId - id of uploaded file
 // Return
 //	keyId - generated ID for new key
@@ -223,7 +217,6 @@ func (s *ServerConnection) CertificatesImportPrivateKey(fileId string) (KId, boo
 }
 
 // CertificatesUnlockPrivateKey - Try to parse imported private key. Need to be called, when @importPrivateKey returns needPassword == true.
-// Parameters
 //	keyId - ID assigned to imported private key, @see importPrivateKey
 //	password - certificate password
 func (s *ServerConnection) CertificatesUnlockPrivateKey(keyId KId, password string) error {
@@ -236,7 +229,6 @@ func (s *ServerConnection) CertificatesUnlockPrivateKey(keyId KId, password stri
 }
 
 // CertificatesExportCertificate - Export of certificate or certificate request
-// Parameters
 //	id - ID of the certificate or certificate request
 // Return
 //	fileDownload - description of the output file
@@ -258,7 +250,6 @@ func (s *ServerConnection) CertificatesExportCertificate(id KId) (*Download, err
 }
 
 // CertificatesExportPrivateKey - Export of certificate or request privatekey
-// Parameters
 //	id - ID of the certificate or certificate request
 // Return
 //	fileDownload - description of the output file
@@ -280,7 +271,6 @@ func (s *ServerConnection) CertificatesExportPrivateKey(id KId) (*Download, erro
 }
 
 // CertificatesToSource - Obtain source (plain-text representation) of the certificate
-// Parameters
 //	id - global identifier
 // Return
 //	source - certificate in plain text

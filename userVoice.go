@@ -45,7 +45,6 @@ func (s *ServerConnection) UserVoiceGetStatus() (bool, error) {
 }
 
 // UserVoiceGetUrl - Parameters name and email can be empty strings.
-// Parameters
 //	name - user displayname for userVoice
 //	email - user email address for userVoice
 // Return
@@ -69,7 +68,6 @@ func (s *ServerConnection) UserVoiceGetUrl(name string, email string) (string, e
 }
 
 // UserVoiceSet - Set settings of User Voice.
-// Parameters
 //	settings - structure with settings
 func (s *ServerConnection) UserVoiceSet(settings UserVoiceSettings) error {
 	params := struct {

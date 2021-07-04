@@ -64,7 +64,6 @@ type TimeRangeEntryList []TimeRangeEntry
 type TimeRangeGroupList []TimeRangeGroup
 
 // TimeRangesCreate - Create new ranges.
-// Parameters
 //	ranges - details for new ranges. Field KiD is assigned by the manager to temporary value until apply() or reset().
 // Return
 //	errors - possible errors: - "This time range already exists!" duplicate name-value
@@ -88,7 +87,6 @@ func (s *ServerConnection) TimeRangesCreate(ranges TimeRangeEntryList) (ErrorLis
 }
 
 // TimeRangesGet - Get the list of ranges.
-// Parameters
 //	query - conditions and limits. Included from weblib. KWF engine implementation notes: - LIKE matches substring (second argument) in a string (first argument). There are no wildcards. - sort and match are case insensitive. - column alias (first operand):
 // Return
 //  list - list of ranges and its details
@@ -130,7 +128,6 @@ func (s *ServerConnection) TimeRangesGetGroupList() (TimeRangeGroupList, error) 
 }
 
 // TimeRangesRemove - Remove ranges.
-// Parameters
 //	rangeIds - IDs of ranges that should be removed
 // Return
 //	errors - Errors by removing ranges
@@ -152,7 +149,6 @@ func (s *ServerConnection) TimeRangesRemove(rangeIds KIdList) (ErrorList, error)
 }
 
 // TimeRangesSet - Set existing ranges.
-// Parameters
 //	rangeIds - IDs of ranges to be updated.
 //	details - details for update. Field "KId" is ignored. All other fields must be filled in and they are written to all ranges specified by rangeIds.
 // Return

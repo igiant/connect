@@ -71,7 +71,6 @@ func (s *ServerConnection) ServicesGet() (ServiceList, error) {
 }
 
 // ServicesRestart - Restart a given service.
-// Parameters
 //	service - unique service identifier
 func (s *ServerConnection) ServicesRestart(service KId) error {
 	params := struct {
@@ -82,7 +81,6 @@ func (s *ServerConnection) ServicesRestart(service KId) error {
 }
 
 // ServicesSet - Change current status of service(s).
-// Parameters
 //	services - list of KMS services
 // Return
 //	errors - errors of requested changes
@@ -104,7 +102,6 @@ func (s *ServerConnection) ServicesSet(services ServiceList) (ErrorList, error) 
 }
 
 // ServicesStart - Start a given service.
-// Parameters
 //	service - unique service identifier
 func (s *ServerConnection) ServicesStart(service KId) error {
 	params := struct {
@@ -115,7 +112,6 @@ func (s *ServerConnection) ServicesStart(service KId) error {
 }
 
 // ServicesStop - Stop a given service.
-// Parameters
 //	service - unique service identifier
 func (s *ServerConnection) ServicesStop(service KId) error {
 	params := struct {

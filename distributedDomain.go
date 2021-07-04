@@ -95,7 +95,6 @@ type ClusterAuthentication struct {
 type ClusterServerList []ClusterServer
 
 // DistributedDomainConnect - Connect server to cluster as slave.
-// Parameters
 //	hostName - name of the master server
 //	adminUser - username of administrator on the master server
 //	password - administrator's password
@@ -121,7 +120,6 @@ func (s *ServerConnection) DistributedDomainConnect(hostName string, adminUser s
 }
 
 // DistributedDomainCopy - Copy domain from the master server.
-// Parameters
 //	domainName - name of the domain on the master server that you want to copy. Name can be obtained by using method getDomainsFromServer.
 func (s *ServerConnection) DistributedDomainCopy(domainName string) error {
 	params := struct {
@@ -138,7 +136,6 @@ func (s *ServerConnection) DistributedDomainDisconnect() error {
 }
 
 // DistributedDomainGetDistributable - Retrieve domains, which can be distributed, from the master server as a standalone server.
-// Parameters
 //	connected - true means the caller is connected to cluster
 //	authentication - Structure with a credential. Credential will be used when connected is false.
 // Return

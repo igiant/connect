@@ -44,7 +44,6 @@ type MessageInQueueList []MessageInQueue
 type MessageInProcessList []MessageInProcess
 
 // QueueGet - Obtain a list of queued messages.
-// Parameters
 //	query - search conditions
 // Return
 //	list - awaiting messages
@@ -71,7 +70,6 @@ func (s *ServerConnection) QueueGet(query SearchQuery) (MessageInQueueList, int,
 }
 
 // QueueGetProcessed - List messages that are being processed by the server.
-// Parameters
 //	query - search conditions
 // Return
 //	list - processed messages
@@ -96,7 +94,6 @@ func (s *ServerConnection) QueueGetProcessed(query SearchQuery) (MessageInProces
 }
 
 // QueueRemove - Remove selected messages from the message queue.
-// Parameters
 //	messageIds - identifiers of messages to be deleted
 func (s *ServerConnection) QueueRemove(messageIds KIdList) (int, error) {
 	params := struct {
@@ -131,7 +128,6 @@ func (s *ServerConnection) QueueRemoveAll() (int, error) {
 }
 
 // QueueRemoveMatching - Remove all messages matching a pattern from the message queue.
-// Parameters
 //	senderPattern - sender pattern with wildcards
 //	recipientPattern - recipient pattern with wildcards
 func (s *ServerConnection) QueueRemoveMatching(senderPattern string, recipientPattern string) (int, error) {
@@ -159,7 +155,6 @@ func (s *ServerConnection) QueueRun() error {
 }
 
 // QueueTryToSend - Try to send selected messages.
-// Parameters
 //	messageIds - identifiers of messages to be sent immediately
 func (s *ServerConnection) QueueTryToSend(messageIds KIdList) error {
 	params := struct {

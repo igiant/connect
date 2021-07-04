@@ -185,7 +185,6 @@ type ChartData struct {
 }
 
 // StatisticsExportToHtml - Export server statistics to HTML format.
-// Parameters
 //	type - export type
 //	lang - export language
 // Return
@@ -241,7 +240,6 @@ func (s *ServerConnection) StatisticsGetCharts() (ChartList, error) {
 }
 
 // StatisticsGetChartData - Obtain values of charts graph.
-// Parameters
 //	classname - classname of charts graph
 //	name - name of charts graph
 //	scaleId - ID of scale

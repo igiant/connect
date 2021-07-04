@@ -58,7 +58,6 @@ type ResourceList []Resource
 // Resource management
 
 // ResourcesCreate - Create new resources.
-// Parameters
 //	resources - new resource entities
 // Return
 //	errors - error message list
@@ -82,7 +81,6 @@ func (s *ServerConnection) ResourcesCreate(resources ResourceList) (ErrorList, C
 }
 
 // ResourcesGet - Obtain a list of resources.
-// Parameters
 //	query - query conditions and limits
 //	domainId - domain identification
 // Return
@@ -109,7 +107,6 @@ func (s *ServerConnection) ResourcesGet(query SearchQuery, domainId KId) (Resour
 }
 
 // ResourcesGetPrincipalList - Obtain a list of potential resource targets (principals).
-// Parameters
 //	query - query attributes and limits
 // Return
 //	list - principals
@@ -135,7 +132,6 @@ func (s *ServerConnection) ResourcesGetPrincipalList(query SearchQuery, domainId
 }
 
 // ResourcesRemove - Remove resources.
-// Parameters
 //	resourceIds - list of global identifiers of resource(s) to be deleted
 // Return
 //	errors - error message list
@@ -157,7 +153,6 @@ func (s *ServerConnection) ResourcesRemove(resourceIds KIdList) (ErrorList, erro
 }
 
 // ResourcesSet - Set existing resources.
-// Parameters
 //	resourceIds - a list resource global identifier(s)
 //	pattern - pattern to use for new values
 // Return

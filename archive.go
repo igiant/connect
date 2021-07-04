@@ -47,7 +47,6 @@ func (s *ServerConnection) ArchiveGet() (*ArchiveOptions, error) {
 }
 
 // ArchiveSet - Set archive options.
-// Parameters
 //	options - archive options
 func (s *ServerConnection) ArchiveSet(options ArchiveOptions) error {
 	params := struct {

@@ -142,7 +142,6 @@ type Ml struct {
 type MlList []Ml
 
 // MailingListsAddMlUserList - Add one or more members/moderators to a mailing list.
-// Parameters
 //	members - ML members and/or moderators
 //	mlId - unique ML identifier
 // Return
@@ -166,7 +165,6 @@ func (s *ServerConnection) MailingListsAddMlUserList(members UserOrEmailList, ml
 }
 
 // MailingListsCreate - Create new mailing lists.
-// Parameters
 //	mailingLists - mailing list entities
 // Return
 //	errors - error message list
@@ -190,7 +188,6 @@ func (s *ServerConnection) MailingListsCreate(mailingLists MlList) (ErrorList, C
 }
 
 // MailingListsExportMlUsersToCsv - Export of mailing list users of specified membership type.
-// Parameters
 //	kind - membership type
 //	mlId - unique ML identifier
 // Return
@@ -214,7 +211,6 @@ func (s *ServerConnection) MailingListsExportMlUsersToCsv(kind MlMembership, mlI
 }
 
 // MailingListsGet - Obtain a list of mailing lists.
-// Parameters
 //	query - query conditions and limits
 // Return
 //	list - mailing lists
@@ -240,7 +236,6 @@ func (s *ServerConnection) MailingListsGet(query SearchQuery, domainId KId) (MlL
 }
 
 // MailingListsGetMlUserList - Obtain list of mailing list users including membership type.
-// Parameters
 //	query - orderBy definition (conditions and limit are ignored)
 //	mlId - unique ML identifier
 // Return
@@ -267,7 +262,6 @@ func (s *ServerConnection) MailingListsGetMlUserList(query SearchQuery, mlId KId
 }
 
 // MailingListsGetMlUserListFromCsv - Parse CSV file in format 'Email, FullName' and return list of members.
-// Parameters
 //	fileId - ID of the uploaded file
 //	mlToImport - unique ML identifier or empty string if XML does not exist yet
 // Return
@@ -308,7 +302,6 @@ func (s *ServerConnection) MailingListsGetSuffixes() (StringList, error) {
 }
 
 // MailingListsGetTrusteeTargetList - Obtain a list of potential mailing list archive rights targets.
-// Parameters
 //	query - query attributes and limits
 // Return
 //	list - trustee targets
@@ -334,7 +327,6 @@ func (s *ServerConnection) MailingListsGetTrusteeTargetList(query SearchQuery, d
 }
 
 // MailingListsRemove - Remove mailing lists.
-// Parameters
 //	mlIds - list of global identifiers of MLs to be deleted
 // Return
 //	errors - error message list
@@ -356,7 +348,6 @@ func (s *ServerConnection) MailingListsRemove(mlIds KIdList) (ErrorList, error) 
 }
 
 // MailingListsRemoveMlUserList - Remove member(s)/moderator(s) from a mailing list.
-// Parameters
 //	members - ML members and/or moderators
 //	mlId - unique ML identifier
 // Return
@@ -380,7 +371,6 @@ func (s *ServerConnection) MailingListsRemoveMlUserList(members UserOrEmailList,
 }
 
 // MailingListsSet - Create a new mailing list.
-// Parameters
 //	mlIds - ML global identifiers
 //	pattern - pattern to use for new values
 // Return

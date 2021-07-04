@@ -49,7 +49,6 @@ func (s *ServerConnection) SecurityPolicyGet() (*SecurityPolicyOptions, error) {
 }
 
 // SecurityPolicySet - Set Security Policy options.
-// Parameters
 //	options - options to be updated
 func (s *ServerConnection) SecurityPolicySet(options SecurityPolicyOptions) error {
 	params := struct {

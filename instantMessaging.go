@@ -32,7 +32,6 @@ func (s *ServerConnection) InstantMessagingGet() (*XmppSettings, error) {
 }
 
 // InstantMessagingSet - Set settings of XMPP server
-// Parameters
 //	settings - Sign On settings
 func (s *ServerConnection) InstantMessagingSet(settings XmppSettings) error {
 	params := struct {

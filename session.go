@@ -45,7 +45,6 @@ type RenameInfo struct {
 
 // Login - log in a given user. Please note that with a session to one module you cannot use another one
 // (eg. with admin session you cannot use webmail).
-// Parameters:
 //      user     - login name + domain name (can be omitted if primary) of the user to be logged in,
 //                 e.g. "jdoe" or "jdoe@company.com"
 //      password - password of the user to be logged in

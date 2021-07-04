@@ -5,7 +5,6 @@ type DownloadList []Download
 // Download management
 
 // DownloadsRemove - Remove file prepared to download.
-// Parameters
 //	url - url of file prepared to download
 func (s *ServerConnection) DownloadsRemove(url string) error {
 	params := struct {

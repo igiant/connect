@@ -171,7 +171,6 @@ func (s *ServerConnection) DomainsCheckPublicFoldersIntegrity() error {
 }
 
 // DomainsCreate - Create new domains.
-// Parameters
 //	domains - new domain entities
 // Return
 //	errors - error message list
@@ -195,7 +194,6 @@ func (s *ServerConnection) DomainsCreate(domains DomainList) (ErrorList, CreateR
 }
 
 // DomainsGeneratePassword - Generate password which meets current password policy of a given domain.
-// Parameters
 //	domainId - ID of the domain
 // Return
 //	password - generated password
@@ -217,7 +215,6 @@ func (s *ServerConnection) DomainsGeneratePassword(domainId KId) (string, error)
 }
 
 // DomainsGet - Obtain a list of domains.
-// Parameters
 //	query - query conditions and limits
 // Return
 //	list - domains
@@ -277,7 +274,6 @@ func (s *ServerConnection) DomainsGetSettings() (*DomainSetting, error) {
 }
 
 // DomainsGetUserCountInfo - Get information about user count and limit for domain. Disabled users are not counted.
-// Parameters
 //	domainId - ID of the domain which will be renamed
 // Return
 //	countInfo - structure with users count and limit
@@ -299,7 +295,6 @@ func (s *ServerConnection) DomainsGetUserCountInfo(domainId KId) (*UserDomainCou
 }
 
 // DomainsRemove - Remove domains.
-// Parameters
 //	domainIds - list of global identifiers of domains to be deleted
 // Return
 //	errors - error message list
@@ -321,7 +316,6 @@ func (s *ServerConnection) DomainsRemove(domainIds KIdList) (ErrorList, error) {
 }
 
 // DomainsRename - Start domain renaming process.
-// Parameters
 //	domainId - ID of the domain which will be renamed
 //	newName - new domain name
 // Return
@@ -345,7 +339,6 @@ func (s *ServerConnection) DomainsRename(domainId KId, newName string) (*Cluster
 }
 
 // DomainsSaveFooterImage - Save a new footer's image.
-// Parameters
 //	fileId - id of uploaded file
 // Return
 //	imgUrl - url to saved image
@@ -367,7 +360,6 @@ func (s *ServerConnection) DomainsSaveFooterImage(fileId string) (string, error)
 }
 
 // DomainsSaveWebMailLogo - Save a new logo.
-// Parameters
 //	fileId - ID of the uploaded file
 //	domainId - global domain identifier
 // Return
@@ -391,7 +383,6 @@ func (s *ServerConnection) DomainsSaveWebMailLogo(fileId string, domainId KId) (
 }
 
 // DomainsSet - Set existing domains to given pattern.
-// Parameters
 //	domainIds - list of the domain's global identifier(s)
 //	pattern - pattern to use for new values
 // Return
@@ -415,7 +406,6 @@ func (s *ServerConnection) DomainsSet(domainIds KIdList, pattern Domain) (ErrorL
 }
 
 // DomainsSetSettings - Set settings for all domains.
-// Parameters
 //	setting - domain global settings
 func (s *ServerConnection) DomainsSetSettings(setting DomainSetting) error {
 	params := struct {
@@ -426,7 +416,6 @@ func (s *ServerConnection) DomainsSetSettings(setting DomainSetting) error {
 }
 
 // DomainsTestDomainController - Test connection between Kerio Connect and domain controller.
-// Parameters
 //	hostnames - directory server (primary and secondary if any)
 //	config - directory service configuration. If password is empty then it is taken from domain by 'domainId'.
 //	domainId - global domain identifier
@@ -452,7 +441,6 @@ func (s *ServerConnection) DomainsTestDomainController(hostnames StringList, con
 }
 
 // DomainsTestDkimDnsStatus - Tests DKIM DNS TXT status for domain list.
-// Parameters
 //	hostnames - hostnames checked for DKIM public key in DNS
 // Return
 //	errors - error message

@@ -39,7 +39,6 @@ type UserTemplate struct {
 type UserTemplateList []UserTemplate
 
 // UserTemplatesCreate - Create user templates.
-// Parameters
 //	userTemplates - new user template entities
 // Return
 //	errors - error message list
@@ -63,7 +62,6 @@ func (s *ServerConnection) UserTemplatesCreate(userTemplates UserTemplateList) (
 }
 
 // UserTemplatesGet - Obtain a list of user templates.
-// Parameters
 //	query - query attributes and limits
 // Return
 //	userTemplateList - list of user templates
@@ -88,7 +86,6 @@ func (s *ServerConnection) UserTemplatesGet(query SearchQuery) (UserTemplateList
 }
 
 // UserTemplatesGetAvailable - - Only templates without administrative rights are listed.
-// Parameters
 //	domainId - only templates with this domain and templates without domain are listed
 // Return
 //	userTemplateList - list of user templates
@@ -110,7 +107,6 @@ func (s *ServerConnection) UserTemplatesGetAvailable(domainId KId) (UserTemplate
 }
 
 // UserTemplatesRemove - Remove list of user template records.
-// Parameters
 //	idList - list of identifiers of deleted user templates
 // Return
 //	errors - error message list
@@ -132,7 +128,6 @@ func (s *ServerConnection) UserTemplatesRemove(idList KIdList) (ErrorList, error
 }
 
 // UserTemplatesSet - Set user templates according a given pattern.
-// Parameters
 //	idList - list of domain global identifier(s) of items to be changed
 //	pattern - pattern to use for new values
 // Return

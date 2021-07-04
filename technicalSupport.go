@@ -50,7 +50,6 @@ func (s *ServerConnection) TechnicalSupportGetInfo() (*UserInfo, *SupportProduct
 }
 
 // TechnicalSupportAddSystemInfoToTicket - @return (void)
-// Parameters
 //	ticketId (in string) tickedId of target ticket
 //	email (in string) email of the customer
 func (s *ServerConnection) TechnicalSupportAddSystemInfoToTicket(ticketId string, email string) error {
